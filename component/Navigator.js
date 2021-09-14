@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Text, View, StyleSheet, StatusBar, Dimensions } from 'react-native';
+import { ImageBackground, Text, View, StyleSheet, StatusBar, Dimensions, Image } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -94,6 +94,7 @@ function TabNavigator() {
 
             return (
               <View style={styles.tabIcon}>
+                <Image source={require("../assets/tabShadow.png")} style={styles.shadowTabImage} />
                 <Icon size={size} color={color} />
               </View>
             );
@@ -172,11 +173,18 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 50,
     backgroundColor: color.bg.secondary,
+    position: "relative",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 6,
-    borderWidth: 2,
-    borderColor: color.bg.primary,
+  },
+  shadowTabImage: {
+    position: "absolute",
+    width: 66,
+    height: 66,
+    top: "50%",
+    left: "50%",
+    transform: [{ translateY: -27 }, { translateX: -27 }]
   },
   tabBarLabel: {
     fontSize: 10,

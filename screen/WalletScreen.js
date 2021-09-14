@@ -28,6 +28,12 @@ export function WalletScreen({ navigation }) {
     : currentCardIndex.value
   );
 
+  const handleScroll = ({ nativeEvent }) => {
+    scrollX.value = nativeEvent.contentOffset.x;
+    const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+    if (slide !== active) setActive(slide);
+  };
+
   return (
     <View
       style={styles.container}
@@ -36,13 +42,10 @@ export function WalletScreen({ navigation }) {
         pagingEnabled={true}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
+        overScrollMode={"never"}
         scrollEnabled={scrollEnabled}
         style={styles.scrollContainer}
-        onScroll={({ nativeEvent }) => {
-          scrollX.value = nativeEvent.contentOffset.x;
-          const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
-          if (slide !== active) setActive(slide);
-        }}
+        onScroll={handleScroll}
       >
         <WalletBalanceScreen
           navigation={navigation}
