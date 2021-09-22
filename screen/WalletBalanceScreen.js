@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
-import { Button, View, Dimensions, StyleSheet } from 'react-native';
+import { View, Dimensions, StyleSheet } from 'react-native';
 import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
 
+import { BalanceSheet } from '../component/BalanceSheet';
 import { BottomSheet } from '../component/BottomSheet';
 import { TransactionHeader } from '../component/Transaction/TransactionHeader';
 import { TransactionItem } from '../component/Transaction/TransactionItem';
@@ -60,7 +61,7 @@ export const WalletBalanceScreen = React.memo(({
   currentIndex,
   setScrollEnabled,
 }) => {
-  const snapPoints = useMemo(() => ["42%", "84%"], []);
+  const snapPoints = useMemo(() => ["42%", "92%"], []);
 
   const handleGetDetails = ({ id, url }) => {
     navigation.navigate('Details', { url: url, id: id });
@@ -70,7 +71,10 @@ export const WalletBalanceScreen = React.memo(({
     <View
       style={styles.container}
     >
-      <Button title={"WalletBalanceScreen"} onPress={() => console.log(currentIndex.value)} />
+      <BalanceSheet
+        currentIndex={currentIndex}
+        currentPosition={currentPosition}
+      />
       <BottomSheet
         snapPoints={snapPoints}
         currentIndex={currentIndex}

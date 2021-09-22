@@ -7,13 +7,13 @@ import Animated, {
 } from 'react-native-reanimated';
 import { color } from '../styles/color.theme';
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 export function ScreenPagination({ screens, currentIndex, scrollX }) {
   const containerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
       currentIndex.value,
-      [0, 0.08],
+      [0, 0.05],
       [1, 0],
       Extrapolate.CLAMP,
     ),
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     position: "absolute",
-    bottom: "42%",
+    bottom: height * 0.41,
     alignSelf: "center",
   },
   paginationDot: {

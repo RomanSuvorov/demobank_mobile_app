@@ -26,7 +26,7 @@ export const WalletCardScreen = React.memo(({
   currentIndex,
   setScrollEnabled,
 }) => {
-  const snapPoints = useMemo(() => ["42%", "95%"], []);
+  const snapPoints = useMemo(() => ["42%", "65%"], []);
 
   return (
     <View

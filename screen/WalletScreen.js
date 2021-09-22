@@ -78,8 +78,4 @@ const styles = StyleSheet.create({
     height,
     paddingTop: 20,
   },
-  contentContainer: {
-    flex: 1,
-    alignItems: 'center',
-  },
 });
