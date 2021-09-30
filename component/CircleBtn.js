@@ -1,29 +1,28 @@
 import React from 'react';
-import { View, TouchableOpacity, Image, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
-import { color } from '../styles/color.theme';
-import { globalStyles } from '../styles/global';
-import Shadow from '../assets/circleBtnShadow.png';
+import { CustomText } from './CustomText';
+import Shadow from '../assets/grayShadow.png';
 
-export function CircleBtn({ label = "", Icon = null, style = {} }) {
+export function CircleBtn({ label = "", Icon = null, style = {}, styleCircle = {}, styleShadow = {} }) {
   return (
     <TouchableOpacity style={[styles.container, style]}>
-      <View style={styles.circle}>
+      <View style={[styles.circle, styleCircle]}>
         <Image
-          style={styles.shadow}
+          style={[styles.shadow, styleShadow]}
           source={Shadow}
         />
-        <View style={styles.icon}>
           <Icon />
-        </View>
       </View>
       {label && (
-        <Text
-          style={[globalStyles.secondaryText, styles.label]}
+        <CustomText
+          size={12}
+          color={"secondary"}
+          style={[styles.label]}
           numberOfLines={2}
         >
           {label}
-        </Text>
+        </CustomText>
       )}
     </TouchableOpacity>
   );
@@ -45,19 +44,11 @@ const styles = StyleSheet.create({
   },
   shadow: {
     position: "absolute",
-    width: 75,
-    height: 75,
+    width: 80,
+    height: 80,
     top: "50%",
     left: "50%",
     transform: [{ translateY: -32 }, { translateX: -32 }],
-  },
-  icon: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-    backgroundColor: color.bg.primary,
-    alignItems: "center",
-    justifyContent: "center",
   },
   label: {
     textAlign: "center",

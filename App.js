@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {  } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
+import { useFonts } from '@expo-google-fonts/inter';
+import AppLoading from 'expo-app-loading';
 
 import { MainNavigator } from './component/Navigator';
 import { color } from './styles/color.theme';
@@ -7,9 +9,20 @@ import { color } from './styles/color.theme';
 export default function App() {
   const isAuthenticated = true;
 
+  const [fontLoaded] = useFonts({
+    'Play-Bold': require('./assets/fonts/Play-Bold.ttf'),
+    'Play-Regular': require('./assets/fonts/Play-Regular.ttf'),
+  });
+
   return (
     <SafeAreaView style={styles.container}>
-      <MainNavigator isAuthenticated={isAuthenticated} />
+      {
+        fontLoaded ? (
+          <MainNavigator isAuthenticated={isAuthenticated} />
+        ) : (
+          <AppLoading />
+        )
+      }
     </SafeAreaView>
   );
 }

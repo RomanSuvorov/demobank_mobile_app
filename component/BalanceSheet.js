@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
@@ -7,14 +7,16 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { CircleBtn } from './CircleBtn';
-import { CopyAddressIcon, FillUpWalletIcon, SendToWalletIcon } from './Icons';
-import { globalStyles } from '../styles/global';
+import { CustomText } from './CustomText';
+import { CopyAddressIcon, FillUpWalletIcon, SendToWalletIcon, WalletsIcon, ArrowDownIcon } from './Icons';
+import { GLOB_VAR, PAGINATION_HEIGHT, WALLETS_ICON_BOX_HEIGHT, ACTIONS_BOX_HEIGHT } from '../styles/global';
+import { deviceSize, getStyle } from '../helper';
+import { color } from '../styles/color.theme';
 
-const { width, height } = Dimensions.get("window");
-const HORIZONTAL_MARGIN_LAYOUT = width * 0.056;
-const HORIZONTAL_MARGIN_BALANCE = width * 0.037;
+const { width, height } = deviceSize;
+const HORIZONTAL_PADDING_BALANCE = width * 0.093;
 
-export function BalanceSheet({ currentIndex, currentPosition }) {
+export function BalanceSheet({ currentIndex }) {
   const [widthOfBalanceString, setWidthOfBalanceString] = useState(0);
   const actionsContainerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -37,8 +39,8 @@ export function BalanceSheet({ currentIndex, currentPosition }) {
 
   const animateTextOpacityAndTransform = ({
     withOpacity = true,
-    translateYInput = [0, 0.6],
-    translateYOutput = [0, -(height * 0.08)],
+    translateYInput = [0, 0.8],
+    translateYOutput = [WALLETS_ICON_BOX_HEIGHT / 2, -(WALLETS_ICON_BOX_HEIGHT + 12)],
     withScale = false,
   }) => useAnimatedStyle(() => ({
     opacity: withOpacity ? interpolate(
@@ -52,7 +54,7 @@ export function BalanceSheet({ currentIndex, currentPosition }) {
         translateX: interpolate(
           currentIndex.value,
           [0, 0.8],
-          [0, (width - (HORIZONTAL_MARGIN_BALANCE * 2) - (HORIZONTAL_MARGIN_LAYOUT * 2) - widthOfBalanceString) / 2],
+          [0, (width - HORIZONTAL_PADDING_BALANCE - widthOfBalanceString) / 2],
           Extrapolate.CLAMP,
         ),
       },
@@ -67,7 +69,7 @@ export function BalanceSheet({ currentIndex, currentPosition }) {
       {
         scale: withScale ? interpolate(
           currentIndex.value,
-          [0.8, 1],
+          [0.9, 1],
           [1, 0.9],
           Extrapolate.CLAMP,
         ) : 1
@@ -75,10 +77,14 @@ export function BalanceSheet({ currentIndex, currentPosition }) {
     ],
   }));
 
-  const getStyle = (styles, animatedStyles, depend) => useMemo(
-    () => [styles, animatedStyles],
-    [depend]
-  );
+  const walletsAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(
+      currentIndex.value,
+      [0, 0.2],
+      [1, 0],
+      Extrapolate.CLAMP,
+    ),
+  }));
 
   const onLayout = (event) => {
     const { width } = event.nativeEvent.layout;
@@ -86,7 +92,7 @@ export function BalanceSheet({ currentIndex, currentPosition }) {
   }
 
   const currentBalanceLabelAnimatedStyle = animateTextOpacityAndTransform({ withOpacity: true });
-  const balancePriceContainerAnimatedStyle = animateTextOpacityAndTransform({ withOpacity: false, translateYInput: [0, 0.8], translateYOutput: [0, -(height * 0.12)], withScale: true });
+  const balancePriceContainerAnimatedStyle = animateTextOpacityAndTransform({ withOpacity: false, withScale: true });
   const balancePriceEqualToAnimatedStyle = animateTextOpacityAndTransform({ withOpacity: true });
   const byLastPeriodContainerAnimatedStyle = animateTextOpacityAndTransform({ withOpacity: true });
 
@@ -95,26 +101,74 @@ export function BalanceSheet({ currentIndex, currentPosition }) {
   const balancePriceEqualToStyle = getStyle(styles.balancePriceEqualTo, balancePriceEqualToAnimatedStyle, balancePriceEqualToAnimatedStyle);
   const byLastPeriodContainerStyle = getStyle(styles.byLastPeriodContainer, byLastPeriodContainerAnimatedStyle, byLastPeriodContainerAnimatedStyle);
   const actionsContainerStyle = getStyle(styles.actionsContainer, actionsContainerAnimatedStyle, actionsContainerAnimatedStyle);
+  const walletsStyle = getStyle(styles.walletsContainer, walletsAnimatedStyle, walletsAnimatedStyle);
 
   return (
     <View style={styles.container}>
+      <Animated.View style={walletsStyle}>
+        <CircleBtn
+          label={null}
+          Icon={WalletsIcon}
+          styleCircle={styles.walletsCircle}
+          styleShadow={styles.shadowWalletsCircle}
+        />
+        <ArrowDownIcon style={styles.walletsArray} />
+      </Animated.View>
       <View style={styles.balanceContainer}>
         <View style={styles.currentBalanceContainer}>
           <Animated.View style={currentBalanceLabelStyle}>
-            <Text style={[globalStyles.secondaryText]}>Баланс</Text>
+            <CustomText
+              size={12}
+              color={"secondary"}
+            >
+              Баланс
+            </CustomText>
           </Animated.View>
           <Animated.View style={balancePriceContainerStyle} onLayout={onLayout}>
-            <Text style={[globalStyles.primaryText, styles.balancePriceValue]}>{"0.64748838474"}</Text>
-            <Text style={[globalStyles.primaryText, styles.balancePriceCurr]}>{"BTC"}</Text>
+            <CustomText
+              size={24}
+              type={'bold'}
+              style={[styles.balancePriceValue]}
+            >
+              {"0.64748838474"}
+            </CustomText>
+            <CustomText
+              type={'bold'}
+              style={[styles.balancePriceCurr]}
+            >
+              {"BTC"}
+            </CustomText>
           </Animated.View>
           <Animated.View style={balancePriceEqualToStyle}>
-            <Text style={[globalStyles.secondaryText]}>{"33761.58"}</Text>
-            <Text style={[globalStyles.secondaryText]}>{` ${"USD"}`}</Text>
+            <CustomText
+              size={12}
+              color={"secondary"}
+            >
+              {"33761.58"}
+            </CustomText>
+            <CustomText
+              size={12}
+              color={"secondary"}
+            >
+              {` ${"USD"}`}
+            </CustomText>
           </Animated.View>
         </View>
         <Animated.View style={byLastPeriodContainerStyle}>
-          <Text style={[globalStyles.secondaryText, styles.byLastPeriodLabel]}>За прошлый месяц</Text>
-          <Text style={[globalStyles.primaryText, globalStyles.successText, styles.byLastPeriodValue]}>{"+36.12 USD (+5.2%)"}</Text>
+          <CustomText
+            size={12}
+            color={"secondary"}
+            style={[styles.byLastPeriodLabel]}
+          >
+            За прошлый месяц
+          </CustomText>
+          <CustomText
+            size={14}
+            color={"success"}
+            style={[styles.byLastPeriodValue]}
+          >
+            {"+36.12 USD (+5.2%)"}
+          </CustomText>
         </Animated.View>
       </View>
       <Animated.View style={actionsContainerStyle}>
@@ -137,14 +191,42 @@ export function BalanceSheet({ currentIndex, currentPosition }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: height * 0.54,
-    marginHorizontal: HORIZONTAL_MARGIN_LAYOUT,
+    height: height - PAGINATION_HEIGHT - (height * GLOB_VAR.INITIAL_SNAP_POINT),
+    paddingHorizontal: 21,
     position: "relative",
   },
-  balanceContainer: {
-    marginHorizontal: HORIZONTAL_MARGIN_BALANCE,
-    top: height * 0.12,
+  walletsContainer: {
+    height: WALLETS_ICON_BOX_HEIGHT,
+    alignItems: "center",
+  },
+  walletsCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+    backgroundColor: color.bg.primary,
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+    top: 4,
+  },
+  shadowWalletsCircle: {
     position: "absolute",
+    width: 60,
+    height: 60,
+    top: "50%",
+    left: "50%",
+    transform: [{ translateY: -25 }, { translateX: -25 }]
+  },
+  walletsArray: {
+    position: "absolute",
+    top: 54, // 44 - size of icon + 10 - marginTop
+  },
+  balanceContainer: {
+    top: WALLETS_ICON_BOX_HEIGHT,
+    left: HORIZONTAL_PADDING_BALANCE,
+    position: "absolute",
+    width: (width * 0.7) - HORIZONTAL_PADDING_BALANCE,
+    height: height - (height * GLOB_VAR.INITIAL_SNAP_POINT) - PAGINATION_HEIGHT - WALLETS_ICON_BOX_HEIGHT - ACTIONS_BOX_HEIGHT,
   },
   currentBalanceContainer: {
 
@@ -157,12 +239,9 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   balancePriceValue: {
-    fontSize: 24,
-    fontWeight: "bold",
     lineHeight: 24,
   },
   balancePriceCurr: {
-    fontWeight: "bold",
     lineHeight: 24,
     marginLeft: 6,
   },
@@ -184,5 +263,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     bottom: 0,
     position: "absolute",
+    height: ACTIONS_BOX_HEIGHT,
+    width: width,
   },
 });

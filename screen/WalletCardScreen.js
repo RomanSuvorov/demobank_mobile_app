@@ -1,13 +1,16 @@
 import React, { useMemo } from 'react';
-import { View, Dimensions, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
 
 import { BottomSheet } from '../component/BottomSheet';
+import { CardSheet } from '../component/CardSheet';
 import { TransactionHeader } from '../component/Transaction/TransactionHeader';
 import { TransactionItem } from '../component/Transaction/TransactionItem';
 import { BlockIcon, FingerPrintIcon, LockOpenIcon, SettingsIcon } from '../component/Icons';
+import { GLOB_VAR } from '../styles/global';
+import { deviceSize } from '../helper';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = deviceSize;
 
 const listData = [
   {
@@ -24,15 +27,26 @@ const listData = [
 export const WalletCardScreen = React.memo(({
   currentPosition,
   currentIndex,
+  paginationIndex,
   setScrollEnabled,
+  scrollX,
+  activeSlide,
+  goToSecondSlide,
 }) => {
-  const snapPoints = useMemo(() => ["42%", "65%"], []);
+  const snapPoints = useMemo(() => [GLOB_VAR.INITIAL_SNAP_POINT_PERC, GLOB_VAR.SECOND_SNAP_POINT_CARD], []);
 
   return (
     <View
       style={styles.container}
     >
-      <Button title={"WalletCardScreen"} onPress={() => console.log(currentIndex.value)} />
+      <CardSheet
+        currentIndex={currentIndex}
+        currentPosition={currentPosition}
+        scrollX={scrollX}
+        paginationIndex={paginationIndex}
+        activeSlide={activeSlide}
+        goToSecondSlide={goToSecondSlide}
+      />
       <BottomSheet
         snapPoints={snapPoints}
         currentIndex={currentIndex}

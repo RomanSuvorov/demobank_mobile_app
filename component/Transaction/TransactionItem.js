@@ -1,7 +1,7 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { globalStyles } from '../../styles/global';
+import { CustomText } from '../CustomText';
 import { color } from '../../styles/color.theme';
 
 export function TransactionItem({ item, onPress }) {
@@ -26,33 +26,41 @@ export function TransactionItem({ item, onPress }) {
         }
       </View>
       <View style={styles.transactionItemInfo}>
-        <Text numberOfLines={1} style={item.sum ? globalStyles.primaryText : { fontSize: 12, color: color.text.primary }}>
+        <CustomText
+          size={item.sum ? 14 : 12}
+          numberOfLines={1}
+        >
           {item.title}
-        </Text>
+        </CustomText>
         {
           item.subTitle && (
-            <Text numberOfLines={1} style={globalStyles.secondaryText}>
+            <CustomText
+              size={12}
+              numberOfLines={1}
+              color={"secondary"}
+            >
               {item.subTitle}
-            </Text>
+            </CustomText>
           )
         }
       </View>
       {
         item.sum && (
           <View style={styles.transactionItemAmount}>
-            <Text
-              style={[
-                globalStyles.primaryText,
-                styles.transactionItemAmount_text,
-                item.sum[0] === "-" ? styles.transactionItemAmount_sumNegative : styles.transactionItemAmount_subPositive,
-              ]}
+            <CustomText
+              size={16}
+              type={'bold'}
+              color={item.sum[0] === "-" ? "danger" : "success"}
               numberOfLines={1}
             >
               {item.sum}
-            </Text>
-            <Text style={[globalStyles.primaryText, styles.transactionItemAmount_text]}>
+            </CustomText>
+            <CustomText
+              size={16}
+              type={'bold'}
+            >
               &nbsp;{item.curr}
-            </Text>
+            </CustomText>
           </View>
         )
       }
@@ -97,15 +105,5 @@ const styles = StyleSheet.create({
   transactionItemAmount: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  transactionItemAmount_text: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  transactionItemAmount_sumNegative: {
-    color: color.danger,
-  },
-  transactionItemAmount_subPositive: {
-    color: color.success,
   },
 });

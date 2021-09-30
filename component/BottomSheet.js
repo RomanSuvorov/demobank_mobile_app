@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import BS from '@gorhom/bottom-sheet';
 
 import { color } from '../styles/color.theme';
+import { deviceSize } from '../helper';
 
-const { height, width } = Dimensions.get("window");
+const { width, height } = deviceSize;
 
 function CustomBottomSheetBackground({ style }) {
   return (
@@ -27,6 +28,7 @@ export function BottomSheet({
   currentIndex,
   currentPosition,
   content = null,
+  enableOverDrag = false,
   setScrollEnabled = () => {},
 }) {
   const bottomSheetRef = useRef(null);
@@ -40,6 +42,7 @@ export function BottomSheet({
         handleComponent={null}
         animatedIndex={currentIndex}
         animatedPosition={currentPosition}
+        enableOverDrag={enableOverDrag}
         onChange={(index) => setScrollEnabled(index !== 1)}
       >
         {content}

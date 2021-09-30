@@ -1,13 +1,16 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import { color } from '../styles/color.theme';
+import { GLOB_VAR, PAGINATION_HEIGHT } from '../styles/global';
+import { StatusBarHeight } from '../helper';
+import { deviceSize } from '../helper';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = deviceSize;
 
 export function ScreenPagination({ screens, currentIndex, scrollX }) {
   const containerAnimatedStyle = useAnimatedStyle(() => ({
@@ -57,7 +60,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     position: "absolute",
-    bottom: height * 0.41,
+    height: PAGINATION_HEIGHT,
+    alignItems: "center",
+    bottom: (height * GLOB_VAR.INITIAL_SNAP_POINT) - StatusBarHeight,
     alignSelf: "center",
   },
   paginationDot: {

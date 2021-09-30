@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { WebView } from 'react-native-webview';
-import { View, ActivityIndicator, SafeAreaView, StatusBar, Dimensions, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { color } from '../styles/color.theme';
+import { deviceSize } from '../helper';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = deviceSize;
 
 export function DetailsScreen({ navigation, route }) {
   const ref = useRef(null);

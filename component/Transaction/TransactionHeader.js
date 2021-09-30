@@ -1,12 +1,17 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
-import { globalStyles } from '../../styles/global';
+import { CustomText } from '../CustomText';
 
 export function TransactionHeader({ title }) {
   return (
     <View style={styles.sectionHeader}>
-      <Text style={globalStyles.secondaryText}>{title}</Text>
+      <CustomText
+        size={12}
+        color={"secondary"}
+      >
+        {title}
+      </CustomText>
     </View>
   );
 }

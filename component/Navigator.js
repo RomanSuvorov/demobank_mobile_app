@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, Text, View, StyleSheet, StatusBar, Dimensions, Image } from 'react-native';
+import { ImageBackground, View, StyleSheet, StatusBar, Image } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -11,9 +11,11 @@ import { AnalyticsScreen } from '../screen/AnalyticsScreen';
 import { SettingsScreen } from '../screen/SettingsScreen';
 import { DetailsScreen } from '../screen/DetailsScreen';
 import { AnalyticsIcon, ExchangeIcon, SettingsIcon, WalletIcon } from './Icons';
+import { CustomText } from './CustomText';
 import { color } from '../styles/color.theme';
+import { deviceSize } from '../helper';
 
-const { height } = Dimensions.get("window");
+const { height } = deviceSize;
 
 const DemobankTheme = {
   ...DefaultTheme,
@@ -154,7 +156,7 @@ function TabNavigator() {
 function SignInNavigator() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>SignIn Screen</Text>
+      <CustomText>SignIn Screen</CustomText>
     </View>
   );
 }
@@ -184,10 +186,11 @@ const styles = StyleSheet.create({
     height: 66,
     top: "50%",
     left: "50%",
-    transform: [{ translateY: -27 }, { translateX: -27 }]
+    transform: [{ translateY: -27 }, { translateX: -27 }],
   },
   tabBarLabel: {
     fontSize: 10,
+    fontFamily: "Play-Regular",
   },
   imageBackground: {
     flex: 1,

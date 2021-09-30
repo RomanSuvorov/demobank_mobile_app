@@ -1,13 +1,15 @@
 import React, { useMemo } from 'react';
-import { View, Dimensions, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
 
 import { BalanceSheet } from '../component/BalanceSheet';
 import { BottomSheet } from '../component/BottomSheet';
 import { TransactionHeader } from '../component/Transaction/TransactionHeader';
 import { TransactionItem } from '../component/Transaction/TransactionItem';
+import { GLOB_VAR } from '../styles/global';
+import { deviceSize } from '../helper';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = deviceSize;
 
 const MOCK_DATA = [
   {
@@ -61,7 +63,7 @@ export const WalletBalanceScreen = React.memo(({
   currentIndex,
   setScrollEnabled,
 }) => {
-  const snapPoints = useMemo(() => ["42%", "92%"], []);
+  const snapPoints = useMemo(() => [GLOB_VAR.INITIAL_SNAP_POINT_PERC, GLOB_VAR.SECOND_SNAP_POINT_BALANCE], []);
 
   const handleGetDetails = ({ id, url }) => {
     navigation.navigate('Details', { url: url, id: id });
@@ -88,6 +90,7 @@ export const WalletBalanceScreen = React.memo(({
             contentContainerStyle={styles.bottomSheetContainer}
           />
         )}
+        enableOverDrag={true}
         setScrollEnabled={setScrollEnabled}
       />
     </View>
