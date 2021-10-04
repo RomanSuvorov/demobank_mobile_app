@@ -3,7 +3,7 @@ import { HeaderBackButton } from '@react-navigation/elements';
 import { WebView } from 'react-native-webview';
 import { View, ActivityIndicator, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 import { color } from '../styles/color.theme';
-import { deviceSize } from '../helper';
+import { deviceSize } from '../sdk/helper';
 
 const { width, height } = deviceSize;
 

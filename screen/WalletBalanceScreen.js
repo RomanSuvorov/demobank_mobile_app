@@ -7,7 +7,7 @@ import { BottomSheet } from '../component/BottomSheet';
 import { TransactionHeader } from '../component/Transaction/TransactionHeader';
 import { TransactionItem } from '../component/Transaction/TransactionItem';
 import { GLOB_VAR } from '../styles/global';
-import { deviceSize } from '../helper';
+import { deviceSize, StatusBarHeight } from '../sdk/helper';
 
 const { width, height } = deviceSize;
 
@@ -63,7 +63,7 @@ export const WalletBalanceScreen = React.memo(({
   currentIndex,
   setScrollEnabled,
 }) => {
-  const snapPoints = useMemo(() => [GLOB_VAR.INITIAL_SNAP_POINT_PERC, GLOB_VAR.SECOND_SNAP_POINT_BALANCE], []);
+  const snapPoints = useMemo(() => [GLOB_VAR.INITIAL_SNAP_POINT, GLOB_VAR.SECOND_SNAP_POINT_BALANCE], []);
 
   const handleGetDetails = ({ id, url }) => {
     navigation.navigate('Details', { url: url, id: id });
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
   container: {
     width,
     height,
+    paddingTop: StatusBarHeight,
   },
   bottomSheetContainer: {
     paddingTop: 18,

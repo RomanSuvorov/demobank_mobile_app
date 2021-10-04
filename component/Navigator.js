@@ -13,7 +13,7 @@ import { DetailsScreen } from '../screen/DetailsScreen';
 import { AnalyticsIcon, ExchangeIcon, SettingsIcon, WalletIcon } from './Icons';
 import { CustomText } from './CustomText';
 import { color } from '../styles/color.theme';
-import { deviceSize } from '../helper';
+import { deviceSize } from '../sdk/helper';
 
 const { height } = deviceSize;
 
@@ -71,7 +71,7 @@ function TabNavigator() {
       resizeMode={"cover"}
       style={styles.imageBackground}
     >
-      <StatusBar barStyle="light-content" backgroundColor={"transparent"} translucent={true} />
+      <StatusBar backgroundColor={"transparent"} translucent={true} />
       <Tab.Navigator
         screenOptions={({ route }) => ({
           headerShown: false,

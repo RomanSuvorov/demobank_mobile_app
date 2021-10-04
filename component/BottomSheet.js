@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import BS from '@gorhom/bottom-sheet';
 
 import { color } from '../styles/color.theme';
-import { deviceSize } from '../helper';
+import { deviceSize } from '../sdk/helper';
 
 const { width, height } = deviceSize;
 

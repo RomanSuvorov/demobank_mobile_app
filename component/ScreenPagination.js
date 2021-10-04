@@ -7,10 +7,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { color } from '../styles/color.theme';
 import { GLOB_VAR, PAGINATION_HEIGHT } from '../styles/global';
-import { StatusBarHeight } from '../helper';
-import { deviceSize } from '../helper';
+import { deviceSize } from '../sdk/helper';
 
-const { width, height } = deviceSize;
+const { width } = deviceSize;
 
 export function ScreenPagination({ screens, currentIndex, scrollX }) {
   const containerAnimatedStyle = useAnimatedStyle(() => ({
@@ -62,7 +61,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: PAGINATION_HEIGHT,
     alignItems: "center",
-    bottom: (height * GLOB_VAR.INITIAL_SNAP_POINT) - StatusBarHeight,
+    bottom: GLOB_VAR.INITIAL_SNAP_POINT,
     alignSelf: "center",
   },
   paginationDot: {

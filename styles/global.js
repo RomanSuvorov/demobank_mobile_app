@@ -1,4 +1,4 @@
-import { deviceSize } from '../helper';
+import { deviceSize, StatusBarHeight } from '../sdk/helper';
 
 const { height, width } = deviceSize;
 
@@ -16,10 +16,11 @@ export const TOP_OFFSET_OF_QR = CARD_WIDTH * 0.33 * 0.185; // 0.33 => without sh
 export const LEFT_OFFSET_OF_QR = CARD_WIDTH * 0.33 * 0.185; // 0.33 => without shadow
 export const WIDTH_OF_ADDRESS_FRAME = CARD_WIDTH * 0.88;
 export const HEIGHT_OF_ADDRESS_FRAME = CARD_HEIGHT * 0.26;
+export const HEIGHT_OF_BALANCE_CONTENT = CARD_HEIGHT + ACTIONS_BOX_HEIGHT + WALLETS_ICON_BOX_HEIGHT;
+export const HEIGHT_OF_CARD_CONTENT = CARD_HEIGHT + ACTIONS_BOX_HEIGHT + (StatusBarHeight * 2);
 
 export const GLOB_VAR = {
-  INITIAL_SNAP_POINT_PERC: "42%",
-  INITIAL_SNAP_POINT: 0.42,
-  SECOND_SNAP_POINT_BALANCE: height - (WALLETS_ICON_BOX_HEIGHT - 12),
-  SECOND_SNAP_POINT_CARD: height,
+  INITIAL_SNAP_POINT: height - HEIGHT_OF_BALANCE_CONTENT - PAGINATION_HEIGHT - StatusBarHeight,
+  SECOND_SNAP_POINT_BALANCE: height - (WALLETS_ICON_BOX_HEIGHT + StatusBarHeight - 12),
+  SECOND_SNAP_POINT_CARD: height - StatusBarHeight,
 };

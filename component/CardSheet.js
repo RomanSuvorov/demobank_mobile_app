@@ -7,17 +7,14 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Card } from './Card';
-import { GLOB_VAR, PAGINATION_HEIGHT, ACTIONS_BOX_HEIGHT } from '../styles/global';
-import { deviceSize, getStyle } from '../helper';
-
-const { height } = deviceSize;
+import { ACTIONS_BOX_HEIGHT, HEIGHT_OF_CARD_CONTENT } from '../styles/global';
+import { getStyle } from '../sdk/helper';
 
 export function CardSheet({
   currentIndex,
   currentPosition,
   scrollX,
   paginationIndex,
-  activeSlide,
   goToSecondSlide,
 }) {
   const progressBarContainerAnimatedStyle = useAnimatedStyle(() => ({
@@ -45,7 +42,6 @@ export function CardSheet({
       <Card
         scrollX={scrollX}
         paginationIndex={paginationIndex}
-        activeSlide={activeSlide}
         goToSecondSlide={goToSecondSlide}
       />
 
@@ -56,7 +52,7 @@ export function CardSheet({
 
 const styles = StyleSheet.create({
   container: {
-    height: height - PAGINATION_HEIGHT - (height * GLOB_VAR.INITIAL_SNAP_POINT),
+    height: HEIGHT_OF_CARD_CONTENT,
     alignItems: "center",
   },
   progressBarContainer: {

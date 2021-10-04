@@ -9,8 +9,8 @@ import Animated, {
 import { CircleBtn } from './CircleBtn';
 import { CustomText } from './CustomText';
 import { CopyAddressIcon, FillUpWalletIcon, SendToWalletIcon, WalletsIcon, ArrowDownIcon } from './Icons';
-import { GLOB_VAR, PAGINATION_HEIGHT, WALLETS_ICON_BOX_HEIGHT, ACTIONS_BOX_HEIGHT } from '../styles/global';
-import { deviceSize, getStyle } from '../helper';
+import { WALLETS_ICON_BOX_HEIGHT, ACTIONS_BOX_HEIGHT, HEIGHT_OF_BALANCE_CONTENT } from '../styles/global';
+import { deviceSize, getStyle } from '../sdk/helper';
 import { color } from '../styles/color.theme';
 
 const { width, height } = deviceSize;
@@ -191,7 +191,7 @@ export function BalanceSheet({ currentIndex }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: height - PAGINATION_HEIGHT - (height * GLOB_VAR.INITIAL_SNAP_POINT),
+    height: HEIGHT_OF_BALANCE_CONTENT,
     paddingHorizontal: 21,
     position: "relative",
   },
@@ -207,7 +207,6 @@ const styles = StyleSheet.create({
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
-    top: 4,
   },
   shadowWalletsCircle: {
     position: "absolute",
@@ -219,14 +218,14 @@ const styles = StyleSheet.create({
   },
   walletsArray: {
     position: "absolute",
-    top: 54, // 44 - size of icon + 10 - marginTop
+    top: 40 + WALLETS_ICON_BOX_HEIGHT / 6, // 44 - size of icon + 10 - marginTop
   },
   balanceContainer: {
     top: WALLETS_ICON_BOX_HEIGHT,
     left: HORIZONTAL_PADDING_BALANCE,
     position: "absolute",
     width: (width * 0.7) - HORIZONTAL_PADDING_BALANCE,
-    height: height - (height * GLOB_VAR.INITIAL_SNAP_POINT) - PAGINATION_HEIGHT - WALLETS_ICON_BOX_HEIGHT - ACTIONS_BOX_HEIGHT,
+    height: HEIGHT_OF_BALANCE_CONTENT - ACTIONS_BOX_HEIGHT - WALLETS_ICON_BOX_HEIGHT,
   },
   currentBalanceContainer: {
 

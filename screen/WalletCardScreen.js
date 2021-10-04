@@ -8,7 +8,7 @@ import { TransactionHeader } from '../component/Transaction/TransactionHeader';
 import { TransactionItem } from '../component/Transaction/TransactionItem';
 import { BlockIcon, FingerPrintIcon, LockOpenIcon, SettingsIcon } from '../component/Icons';
 import { GLOB_VAR } from '../styles/global';
-import { deviceSize } from '../helper';
+import { deviceSize, StatusBarHeight } from '../sdk/helper';
 
 const { width, height } = deviceSize;
 
@@ -30,10 +30,9 @@ export const WalletCardScreen = React.memo(({
   paginationIndex,
   setScrollEnabled,
   scrollX,
-  activeSlide,
   goToSecondSlide,
 }) => {
-  const snapPoints = useMemo(() => [GLOB_VAR.INITIAL_SNAP_POINT_PERC, GLOB_VAR.SECOND_SNAP_POINT_CARD], []);
+  const snapPoints = useMemo(() => [GLOB_VAR.INITIAL_SNAP_POINT, GLOB_VAR.SECOND_SNAP_POINT_CARD], []);
 
   return (
     <View
@@ -44,7 +43,6 @@ export const WalletCardScreen = React.memo(({
         currentPosition={currentPosition}
         scrollX={scrollX}
         paginationIndex={paginationIndex}
-        activeSlide={activeSlide}
         goToSecondSlide={goToSecondSlide}
       />
       <BottomSheet
@@ -70,6 +68,7 @@ const styles = StyleSheet.create({
   container: {
     width,
     height,
+    paddingTop: StatusBarHeight,
   },
   bottomSheetContainer: {
     paddingTop: 18,

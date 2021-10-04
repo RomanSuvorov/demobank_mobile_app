@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pressable, ImageBackground, StyleSheet, Image } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -6,13 +6,14 @@ import Animated, {
   interpolate, withTiming,
   Extrapolate,
 } from 'react-native-reanimated';
+import { useSelector } from 'react-redux';
 
 import { CustomText } from './CustomText';
 import CardBackground from '../assets/cardFrontBg.png';
 import FrameForQR from '../assets/frameForQR.png';
 import FrameForAddress from '../assets/frameForAddress.png';
 import MockQR from '../assets/mockQR.png';
-import { deviceSize, getStyle, StatusBarHeight } from '../helper';
+import { deviceSize, getStyle, StatusBarHeight } from '../sdk/helper';
 import {
   ACTIONS_BOX_HEIGHT,
   CARD_HEIGHT,
@@ -26,15 +27,19 @@ import {
   LEFT_OFFSET_OF_QR,
   WIDTH_OF_ADDRESS_FRAME,
   HEIGHT_OF_ADDRESS_FRAME,
+  WALLETS_ICON_BOX_HEIGHT,
 } from '../styles/global';
 import { color } from '../styles/color.theme';
 
 const { width } = deviceSize;
 const CARD_FLIP_DURATION = 800;
+const CARD_SHORT_FLIP_DURATION = 500;
 
-export function Card({ scrollX, paginationIndex, activeSlide, goToSecondSlide = () => {} }) {
+export function Card({ scrollX, paginationIndex, goToSecondSlide = () => {} }) {
   const progress = useSharedValue(0);
   const cardAnimatedValue = useSharedValue(0);
+  const activeSlide = useSelector(state => state.app.activeSlide);
+  const [isFront, setIsFront] = useState(true)
 
   const frontCardAnimatedStyle = useAnimatedStyle(() => ({
     transform: [
@@ -68,9 +73,16 @@ export function Card({ scrollX, paginationIndex, activeSlide, goToSecondSlide = 
     ],
   }));
 
-  const flipCard = ({ nativeEvent }) => {
-    if (!nativeEvent) {
-      cardAnimatedValue.value = withTiming(cardAnimatedValue.value - 180, { duration: CARD_FLIP_DURATION });
+  useEffect(() => {
+    if (activeSlide === 0 && !isFront) flipCard({ resetting: true });
+  }, [activeSlide]);
+
+  const flipCard = ({ nativeEvent, resetting = false }) => {
+    if (resetting) {
+      cardAnimatedValue.value = withTiming(cardAnimatedValue.value - 180, { duration: CARD_SHORT_FLIP_DURATION });
+      progress.value = withTiming(1, { duration: CARD_SHORT_FLIP_DURATION }, () => progress.value = 0);
+
+      setIsFront(true);
       return;
     }
 
@@ -86,6 +98,7 @@ export function Card({ scrollX, paginationIndex, activeSlide, goToSecondSlide = 
     } else {
       cardAnimatedValue.value = withTiming(cardAnimatedValue.value - 180, { duration: CARD_FLIP_DURATION });
     }
+    setIsFront(!isFront);
     progress.value = withTiming(1, { duration: CARD_FLIP_DURATION }, () => progress.value = 0);
   };
 
@@ -113,7 +126,7 @@ export function Card({ scrollX, paginationIndex, activeSlide, goToSecondSlide = 
     <Animated.View style={containerStyle}>
         <Pressable onPress={flipCard}>
           <Animated.View style={[styles.flipCard, frontCardAnimatedStyle]}>
-            <ImageBackground source={CardBackground} style={styles.cardBg} />
+            <ImageBackground source={CardBackground} style={styles.cardBg} resizeMode='contain' />
             <CustomText
               style={{ color: "#fff" }}
             >
@@ -145,7 +158,7 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     justifyContent: "center",
     position: "absolute",
-    top: StatusBarHeight,
+    top: WALLETS_ICON_BOX_HEIGHT / 2,
   },
   flipCard: {
     width: CARD_WIDTH,

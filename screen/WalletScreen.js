@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { useSharedValue, useDerivedValue } from 'react-native-reanimated';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { WalletBalanceScreen } from './WalletBalanceScreen';
 import { WalletCardScreen } from './WalletCardScreen';
 import { ScreenPagination } from '../component/ScreenPagination';
-import { StatusBarHeight, deviceSize } from '../helper';
+import { deviceSize } from '../sdk/helper';
+import AppType from '../store/app/types';
 
 const { width, height } = deviceSize;
 
@@ -16,8 +18,9 @@ const screens = [
 
 export function WalletScreen({ navigation }) {
   const [scrollEnabled, setScrollEnabled] = useState(true);
-  const [active, setActive] = useState(0);
+  const activeSlide = useSelector(state => state.app.activeSlide);
   const scrollRef = useRef(null);
+  const dispatch = useDispatch();
   const scrollX = useSharedValue(0);
   const currentBalancePosition = useSharedValue(0);
   const currentCardPosition = useSharedValue(0);
@@ -25,27 +28,25 @@ export function WalletScreen({ navigation }) {
   const currentCardIndex = useSharedValue(0);
 
   const paginationIndex = useDerivedValue(() =>
-    active === 0
-    ? currentBalanceIndex.value
-    : currentCardIndex.value
+    activeSlide === 0 ? currentBalanceIndex.value : currentCardIndex.value
   );
 
-  const handleScroll = ({ nativeEvent }) => {
-    scrollX.value = nativeEvent.contentOffset.x;
-    const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
-    if (slide !== active) setActive(slide);
-  };
+  const handleScroll = ({ nativeEvent }) => scrollX.value = nativeEvent.contentOffset.x;
 
   const goToSecondSlide = () => {
     if (scrollRef && scrollRef.current) {
-      scrollRef.current.scrollToEnd({ animated: true, duration: 800 })
+      scrollRef.current.scrollToEnd({ animated: true });
+      dispatch({ type: AppType.CHANGE_ACTIVE_SLIDE, payload: 1 });
     }
   };
 
+  const handleChangeSlide = ({ nativeEvent }) => {
+    const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+    if (slide !== activeSlide) dispatch({ type: AppType.CHANGE_ACTIVE_SLIDE, payload: slide });
+  };
+
   return (
-    <View
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <ScrollView
         ref={scrollRef}
         pagingEnabled={true}
@@ -56,6 +57,7 @@ export function WalletScreen({ navigation }) {
         style={styles.scrollContainer}
         scrollEventThrottle={16}
         onScroll={handleScroll}
+        onMomentumScrollEnd={handleChangeSlide}
       >
         <WalletBalanceScreen
           navigation={navigation}
@@ -70,7 +72,6 @@ export function WalletScreen({ navigation }) {
           paginationIndex={paginationIndex}
           setScrollEnabled={setScrollEnabled}
           scrollX={scrollX}
-          activeSlide={active}
           goToSecondSlide={goToSecondSlide}
         />
       </ScrollView>
@@ -90,6 +91,5 @@ const styles = StyleSheet.create({
   scrollContainer: {
     width,
     height,
-    paddingTop: StatusBarHeight,
   },
 });

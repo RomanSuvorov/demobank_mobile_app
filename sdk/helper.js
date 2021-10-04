@@ -1,6 +1,31 @@
 import React, { useMemo } from 'react';
+import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
+import ReduxPromise from 'redux-promise';
+import thunk from 'redux-thunk';
+import produce from 'immer';
 import { Platform, Dimensions, StatusBar } from 'react-native';
 
+// redux
+export const createReduxStore = _configureStore;
+function _configureStore(reducers) {
+  let middleware = [ReduxPromise, thunk];
+
+  return createStore(
+    combineReducers({ ...reducers }),
+    undefined,
+    compose(applyMiddleware(...middleware)),
+  );
+}
+
+export const createReducer = (cases = {}, defaultState = {}) =>
+  (state = defaultState, action) => produce(state, draft => {
+    if (action && action.type && cases[action.type] instanceof Function) {
+      cases[action.type](draft, action.payload);
+    }
+  });
+
+
+// size
 const { width, height } = Dimensions.get("window");
 
 const X_WIDTH = 375;
@@ -20,6 +45,7 @@ export const StatusBarHeight = Platform.select({
 
 export const deviceSize = { height, width };
 
+// styles
 export const getStyle = (styles, animatedStyles, depend) => useMemo(
   () => [styles, animatedStyles],
   [depend]
