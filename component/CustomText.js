@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import { color as cl } from '../styles/color.theme';
+import { active, danger, success, textWhite, textWhite01, grey } from '../styles/color.theme';
 
 export function CustomText({
   type = "regular",
   size = 14,
-  color = "primary",
+  color = "textWhite",
   style = {},
   children,
   ...props
@@ -23,17 +23,19 @@ export function CustomText({
 
   const setFontColor = (color) => {
     switch (color) {
-      case 'secondary':
-        return cl.text.secondary;
+      case 'grey':
+        return grey;
       case 'active':
-        return cl.text.active;
+        return active;
       case 'danger':
-        return cl.danger;
+        return danger;
       case 'success':
-        return cl.success;
-      case 'primary':
+        return success;
+      case 'white01':
+        return textWhite01;
+      case 'textWhite':
       default:
-        return cl.text.primary;
+        return textWhite;
     }
   }
 

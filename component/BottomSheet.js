@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import BS from '@gorhom/bottom-sheet';
 
-import { color } from '../styles/color.theme';
+import { dark } from '../styles/color.theme';
 import { deviceSize } from '../sdk/helper';
 
 const { width, height } = deviceSize;
@@ -14,7 +14,7 @@ function CustomBottomSheetBackground({ style }) {
         {
           borderTopRightRadius: 20,
           borderTopLeftRadius: 20,
-          backgroundColor: color.bg.secondary,
+          backgroundColor: dark,
           marginHorizontal: 0.5,
         },
         { ...style },

@@ -1,30 +1,36 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { CustomText } from '../CustomText';
-import { color } from '../../styles/color.theme';
+import { CircleBtn } from '../CircleBtn';
+import { grey } from '../../styles/color.theme';
 
-export function TransactionItem({ item, onPress }) {
+export function TransactionItem({ item, onPress, withShadow }) {
   return (
     <TouchableOpacity
       style={[styles.transactionItem, item.sum ? styles.transactionItemPaddingLarge : styles.transactionItemPaddingSmall]}
       onPress={() => onPress(item)}
     >
-      <View style={styles.logoBox}>
-        {
-          item.logo ? (
-            <Image
-              style={styles.logoImage}
-              source={item.logo}
-            />
-          ) : (
-            <item.svg
-              style={styles.logoSvg}
-              color={color.text.secondary}
-            />
-          )
-        }
-      </View>
+      {!!item.logo && (
+        <CircleBtn
+          size={45}
+          contentSize={33}
+          label={null}
+          imageSource={item.logo}
+          withShadow={withShadow}
+        />
+      )}
+
+      {!!item.Svg && (
+        <CircleBtn
+          size={45}
+          contentSize={24}
+          label={null}
+          Icon={item.Svg}
+          withShadow={withShadow}
+        />
+      )}
+
       <View style={styles.transactionItemInfo}>
         <CustomText
           size={item.sum ? 14 : 12}
@@ -37,7 +43,7 @@ export function TransactionItem({ item, onPress }) {
             <CustomText
               size={12}
               numberOfLines={1}
-              color={"secondary"}
+              color={"grey"}
             >
               {item.subTitle}
             </CustomText>
@@ -79,23 +85,6 @@ const styles = StyleSheet.create({
   },
   transactionItemPaddingSmall: {
     paddingVertical: 12,
-  },
-  logoBox: {
-    width: 45,
-    height: 45,
-    backgroundColor: color.bg.primary,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  logoImage: {
-    width: 33,
-    height: 33,
-    resizeMode: 'center',
-  },
-  logoSvg: {
-    width: 24,
-    height: 24,
   },
   transactionItemInfo: {
     justifyContent: "center",

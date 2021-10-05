@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { WebView } from 'react-native-webview';
 import { View, ActivityIndicator, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import { color } from '../styles/color.theme';
+import { lightDark, active } from '../styles/color.theme';
 import { deviceSize } from '../sdk/helper';
 
 const { width, height } = deviceSize;
@@ -19,7 +19,7 @@ export function DetailsScreen({ navigation, route }) {
         source={{ uri: route.params.url }}
         renderLoading={() => (
           <View style={styles.loaderContainer}>
-            <ActivityIndicator color={color.text.active} size="large" />
+            <ActivityIndicator color={active} size="large" />
           </View>
         )}
         startInLoadingState
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     height: height,
     alignItems: 'center',
     justifyContent: "center",
-    backgroundColor: color.bg.primary,
+    backgroundColor: lightDark,
   },
   webView: {
     flex: 1, alignItems: 'center', justifyContent: 'center',

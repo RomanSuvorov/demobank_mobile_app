@@ -7,7 +7,7 @@ import AppLoading from 'expo-app-loading';
 import { MainNavigator } from './component/Navigator';
 import { createReduxStore } from './sdk/helper';
 import reducers from './store';
-import { color } from './styles/color.theme';
+import { dark } from './styles/color.theme';
 
 const store = createReduxStore(reducers);
 
@@ -37,6 +37,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.bg.secondary,
+    backgroundColor: dark,
   },
 });

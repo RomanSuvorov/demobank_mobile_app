@@ -54,7 +54,7 @@ export const WalletCardScreen = React.memo(({
             sections={listData}
             keyExtractor={(item) => item.title}
             renderSectionHeader={() => <TransactionHeader title={"Настройки"} />}
-            renderItem={({ item }) => <TransactionItem item={item} onPress={(item) => console.log(item.title)} />}
+            renderItem={({ item }) => <TransactionItem item={item} withShadow={false} onPress={(item) => console.log(item.title)} />}
             contentContainerStyle={styles.bottomSheetContainer}
           />
         )}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Pressable, ImageBackground, StyleSheet, Image } from 'react-native';
+import { Pressable, View, ImageBackground, StyleSheet, Image } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -9,16 +9,17 @@ import Animated, {
 import { useSelector } from 'react-redux';
 
 import { CustomText } from './CustomText';
+import { CircleBtn } from './CircleBtn';
 import CardBackground from '../assets/cardFrontBg.png';
+import DemoBankCardLabel from '../assets/cardLabel.png';
+import BtcMock from '../assets/btc-mock.png';
 import FrameForQR from '../assets/frameForQR.png';
 import FrameForAddress from '../assets/frameForAddress.png';
 import MockQR from '../assets/mockQR.png';
 import { deviceSize, getStyle, StatusBarHeight } from '../sdk/helper';
 import {
-  ACTIONS_BOX_HEIGHT,
   CARD_HEIGHT,
   CARD_WIDTH,
-  PAGINATION_HEIGHT,
   WIDTH_OF_QR_FRAME_WITH_SHADOW,
   HEIGHT_OF_QR_FRAME_WITH_SHADOW,
   WIDTH_OF_QR,
@@ -28,8 +29,9 @@ import {
   WIDTH_OF_ADDRESS_FRAME,
   HEIGHT_OF_ADDRESS_FRAME,
   WALLETS_ICON_BOX_HEIGHT,
+  HEIGHT_OF_CARD_CONTENT,
 } from '../styles/global';
-import { color } from '../styles/color.theme';
+import { dark, grey, textWhite01 } from '../styles/color.theme';
 
 const { width } = deviceSize;
 const CARD_FLIP_DURATION = 800;
@@ -106,7 +108,7 @@ export function Card({ scrollX, paginationIndex, goToSecondSlide = () => {} }) {
     top: interpolate(
       paginationIndex.value,
       [0, 1],
-      [StatusBarHeight, - PAGINATION_HEIGHT - ACTIONS_BOX_HEIGHT - CARD_HEIGHT - StatusBarHeight],
+      [StatusBarHeight, -HEIGHT_OF_CARD_CONTENT],
       Extrapolate.CLAMP,
     ),
     transform: [
@@ -125,13 +127,27 @@ export function Card({ scrollX, paginationIndex, goToSecondSlide = () => {} }) {
   return (
     <Animated.View style={containerStyle}>
         <Pressable onPress={flipCard}>
-          <Animated.View style={[styles.flipCard, frontCardAnimatedStyle]}>
+          <Animated.View style={[styles.flipCard, styles.flipCardFront, frontCardAnimatedStyle]}>
             <ImageBackground source={CardBackground} style={styles.cardBg} resizeMode='contain' />
-            <CustomText
-              style={{ color: "#fff" }}
-            >
-              Front
-            </CustomText>
+
+            <Image source={DemoBankCardLabel} style={styles.frontCardLabel}/>
+            <View style={styles.frontCardNameWrapper}>
+              <CircleBtn
+                style={{ marginRight: 12 }}
+                size={45}
+                contentSize={33}
+                label={null}
+                imageSource={BtcMock}
+              />
+              <View style={styles.divider} />
+              <CustomText
+                style={{ marginLeft: 12, marginTop: 15 }}
+                color={"white01"}
+                size={16}
+              >
+                Bitcoin
+              </CustomText>
+            </View>
           </Animated.View>
           <Animated.View style={[styles.flipCard, styles.flipCardBack, backCardAnimatedStyle]}>
             <ImageBackground source={FrameForQR} style={styles.frameForQR}>
@@ -163,20 +179,37 @@ const styles = StyleSheet.create({
   flipCard: {
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
-    alignItems: "center",
-    justifyContent: "center",
     backfaceVisibility: "hidden",
-    backgroundColor: color.bg.secondary,
+    backgroundColor: dark,
     borderRadius: 10,
   },
   cardBg: {
     width: CARD_WIDTH,
     height: CARD_HEIGHT,
     position: "absolute",
-    backgroundColor: color.bg.secondary,
+    backgroundColor: dark,
     borderRadius: 10,
   },
+  flipCardFront: {
+    padding: 24,
+    justifyContent: "space-between",
+  },
+  frontCardLabel: {
+    width: CARD_WIDTH * 0.3,
+    resizeMode: "contain",
+  },
+  frontCardNameWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  divider: {
+    width: 1,
+    height: 19,
+    backgroundColor: textWhite01,
+    marginTop: 15
+  },
   flipCardBack: {
+    alignItems: "center",
     position: "absolute",
     top: 0,
     justifyContent: "space-around"
@@ -201,7 +234,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: (WIDTH_OF_ADDRESS_FRAME * 0.09) / 2,
   },
   addressText: {
-    color: color.text.secondary,
+    color: grey,
     lineHeight: (HEIGHT_OF_ADDRESS_FRAME - (HEIGHT_OF_ADDRESS_FRAME * 0.356)) / 2,
   },
 });

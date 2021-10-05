@@ -95,7 +95,7 @@ export function SettingsIcon(props) {
       width={20}
       height={20}
       viewBox="0 0 20 20"
-      fill="none"
+      fill={"#989898"}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -112,7 +112,7 @@ export function BlockIcon(props) {
     <Svg
       width={24}
       height={24}
-      fill="none"
+      fill={"#989898"}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -129,7 +129,7 @@ export function FingerPrintIcon(props) {
     <Svg
       width={24}
       height={24}
-      fill="none"
+      fill={"#989898"}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -146,7 +146,7 @@ export function LockOpenIcon(props) {
     <Svg
       width={24}
       height={24}
-      fill="none"
+      fill={"#989898"}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -260,6 +260,40 @@ export function ArrowDownIcon(props) {
         strokeOpacity={0.5}
         strokeWidth={2}
         strokeLinecap="round"
+      />
+    </Svg>
+  );
+}
+
+export function ChangeUp({ props }) {
+  return (
+    <Svg
+      width={8}
+      height={8}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M7.157 1.343a.5.5 0 00-.5-.5h-4.5a.5.5 0 000 1h4v4a.5.5 0 001 0v-4.5zm-5.803 6.01L7.01 1.698 6.303.99.646 6.646l.708.708z"
+        fill="#F7A508"
+      />
+    </Svg>
+  );
+}
+
+export function ChangeDown({ props }) {
+  return (
+    <Svg
+      width={8}
+      height={8}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M6.657 7.5a.5.5 0 00.5-.5V2.5a.5.5 0 10-1 0v4h-4a.5.5 0 000 1h4.5zM.647 1.697l5.656 5.657.707-.708L1.354.99l-.708.707z"
+        fill="#D80027"
       />
     </Svg>
   );

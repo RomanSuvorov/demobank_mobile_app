@@ -5,7 +5,7 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { color } from '../styles/color.theme';
+import { lightGrey } from '../styles/color.theme';
 import { GLOB_VAR, PAGINATION_HEIGHT } from '../styles/global';
 import { deviceSize } from '../sdk/helper';
 
@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
     height: 6,
     borderRadius: 50,
     marginHorizontal: 3,
-    backgroundColor: color.pagination.active,
+    backgroundColor: lightGrey,
   },
 })

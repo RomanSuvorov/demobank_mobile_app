@@ -12,7 +12,7 @@ import { SettingsScreen } from '../screen/SettingsScreen';
 import { DetailsScreen } from '../screen/DetailsScreen';
 import { AnalyticsIcon, ExchangeIcon, SettingsIcon, WalletIcon } from './Icons';
 import { CustomText } from './CustomText';
-import { color } from '../styles/color.theme';
+import { dark, textWhite, grey, active } from '../styles/color.theme';
 import { deviceSize } from '../sdk/helper';
 
 const { height } = deviceSize;
@@ -21,7 +21,7 @@ const DemobankTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    text: color.text.secondary,
+    text: grey,
     background: "transparent",
   },
 };
@@ -56,7 +56,7 @@ function AppNavigator() {
         options={{
           headerShown: true,
           headerStyle: styles.headerStyle,
-          headerTintColor: color.text.primary,
+          headerTintColor: textWhite,
         }}
       />
     </AppStack.Navigator>
@@ -101,8 +101,8 @@ function TabNavigator() {
               </View>
             );
           },
-          tabBarActiveTintColor: color.text.active,
-          tabBarInactiveTintColor: color.text.secondary,
+          tabBarActiveTintColor: active,
+          tabBarInactiveTintColor: grey,
           tabBarStyle: styles.tabBar,
           tabBarLabelStyle: styles.tabBarLabel,
           tabBarItemStyle: styles.tabBarItem,
@@ -111,7 +111,7 @@ function TabNavigator() {
               <View style={styles.barBackground} />
               {route.name === "Wallet" && (
                 <LinearGradient
-                  colors={['rgba(22,26,29,0)', color.bg.secondary]}
+                  colors={['rgba(22,26,29,0)', dark]}
                   style={styles.barBackgroundGradient}
                   locations={[0, 0.64]}
                 />
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 50,
-    backgroundColor: color.bg.secondary,
+    backgroundColor: dark,
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
     height: "100%",
-    backgroundColor: color.bg.secondary,
+    backgroundColor: dark,
   },
   tabBarItem: {
     justifyContent: "center",
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     zIndex: 2,
-    backgroundColor: color.bg.secondary,
+    backgroundColor: dark,
   },
   barBackgroundGradient: {
     flex: 1,
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   headerStyle: {
-    backgroundColor: color.bg.secondary,
+    backgroundColor: dark,
   }
 });
 

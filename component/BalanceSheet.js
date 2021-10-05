@@ -11,7 +11,6 @@ import { CustomText } from './CustomText';
 import { CopyAddressIcon, FillUpWalletIcon, SendToWalletIcon, WalletsIcon, ArrowDownIcon } from './Icons';
 import { WALLETS_ICON_BOX_HEIGHT, ACTIONS_BOX_HEIGHT, HEIGHT_OF_BALANCE_CONTENT } from '../styles/global';
 import { deviceSize, getStyle } from '../sdk/helper';
-import { color } from '../styles/color.theme';
 
 const { width, height } = deviceSize;
 const HORIZONTAL_PADDING_BALANCE = width * 0.093;
@@ -109,8 +108,7 @@ export function BalanceSheet({ currentIndex }) {
         <CircleBtn
           label={null}
           Icon={WalletsIcon}
-          styleCircle={styles.walletsCircle}
-          styleShadow={styles.shadowWalletsCircle}
+          size={40}
         />
         <ArrowDownIcon style={styles.walletsArray} />
       </Animated.View>
@@ -119,7 +117,7 @@ export function BalanceSheet({ currentIndex }) {
           <Animated.View style={currentBalanceLabelStyle}>
             <CustomText
               size={12}
-              color={"secondary"}
+              color={"grey"}
             >
               Баланс
             </CustomText>
@@ -142,13 +140,13 @@ export function BalanceSheet({ currentIndex }) {
           <Animated.View style={balancePriceEqualToStyle}>
             <CustomText
               size={12}
-              color={"secondary"}
+              color={"grey"}
             >
               {"33761.58"}
             </CustomText>
             <CustomText
               size={12}
-              color={"secondary"}
+              color={"grey"}
             >
               {` ${"USD"}`}
             </CustomText>
@@ -157,7 +155,7 @@ export function BalanceSheet({ currentIndex }) {
         <Animated.View style={byLastPeriodContainerStyle}>
           <CustomText
             size={12}
-            color={"secondary"}
+            color={"grey"}
             style={[styles.byLastPeriodLabel]}
           >
             За прошлый месяц
@@ -198,23 +196,6 @@ const styles = StyleSheet.create({
   walletsContainer: {
     height: WALLETS_ICON_BOX_HEIGHT,
     alignItems: "center",
-  },
-  walletsCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 50,
-    backgroundColor: color.bg.primary,
-    position: "relative",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  shadowWalletsCircle: {
-    position: "absolute",
-    width: 60,
-    height: 60,
-    top: "50%",
-    left: "50%",
-    transform: [{ translateY: -25 }, { translateX: -25 }]
   },
   walletsArray: {
     position: "absolute",
@@ -264,5 +245,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: ACTIONS_BOX_HEIGHT,
     width: width,
+    paddingHorizontal: HORIZONTAL_PADDING_BALANCE,
   },
 });
