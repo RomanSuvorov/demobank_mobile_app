@@ -6,30 +6,21 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import { lightGrey } from '../styles/color.theme';
-import { GLOB_VAR, PAGINATION_HEIGHT } from '../styles/global';
+import { PAGINATION_HEIGHT } from '../styles/global';
 import { deviceSize } from '../sdk/helper';
 
 const { width } = deviceSize;
 
-export function ScreenPagination({ screens, currentIndex, scrollX }) {
-  const containerAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(
-      currentIndex.value,
-      [0, 0.05],
-      [1, 0],
-      Extrapolate.CLAMP,
-    ),
-  }));
-
+export function Pagination({ slides, scrollX, style = {} }) {
   const containerStyle = useMemo(
-    () => [styles.container, containerAnimatedStyle],
-    [containerAnimatedStyle],
+    () => [styles.container, style],
+    [style],
   );
 
   return (
     <Animated.View style={containerStyle}>
       {
-        screens.map((item, key) => {
+        slides.map((item, key) => {
           const paginationAnimatedDot = useAnimatedStyle(
             () => ({
               opacity: interpolate(
@@ -61,7 +52,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: PAGINATION_HEIGHT,
     alignItems: "center",
-    bottom: GLOB_VAR.INITIAL_SNAP_POINT,
     alignSelf: "center",
   },
   paginationDot: {

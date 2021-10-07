@@ -8,7 +8,7 @@ export function TransactionHeader({ title }) {
     <View style={styles.sectionHeader}>
       <CustomText
         size={12}
-        color={"grey"}
+        color={"greyPrimary"}
       >
         {title}
       </CustomText>

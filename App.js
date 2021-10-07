@@ -12,8 +12,6 @@ import { dark } from './styles/color.theme';
 const store = createReduxStore(reducers);
 
 export default function App() {
-  const isAuthenticated = true;
-
   const [fontLoaded] = useFonts({
     'Play-Bold': require('./assets/fonts/Play-Bold.ttf'),
     'Play-Regular': require('./assets/fonts/Play-Regular.ttf'),
@@ -22,13 +20,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaView style={styles.container}>
-        {
-          fontLoaded ? (
-            <MainNavigator isAuthenticated={isAuthenticated} />
-          ) : (
-            <AppLoading />
-          )
-        }
+        {fontLoaded ? <MainNavigator /> : <AppLoading />}
       </SafeAreaView>
     </Provider>
   );

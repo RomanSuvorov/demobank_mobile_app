@@ -43,7 +43,8 @@ export function CircleBtn({
       {label && (
         <CustomText
           size={12}
-          color={"grey"}
+          color={"greyPrimary"}
+          align={"center"}
           style={[styles.label]}
           numberOfLines={2}
         >
@@ -70,7 +71,6 @@ const styles = StyleSheet.create({
     left: 0,
   },
   label: {
-    textAlign: "center",
     marginTop: 6,
   },
 });

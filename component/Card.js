@@ -31,7 +31,7 @@ import {
   WALLETS_ICON_BOX_HEIGHT,
   HEIGHT_OF_CARD_CONTENT,
 } from '../styles/global';
-import { dark, grey, textWhite01 } from '../styles/color.theme';
+import { dark, greyPrimary, textWhite01 } from '../styles/color.theme';
 
 const { width } = deviceSize;
 const CARD_FLIP_DURATION = 800;
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: (WIDTH_OF_ADDRESS_FRAME * 0.09) / 2,
   },
   addressText: {
-    color: grey,
+    color: greyPrimary,
     lineHeight: (HEIGHT_OF_ADDRESS_FRAME - (HEIGHT_OF_ADDRESS_FRAME * 0.356)) / 2,
   },
 });

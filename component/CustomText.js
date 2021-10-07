@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 
-import { active, danger, success, textWhite, textWhite01, grey } from '../styles/color.theme';
+import { active, danger, success, textWhite, textWhite01, greySecondary, greyPrimary } from '../styles/color.theme';
 
 export function CustomText({
   type = "regular",
@@ -9,6 +10,7 @@ export function CustomText({
   color = "textWhite",
   style = {},
   children,
+  align = "left",
   ...props
 }) {
   const setFontType = (type) => {
@@ -23,8 +25,10 @@ export function CustomText({
 
   const setFontColor = (color) => {
     switch (color) {
-      case 'grey':
-        return grey;
+      case 'greyPrimary':
+        return greyPrimary;
+      case 'greySecondary':
+        return greySecondary;
       case 'active':
         return active;
       case 'danger':
@@ -42,9 +46,33 @@ export function CustomText({
   return (
     <Text
       {...props}
-      style={[{ fontFamily: setFontType(type), fontSize: size, color: setFontColor(color) }, style]}
+      style={[
+        {
+          fontFamily: setFontType(type),
+          fontSize: size,
+          color: setFontColor(color),
+          textAlign: (align === "left" || align === "right" || align === "center") ? align : "auto",
+        },
+        style,
+      ]}
     >
       {children}
     </Text>
   );
 }
+
+CustomText.propTypes = {
+  type: PropTypes.oneOf(["bold", "regular"]),
+  size: PropTypes.number,
+  color: PropTypes.oneOf(["greyPrimary", "greySecondary", "active", "danger", "success", "white01", "textWhite"]),
+  style: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
+  align: PropTypes.oneOf(["left", "right", "center"]),
+};
+
+CustomText.defaultProps = {
+  type: "regular",
+  size: 14,
+  color: "textWhite",
+  style: {},
+  align: "left",
+};

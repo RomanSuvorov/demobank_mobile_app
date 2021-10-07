@@ -4,15 +4,18 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useSelector } from 'react-redux';
 
 import { WalletScreen } from '../screen/WalletScreen';
 import { ExchangeScreen } from '../screen/ExchangeScreen';
 import { AnalyticsScreen } from '../screen/AnalyticsScreen';
 import { SettingsScreen } from '../screen/SettingsScreen';
 import { DetailsScreen } from '../screen/DetailsScreen';
+import { AuthScreen } from '../screen/AuthScreen';
+import { GenerateWalletScreen } from '../screen/GenerateWalletScreen';
+import { BackNavigation } from './BackNavigation';
 import { AnalyticsIcon, ExchangeIcon, SettingsIcon, WalletIcon } from './Icons';
-import { CustomText } from './CustomText';
-import { dark, textWhite, grey, active } from '../styles/color.theme';
+import { dark, textWhite, greyPrimary, active } from '../styles/color.theme';
 import { deviceSize } from '../sdk/helper';
 
 const { height } = deviceSize;
@@ -21,22 +24,32 @@ const DemobankTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    text: grey,
+    text: greyPrimary,
     background: "transparent",
   },
 };
 
 const Stack = createNativeStackNavigator();
-function Navigator({ isAuthenticated }) {
+function Navigator() {
+  const isAuthenticated = useSelector(state => state.app.isAuthenticated);
+
   return (
     <NavigationContainer theme={DemobankTheme}>
-      <Stack.Navigator
-        screenOptions={{ headerShown: false }}
-      >
+      <StatusBar
+        backgroundColor={"transparent"}
+        translucent={true}
+      />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isAuthenticated ? (
-          <Stack.Screen name={"App"} component={AppNavigator} />
+          <Stack.Screen
+            name={"App"}
+            component={AppNavigator}
+          />
         ) : (
-          <Stack.Screen name={"SignIn"} component={SignInNavigator} />
+          <Stack.Screen
+            name={"Authorization"}
+            component={AuthorizationNavigator}
+          />
         )}
       </Stack.Navigator>
     </NavigationContainer>
@@ -46,10 +59,11 @@ function Navigator({ isAuthenticated }) {
 const AppStack = createNativeStackNavigator();
 function AppNavigator() {
   return (
-    <AppStack.Navigator
-      screenOptions={{ headerShown: false }}
-    >
-      <AppStack.Screen name={"Tabs"} component={TabNavigator} />
+    <AppStack.Navigator screenOptions={{ headerShown: false }}>
+      <AppStack.Screen
+        name={"Tabs"}
+        component={TabNavigator}
+      />
       <AppStack.Screen
         name={"Details"}
         component={DetailsScreen}
@@ -71,9 +85,7 @@ function TabNavigator() {
       resizeMode={"cover"}
       style={styles.imageBackground}
     >
-      <StatusBar backgroundColor={"transparent"} translucent={true} />
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
+      <Tab.Navigator screenOptions={({ route }) => ({
           headerShown: false,
           tabBarIcon: ({ color, size }) => {
             let Icon;
@@ -102,7 +114,7 @@ function TabNavigator() {
             );
           },
           tabBarActiveTintColor: active,
-          tabBarInactiveTintColor: grey,
+          tabBarInactiveTintColor: greyPrimary,
           tabBarStyle: styles.tabBar,
           tabBarLabelStyle: styles.tabBarLabel,
           tabBarItemStyle: styles.tabBarItem,
@@ -153,11 +165,34 @@ function TabNavigator() {
   );
 }
 
-function SignInNavigator() {
+const AuthStack = createNativeStackNavigator();
+function AuthorizationNavigator() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <CustomText>SignIn Screen</CustomText>
-    </View>
+    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthStack.Screen
+        name={"AuthScreen"}
+        component={AuthScreen}
+      />
+      <AuthStack.Screen
+        name={"GenerateWallet"}
+        component={GenerateWalletScreen}
+        options={({ navigation }) => ({
+          headerShown: true,
+          title: null,
+          headerTintColor: active,
+          headerLeft: (props) => (
+            <BackNavigation
+              title={"Назад"}
+              navigation={navigation}
+              {...props}
+            />
+          ),
+          headerTransparent: true,
+          headerStyle: { backgroundColor: "transparent" },
+          headerShadowVisible: false,
+        })}
+      />
+    </AuthStack.Navigator>
   );
 }
 

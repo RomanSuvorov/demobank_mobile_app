@@ -117,7 +117,7 @@ export function BalanceSheet({ currentIndex }) {
           <Animated.View style={currentBalanceLabelStyle}>
             <CustomText
               size={12}
-              color={"grey"}
+              color={"greyPrimary"}
             >
               Баланс
             </CustomText>
@@ -140,13 +140,13 @@ export function BalanceSheet({ currentIndex }) {
           <Animated.View style={balancePriceEqualToStyle}>
             <CustomText
               size={12}
-              color={"grey"}
+              color={"greyPrimary"}
             >
               {"33761.58"}
             </CustomText>
             <CustomText
               size={12}
-              color={"grey"}
+              color={"greyPrimary"}
             >
               {` ${"USD"}`}
             </CustomText>
@@ -155,7 +155,7 @@ export function BalanceSheet({ currentIndex }) {
         <Animated.View style={byLastPeriodContainerStyle}>
           <CustomText
             size={12}
-            color={"grey"}
+            color={"greyPrimary"}
             style={[styles.byLastPeriodLabel]}
           >
             За прошлый месяц

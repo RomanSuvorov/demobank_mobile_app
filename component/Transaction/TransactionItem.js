@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { CustomText } from '../CustomText';
 import { CircleBtn } from '../CircleBtn';
-import { grey } from '../../styles/color.theme';
+import { greyPrimary } from '../../styles/color.theme';
 
 export function TransactionItem({ item, onPress, withShadow }) {
   return (
@@ -43,7 +43,7 @@ export function TransactionItem({ item, onPress, withShadow }) {
             <CustomText
               size={12}
               numberOfLines={1}
-              color={"grey"}
+              color={"greyPrimary"}
             >
               {item.subTitle}
             </CustomText>

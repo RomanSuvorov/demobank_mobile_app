@@ -46,7 +46,7 @@ export function ProgressBar({
             <ChangeUp />
             <CustomText
               style={styles.label}
-              color={"grey"}
+              color={"greyPrimary"}
               size={12}
             >
               Покупают
@@ -59,7 +59,7 @@ export function ProgressBar({
             <ChangeDown />
             <CustomText
               style={styles.label}
-              color={"grey"}
+              color={"greyPrimary"}
               size={12}
             >
               Продают

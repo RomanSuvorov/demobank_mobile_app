@@ -3,6 +3,7 @@ import Types from './types';
 
 const initialStore = {
   activeSlide: 0,
+  isAuthenticated: false,
 };
 
 const reducer = {

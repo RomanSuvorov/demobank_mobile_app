@@ -1,13 +1,20 @@
 import React, { useState, useRef } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
-import { useSharedValue, useDerivedValue } from 'react-native-reanimated';
+import {
+  useSharedValue,
+  useDerivedValue,
+  useAnimatedStyle,
+  interpolate,
+  Extrapolate,
+} from 'react-native-reanimated';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { WalletBalanceScreen } from './WalletBalanceScreen';
 import { WalletCardScreen } from './WalletCardScreen';
-import { ScreenPagination } from '../component/ScreenPagination';
+import { Pagination } from '../component/Pagination';
 import { deviceSize } from '../sdk/helper';
 import AppType from '../store/app/types';
+import { GLOB_VAR } from '../styles/global';
 
 const { width, height } = deviceSize;
 
@@ -30,6 +37,16 @@ export function WalletScreen({ navigation }) {
   const paginationIndex = useDerivedValue(() =>
     activeSlide === 0 ? currentBalanceIndex.value : currentCardIndex.value
   );
+
+  const paginationAnimatedStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(
+      paginationIndex.value,
+      [0, 0.05],
+      [1, 0],
+      Extrapolate.CLAMP,
+    ),
+  }));
+  const paginationStyle = [paginationAnimatedStyle, { bottom: GLOB_VAR.INITIAL_SNAP_POINT }]
 
   const handleScroll = ({ nativeEvent }) => scrollX.value = nativeEvent.contentOffset.x;
 
@@ -75,10 +92,10 @@ export function WalletScreen({ navigation }) {
           goToSecondSlide={goToSecondSlide}
         />
       </ScrollView>
-      <ScreenPagination
-        screens={screens}
-        currentIndex={paginationIndex}
+      <Pagination
+        slides={screens}
         scrollX={scrollX}
+        style={paginationStyle}
       />
     </View>
   );
