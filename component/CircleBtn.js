@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 import { CustomText } from './CustomText';
@@ -17,9 +18,13 @@ export function CircleBtn({
   size = DEFAULT_SIZE,
   contentSize = DEFAULT_CONTENT_SIZE,
   withShadow = true,
+  onPress,
 }) {
   return (
-    <TouchableOpacity style={[styles.container, style]}>
+    <TouchableOpacity
+      style={[styles.container, style]}
+      onPress={onPress}
+    >
       <View style={[styles.circle, { width: size, height: size }]}>
         {withShadow && (
           <Image
@@ -53,6 +58,28 @@ export function CircleBtn({
       )}
     </TouchableOpacity>
   );
+}
+
+CircleBtn.propTypes = {
+  label: PropTypes.string,
+  Icon: PropTypes.func,
+  imageSource: PropTypes.string,
+  style: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
+  size: PropTypes.number,
+  contentSize: PropTypes.number,
+  withShadow: PropTypes.bool,
+  onPress: PropTypes.func,
+};
+
+CircleBtn.defaultProps = {
+  label: "",
+  Icon: null,
+  imageSource: "",
+  style: {},
+  size: DEFAULT_SIZE,
+  contentSize: DEFAULT_CONTENT_SIZE,
+  withShadow: true,
+  onPress: () => {},
 }
 
 const styles = StyleSheet.create({

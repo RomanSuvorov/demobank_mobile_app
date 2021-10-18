@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Pressable, View, ImageBackground, StyleSheet, Image } from 'react-native';
+import { Pressable, View, ImageBackground, StyleSheet, Image, Alert } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -7,6 +7,7 @@ import Animated, {
   Extrapolate,
 } from 'react-native-reanimated';
 import { useSelector } from 'react-redux';
+import { setString } from 'expo-clipboard';
 
 import { CustomText } from './CustomText';
 import { CircleBtn } from './CircleBtn';
@@ -41,6 +42,7 @@ export function Card({ scrollX, paginationIndex, goToSecondSlide = () => {} }) {
   const progress = useSharedValue(0);
   const cardAnimatedValue = useSharedValue(0);
   const activeSlide = useSelector(state => state.app.activeSlide);
+  const address = useSelector(state => state.wallet.address);
   const [isFront, setIsFront] = useState(true)
 
   const frontCardAnimatedStyle = useAnimatedStyle(() => ({
@@ -104,6 +106,11 @@ export function Card({ scrollX, paginationIndex, goToSecondSlide = () => {} }) {
     progress.value = withTiming(1, { duration: CARD_FLIP_DURATION }, () => progress.value = 0);
   };
 
+  const handleCopyAddress = () => {
+    setString(address);
+    Alert.alert("Address copied")
+  };
+
   const containerAnimatedStyle = useAnimatedStyle(() => ({
     top: interpolate(
       paginationIndex.value,
@@ -126,7 +133,10 @@ export function Card({ scrollX, paginationIndex, goToSecondSlide = () => {} }) {
 
   return (
     <Animated.View style={containerStyle}>
-        <Pressable onPress={flipCard}>
+        <Pressable
+          onPress={flipCard}
+          onLongPress={handleCopyAddress}
+        >
           <Animated.View style={[styles.flipCard, styles.flipCardFront, frontCardAnimatedStyle]}>
             <ImageBackground source={CardBackground} style={styles.cardBg} resizeMode='contain' />
 
@@ -159,7 +169,7 @@ export function Card({ scrollX, paginationIndex, goToSecondSlide = () => {} }) {
                 size={12}
                 style={styles.addressText}
               >
-                zpub6qTE9SeygRHtUnAc4e4VuBA5Ex39YC7Aw7bSq5m9LVfkNQCQtqVbHtZ5e8KH9G4D88L3DBCSU
+                {address}
               </CustomText>
             </ImageBackground>
           </Animated.View>

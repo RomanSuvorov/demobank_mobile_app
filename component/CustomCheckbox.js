@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { CustomText } from './CustomText';
 import { CheckBoxIcon } from './Icons';
-import { textWhite, active } from '../styles/color.theme';
+import { textWhite, active, greySecondary } from '../styles/color.theme';
 
 export function CustomCheckbox({
+  disabled,
   size,
   color,
   label,
@@ -17,8 +18,9 @@ export function CustomCheckbox({
 }) {
   const [checked, setChecked] = useState(false);
   const handleChange = () => {
-    setChecked(!checked);
+    if (disabled) return;
 
+    setChecked(!checked);
     onChange(!checked);
   };
 
@@ -26,6 +28,7 @@ export function CustomCheckbox({
     <TouchableOpacity
       style={[styles.container, style]}
       underlayColor="transparent"
+      activeOpacity={disabled ? 1 : 0.2}
       onPress={handleChange}
     >
       <View
@@ -34,9 +37,9 @@ export function CustomCheckbox({
           {
             width: size,
             height: size,
-            backgroundColor: checked ? color : "transparent",
-            borderColor: color,
-          }
+            backgroundColor: checked ? (disabled ? greySecondary : color) : "transparent",
+            borderColor: disabled ? greySecondary : color,
+          },
         ]}
       >
         <View style={styles.centeredWrapper}>
@@ -45,7 +48,7 @@ export function CustomCheckbox({
       </View>
       <CustomText
         size={12}
-        color={labelColor}
+        color={disabled ? "greySecondary" : labelColor}
         style={[styles.labelStyle, labelStyle]}
       >
         {label}
@@ -55,6 +58,7 @@ export function CustomCheckbox({
 }
 
 CustomCheckbox.propTypes = {
+  disabled: PropTypes.bool,
   size: PropTypes.number,
   color: PropTypes.string,
   label: PropTypes.string,
@@ -65,6 +69,7 @@ CustomCheckbox.propTypes = {
 };
 
 CustomCheckbox.defaultProps = {
+  disabled: false,
   size: 23,
   color: active,
   label: "",

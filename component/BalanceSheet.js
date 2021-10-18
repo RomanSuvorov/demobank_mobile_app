@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import { useSelector } from 'react-redux';
+import { setString } from 'expo-clipboard';
 
 import { CircleBtn } from './CircleBtn';
 import { CustomText } from './CustomText';
@@ -17,6 +19,8 @@ const HORIZONTAL_PADDING_BALANCE = width * 0.093;
 
 export function BalanceSheet({ currentIndex }) {
   const [widthOfBalanceString, setWidthOfBalanceString] = useState(0);
+  const address = useSelector(state => state.wallet.address);
+
   const actionsContainerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
       currentIndex.value,
@@ -89,6 +93,11 @@ export function BalanceSheet({ currentIndex }) {
     const { width } = event.nativeEvent.layout;
     setWidthOfBalanceString(width);
   }
+
+  const handleCopyAddress = () => {
+    setString(address);
+    Alert.alert("Address copied");
+  };
 
   const currentBalanceLabelAnimatedStyle = animateTextOpacityAndTransform({ withOpacity: true });
   const balancePriceContainerAnimatedStyle = animateTextOpacityAndTransform({ withOpacity: false, withScale: true });
@@ -181,6 +190,7 @@ export function BalanceSheet({ currentIndex }) {
         <CircleBtn
           label={"Копировать\n адресс "}
           Icon={CopyAddressIcon}
+          onPress={handleCopyAddress}
         />
       </Animated.View>
     </View>

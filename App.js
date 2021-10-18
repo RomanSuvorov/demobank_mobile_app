@@ -4,7 +4,7 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { useFonts } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
 
-import { MainNavigator } from './component/Navigator';
+import { MainNavigator } from './Navigator';
 import { createReduxStore } from './sdk/helper';
 import reducers from './store';
 import { dark } from './styles/color.theme';

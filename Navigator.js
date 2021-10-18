@@ -6,17 +6,21 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector } from 'react-redux';
 
-import { WalletScreen } from '../screen/WalletScreen';
-import { ExchangeScreen } from '../screen/ExchangeScreen';
-import { AnalyticsScreen } from '../screen/AnalyticsScreen';
-import { SettingsScreen } from '../screen/SettingsScreen';
-import { DetailsScreen } from '../screen/DetailsScreen';
-import { AuthScreen } from '../screen/AuthScreen';
-import { GenerateWalletScreen } from '../screen/GenerateWalletScreen';
-import { BackNavigation } from './BackNavigation';
-import { AnalyticsIcon, ExchangeIcon, SettingsIcon, WalletIcon } from './Icons';
-import { dark, textWhite, greyPrimary, active } from '../styles/color.theme';
-import { deviceSize } from '../sdk/helper';
+import { WalletScreen } from './screen/WalletScreen';
+import { ExchangeScreen } from './screen/ExchangeScreen';
+import { AnalyticsScreen } from './screen/AnalyticsScreen';
+import { SettingsScreen } from './screen/SettingsScreen';
+import { DetailsScreen } from './screen/DetailsScreen';
+import { AuthScreen } from './screen/AuthScreen';
+import { GenerateWalletScreen } from './screen/GenerateWalletScreen';
+import { BackNavigation } from './component/BackNavigation';
+import { CustomModal } from './component/CustomModal';
+import { AnalyticsIcon, ExchangeIcon, SettingsIcon, WalletIcon } from './component/Icons';
+import TabNavigatorBgImage from "./assets/backgroundImage.png";
+import TabShadow from "./assets/tabShadow.png";
+import { dark, textWhite, greyPrimary, active } from './styles/color.theme';
+import { deviceSize } from './sdk/helper';
+import { navigationRef } from './sdk/helper';
 
 const { height } = deviceSize;
 
@@ -31,26 +35,42 @@ const DemobankTheme = {
 
 const Stack = createNativeStackNavigator();
 function Navigator() {
-  const isAuthenticated = useSelector(state => state.app.isAuthenticated);
+  const isAuthenticated = useSelector(state => state.wallet.isAuthenticated);
 
   return (
-    <NavigationContainer theme={DemobankTheme}>
+    <NavigationContainer
+      theme={DemobankTheme}
+      ref={navigationRef}
+    >
       <StatusBar
         backgroundColor={"transparent"}
         translucent={true}
       />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {isAuthenticated ? (
+        <Stack.Group>
+          {isAuthenticated ? (
+            <Stack.Screen
+              name={"App"}
+              component={AppNavigator}
+            />
+          ) : (
+            <Stack.Screen
+              name={"Authorization"}
+              component={AuthorizationNavigator}
+            />
+          )}
+        </Stack.Group>
+        <Stack.Group
+          screenOptions={{
+            presentation: "transparentModal",
+            animation: "fade",
+          }}
+        >
           <Stack.Screen
-            name={"App"}
-            component={AppNavigator}
+            name={"Modal"}
+            component={CustomModal}
           />
-        ) : (
-          <Stack.Screen
-            name={"Authorization"}
-            component={AuthorizationNavigator}
-          />
-        )}
+        </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -81,7 +101,7 @@ const Tab = createBottomTabNavigator();
 function TabNavigator() {
   return (
     <ImageBackground
-      source={require("../assets/backgroundImage.png")}
+      source={TabNavigatorBgImage}
       resizeMode={"cover"}
       style={styles.imageBackground}
     >
@@ -108,7 +128,7 @@ function TabNavigator() {
 
             return (
               <View style={styles.tabIcon}>
-                <Image source={require("../assets/tabShadow.png")} style={styles.shadowTabImage} />
+                <Image source={TabShadow} style={styles.shadowTabImage} />
                 <Icon size={size} color={color} />
               </View>
             );

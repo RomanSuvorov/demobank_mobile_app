@@ -4,6 +4,8 @@ import ReduxPromise from 'redux-promise';
 import thunk from 'redux-thunk';
 import produce from 'immer';
 import { Platform, Dimensions, StatusBar } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
+import { createNavigationContainerRef } from '@react-navigation/native';
 
 // redux
 export const createReduxStore = _configureStore;
@@ -50,3 +52,25 @@ export const getStyle = (styles, animatedStyles, depend) => useMemo(
   () => [styles, animatedStyles],
   [depend]
 );
+
+// navigation
+export const navigationRef = createNavigationContainerRef();
+
+export function navigate(name, params) {
+  if (navigationRef.isReady()) {
+    navigationRef.navigate(name, params);
+  }
+}
+
+// storage managing
+export async function saveToDeviceStorage(key, value, options) {
+  await SecureStore.setItemAsync(key, value, options);
+}
+
+export async function getValueFromDeviceStorage(key, options) {
+  return await SecureStore.getItemAsync(key, options);
+}
+
+export async function deleteValueFromDeviceStorage(key, options) {
+  return await SecureStore.deleteItemAsync(key, options);
+}

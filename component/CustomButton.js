@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, ActivityIndicator, StyleSheet } from 'react-native';
 
 import { CustomText } from './CustomText';
 import { active, greySecondary } from '../styles/color.theme';
 
 export function CustomButton({
+  loading,
   type,
   children,
   disabled,
@@ -22,8 +23,7 @@ export function CustomButton({
         disabled ? { backgroundColor: greySecondary } : {},
         style,
       ]}
-      disabled={disabled}
-      activeOpacity={0.4}
+      disabled={disabled || loading}
       onPress={onPress}
     >
       <CustomText
@@ -34,11 +34,22 @@ export function CustomButton({
       >
         {children}
       </CustomText>
+      {
+        loading && (
+          <View style={[
+            styles.loaderContainer,
+            { backgroundColor: type=== "transparent" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.5)" },
+          ]}>
+            <ActivityIndicator color={active} size={"large"} />
+          </View>
+        )
+      }
     </TouchableOpacity>
   );
 }
 
 CustomButton.propTypes = {
+  loading: PropTypes.bool,
   type: PropTypes.oneOf(["filled", "transparent"]),
   disabled: PropTypes.bool,
   isLarge: PropTypes.bool,
@@ -47,6 +58,7 @@ CustomButton.propTypes = {
 };
 
 CustomButton.defaultProps = {
+  loading: false,
   type: "filled",
   disabled: false,
   isLarge: false,
@@ -66,5 +78,15 @@ const styles = StyleSheet.create({
   },
   filledBtn: {
     backgroundColor: active,
+  },
+  loaderContainer: {
+    borderRadius: 10,
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
