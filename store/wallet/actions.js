@@ -1,6 +1,7 @@
 import Types from './types';
 import { navigate, saveToDeviceStorage } from '../../sdk/helper';
 import { createWallet } from '../../sdk/wallet';
+import { SECURE_STORE_NAMES, SCREEN_NAMES } from '../../styles/constants';
 
 export const generateWalletAction = () => async (dispatch) => {
   dispatch({ type: Types.GENERATE_START });
@@ -24,13 +25,13 @@ export const generateWalletAction = () => async (dispatch) => {
 
 
     dispatch({ type: Types.GENERATE_SUCCESS, payload: { address, privateKey } });
-    await saveToDeviceStorage("wallet", JSON.stringify({ address, privateKey }));
+    await saveToDeviceStorage(SECURE_STORE_NAMES.WALLET, JSON.stringify({ address, privateKey }));
     dispatch({ type: Types.CHANGE_AUTHENTICATED });
-    navigate("Modal", { type: "success", text: "Ваш кошелек был успешно создан." });
+    navigate(SCREEN_NAMES.MODAL_SCREEN, { type: "success", text: "Ваш кошелек был успешно создан." });
   } catch (e) {
     console.error(e);
     dispatch({ type: Types.GENERATE_ERROR, payload: e });
-    navigate("Modal", { type: "error", text: "Возникла проблемка при создании кошелька. Упсь" });
+    navigate(SCREEN_NAMES.MODAL_SCREEN, { type: "error", text: "Возникла проблемка при создании кошелька. Упсь" });
   } finally {
     dispatch({ type: Types.GENERATE_FINISH });
   }

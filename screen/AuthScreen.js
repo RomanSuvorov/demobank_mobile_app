@@ -7,6 +7,7 @@ import { CustomText } from '../component/CustomText';
 import { Pagination } from '../component/Pagination';
 import { deviceSize, StatusBarHeight } from '../sdk/helper';
 import { PAGINATION_HEIGHT} from '../styles/global';
+import { SCREEN_NAMES } from '../styles/constants';
 
 const { width, height } = deviceSize;
 const slides = [
@@ -33,9 +34,9 @@ export function AuthScreen({ navigation }) {
 
   const handleScroll = ({ nativeEvent }) => scrollX.value = nativeEvent.contentOffset.x;
 
-  const generateNewWallet = () => navigation.navigate("GenerateWallet");
+  const generateNewWallet = () => navigation.navigate(SCREEN_NAMES.GENERATE_WALLET_SCREEN);
 
-  const importWallet = () => navigation.navigate("ImportWallet");
+  const importWallet = () => navigation.navigate(SCREEN_NAMES.IMPORT_WALLET_SCREEN);
 
   return (
     <View style={styles.container}>

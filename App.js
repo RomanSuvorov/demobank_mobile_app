@@ -4,7 +4,7 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { useFonts } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
 
-import { MainNavigator } from './Navigator';
+import { RootNavigator } from './navigation/RootNavigator';
 import { createReduxStore } from './sdk/helper';
 import reducers from './store';
 import { dark } from './styles/color.theme';
@@ -20,7 +20,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <SafeAreaView style={styles.container}>
-        {fontLoaded ? <MainNavigator /> : <AppLoading />}
+        {fontLoaded ? <RootNavigator /> : <AppLoading />}
       </SafeAreaView>
     </Provider>
   );
