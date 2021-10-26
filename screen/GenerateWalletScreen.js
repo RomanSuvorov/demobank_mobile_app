@@ -11,13 +11,12 @@ import { deviceSize } from '../sdk/helper';
 import AreYouAgreeImage from '../assets/areYouAgreeImage.png';
 import { generateWalletAction } from '../store/wallet/actions';
 
-
 const { width, height } = deviceSize;
 
 export function GenerateWalletScreen({}) {
   const [isAgreed, setIsAgreed] = useState(false);
   const headerHeight = useHeaderHeight();
-  const generateLoading = useSelector(state => state.wallet.generateLoading);
+  const loading = useSelector(state => state.wallet.loading);
   const dispatch = useDispatch();
 
   const handleContinue = () => {
@@ -52,7 +51,7 @@ export function GenerateWalletScreen({}) {
       </View>
       <View style={styles.footerWrapper}>
         <CustomCheckbox
-          disabled={generateLoading}
+          disabled={loading}
           size={23}
           label={"Я понимаю, что если я потеряю секретную фразу, я потеряю доступ к своему кошельку."}
           labelColor={"active"}
@@ -60,7 +59,7 @@ export function GenerateWalletScreen({}) {
           onChange={handleChangeAgreeState}
         />
         <CustomButton
-          loading={generateLoading}
+          loading={loading}
           isLarge={true}
           disabled={!isAgreed}
           onPress={handleContinue}

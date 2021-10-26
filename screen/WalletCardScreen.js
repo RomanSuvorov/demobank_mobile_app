@@ -35,9 +35,7 @@ export const WalletCardScreen = React.memo(({
   const snapPoints = useMemo(() => [GLOB_VAR.INITIAL_SNAP_POINT, GLOB_VAR.SECOND_SNAP_POINT_CARD], []);
 
   return (
-    <View
-      style={styles.container}
-    >
+    <View style={styles.container}>
       <CardSheet
         currentIndex={currentIndex}
         currentPosition={currentPosition}

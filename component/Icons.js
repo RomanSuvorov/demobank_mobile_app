@@ -4,8 +4,8 @@ import Svg, { G, Path, Defs, ClipPath, Rect } from "react-native-svg"
 export function WalletIcon(props) {
   return (
     <Svg
-      width={17}
-      height={17}
+      width={props.size || 17}
+      height={props.size || 17}
       viewBox="0 0 17 17"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -265,7 +265,7 @@ export function ArrowDownIcon(props) {
   );
 }
 
-export function ChangeUp({ props }) {
+export function ChangeUp(props) {
   return (
     <Svg
       width={8}
@@ -282,7 +282,7 @@ export function ChangeUp({ props }) {
   );
 }
 
-export function ChangeDown({ props }) {
+export function ChangeDown(props)  {
   return (
     <Svg
       width={8}
@@ -299,7 +299,7 @@ export function ChangeDown({ props }) {
   );
 }
 
-export function BackArrow({ props }) {
+export function BackArrow(props) {
   return (
     <Svg
       width={13}
@@ -318,7 +318,7 @@ export function BackArrow({ props }) {
   );
 }
 
-export function CheckBoxIcon({ props }) {
+export function CheckBoxIcon(props) {
   return (
     <Svg
       width={11}
@@ -337,7 +337,21 @@ export function CheckBoxIcon({ props }) {
   );
 }
 
-export function CloseIcon({ props }) {
+export function CheckIcon(props) {
+ return (
+   <Svg
+     width={7}
+     height={7}
+     fill="none"
+     xmlns="http://www.w3.org/2000/svg"
+     {...props}
+   >
+     <Path d="M1 3.5L3.5 6 6 1" stroke="#fff" strokeLinecap="round" />
+   </Svg>
+ );
+}
+
+export function CloseIcon(props) {
   return (
     <Svg
       width={24}
@@ -348,6 +362,40 @@ export function CloseIcon({ props }) {
     >
       <Path
         d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"
+        fill={props?.color || "#797979"}
+      />
+    </Svg>
+  );
+}
+
+export function AddIcon(props) {
+  return (
+    <Svg
+      width={24}
+      height={24}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"
+        fill="#fff"
+      />
+    </Svg>
+  );
+}
+
+export function ThreeVerticalDots(props) {
+  return (
+    <Svg
+      width={4}
+      height={16}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M2 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2C.9 6 0 6.9 0 8s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
         fill="#797979"
       />
     </Svg>

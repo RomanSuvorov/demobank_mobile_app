@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, ImageBackground, View, StyleSheet } from 'react-native';
+import { Image, ImageBackground, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -10,7 +10,7 @@ import { SettingsScreen } from '../screen/SettingsScreen';
 import { AnalyticsIcon, ExchangeIcon, SettingsIcon, WalletIcon } from '../component/Icons';
 import TabNavigatorBgImage from '../assets/backgroundImage.png';
 import TabShadow from '../assets/tabShadow.png';
-import { active, greyPrimary, dark } from '../styles/color.theme';
+import { active, greyPrimary, darkGrey, dark } from '../styles/color.theme';
 import { deviceSize } from '../sdk/helper';
 import { SCREEN_NAMES } from '../styles/constants';
 
@@ -25,30 +25,39 @@ export function TabNavigator() {
       style={styles.imageBackground}
     >
       <Tab.Navigator screenOptions={({ route }) => ({
+        tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarIcon: ({ color, size }) => {
           let Icon;
+          let disable;
 
           switch (route.name) {
             case SCREEN_NAMES.EXCHANGE_SCREEN:
               Icon = ExchangeIcon;
+              disable = true;
               break;
             case SCREEN_NAMES.ANALYTICS_SCREEN:
               Icon = AnalyticsIcon;
+              disable = true;
               break;
             case SCREEN_NAMES.SETTINGS_SCREEN:
               Icon = SettingsIcon;
+              disable = false;
               break;
             case SCREEN_NAMES.WALLET_SCREEN:
             default:
               Icon = WalletIcon;
+              disable = false;
               break;
           }
 
           return (
-            <View style={styles.tabIcon}>
-              <Image source={TabShadow} style={styles.shadowTabImage} />
-              <Icon size={size} color={color} />
+            <View style={[styles.tabIcon, { backgroundColor: disable ? darkGrey : dark }]}>
+              {
+                !disable && <Image source={TabShadow} style={styles.shadowTabImage} />
+              }
+
+              <Icon size={17} color={color} />
             </View>
           );
         },
@@ -60,7 +69,10 @@ export function TabNavigator() {
         tabBarBackground: () => (
           <>
             <View style={styles.barBackground} />
-            {(route.name === SCREEN_NAMES.WALLET_SCREEN) && (
+            {(
+              route.name === SCREEN_NAMES.WALLET_SCREEN
+              || route.name === SCREEN_NAMES.SETTINGS_SCREEN
+            ) && (
               <LinearGradient
                 colors={['rgba(22,26,29,0)', dark]}
                 style={styles.barBackgroundGradient}
@@ -69,6 +81,28 @@ export function TabNavigator() {
             )}
           </>
         ),
+        tabBarButton: (props) => {
+          let disable;
+
+          switch (route.name) {
+            case SCREEN_NAMES.EXCHANGE_SCREEN:
+              disable = true;
+              break;
+            case SCREEN_NAMES.ANALYTICS_SCREEN:
+              disable = true;
+              break;
+            case SCREEN_NAMES.SETTINGS_SCREEN:
+              disable = false;
+              break;
+            case SCREEN_NAMES.WALLET_SCREEN:
+            default:
+              disable = false;
+              break;
+          }
+          const handler = !disable ? props.onPress : null
+
+          return <TouchableOpacity {...props} onPress={handler} style={[...props.style ]}  />;
+        }
       })}
       >
         <Tab.Screen
@@ -116,7 +150,6 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 50,
-    backgroundColor: dark,
     position: "relative",
     alignItems: "center",
     justifyContent: "center",

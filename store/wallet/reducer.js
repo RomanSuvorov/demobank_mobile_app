@@ -2,11 +2,8 @@ import { createReducer } from '../../sdk/helper';
 import Types from './types';
 
 const initialStore = {
-  generateLoading: false,
-  generateError: null,
-
-  importLoading: false,
-  importError: null,
+  loading: false,
+  error: null,
 
   address: null,
   privateKey: null,
@@ -15,43 +12,26 @@ const initialStore = {
 };
 
 const reducer = {
-  // generating
-  [Types.GENERATE_START]: draft => {
-    draft.generateLoading = true;
+  // generating or importing
+  [Types.WALLET_LOAD_START]: draft => {
+    draft.loading = true;
   },
 
-  [Types.GENERATE_SUCCESS]: (draft, payload) => {
+  [Types.WALLET_LOAD_SUCCESS]: (draft, payload) => {
     draft.address = payload.address;
     draft.privateKey = payload.privateKey;
   },
 
-  [Types.GENERATE_ERROR]: (draft, payload) => {
-    draft.generateError = payload;
+  [Types.WALLET_LOAD_ERROR]: (draft, payload) => {
+    draft.error = payload;
   },
 
-  [Types.GENERATE_FINISH]: draft => {
-    draft.generateLoading = false;
+  [Types.WALLET_LOAD_FINISH]: draft => {
+    draft.loading = false;
   },
 
-  // importing
-  [Types.IMPORT_START]: draft => {
-    draft.importLoading = true;
-  },
-
-  [Types.IMPORT_SUCCESS]: (draft, payload) => {
-
-  },
-
-  [Types.IMPORT_ERROR]: (draft, payload) => {
-    draft.importError = payload;
-  },
-
-  [Types.IMPORT_FINISH]: draft => {
-    draft.importLoading = false;
-  },
-
-  [Types.CHANGE_AUTHENTICATED]: draft => {
-    draft.isAuthenticated = !draft.isAuthenticated;
+  [Types.CHANGE_AUTHENTICATED]: (draft, payload) => {
+    draft.isAuthenticated = payload;
   }
 };
 

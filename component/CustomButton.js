@@ -12,7 +12,9 @@ export function CustomButton({
   disabled,
   isLarge,
   style,
+  textSize,
   onPress,
+  Icon,
 }) {
   return (
     <TouchableOpacity
@@ -20,25 +22,34 @@ export function CustomButton({
         styles.button,
         type === "transparent" ? styles.transparentBtn : styles.filledBtn,
         { minWidth: isLarge ? 160 : 110 },
-        disabled ? { backgroundColor: greySecondary } : {},
         style,
+        disabled ? { backgroundColor: greySecondary } : {},
       ]}
       disabled={disabled || loading}
       onPress={onPress}
     >
-      <CustomText
-        size={12}
-        type={"bold"}
-        color={type === "transparent" ? "greySecondary" : "textWhite"}
-        align={"center"}
-      >
-        {children}
-      </CustomText>
+      {!!Icon &&  (
+        <View style={[styles.icon, { paddingRight: !!children ? 12 : 0, }]}>
+          {Icon}
+        </View>
+      )}
+      {
+        children && (
+          <CustomText
+            size={textSize}
+            type={"bold"}
+            color={type === "transparent" ? "greySecondary" : "textWhite"}
+            align={"center"}
+          >
+            {children}
+          </CustomText>
+        )
+      }
       {
         loading && (
           <View style={[
             styles.loaderContainer,
-            { backgroundColor: type=== "transparent" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.5)" },
+            { backgroundColor: type === "transparent" ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.5)" },
           ]}>
             <ActivityIndicator color={active} size={"large"} />
           </View>
@@ -54,6 +65,7 @@ CustomButton.propTypes = {
   disabled: PropTypes.bool,
   isLarge: PropTypes.bool,
   style: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
+  textSize: PropTypes.number,
   onPress: PropTypes.func.isRequired,
 };
 
@@ -63,6 +75,7 @@ CustomButton.defaultProps = {
   disabled: false,
   isLarge: false,
   style: {},
+  textSize: 12,
   onPress: () => {},
 };
 
@@ -72,6 +85,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 10,
     alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 38,
+    flexDirection: "row",
+  },
+  icon: {
+
   },
   transparentBtn: {
     backgroundColor: "transparent",

@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { setString } from 'expo-clipboard';
 
 import { CustomText } from './CustomText';
-import { CircleBtn } from './CircleBtn';
+import { Circle } from './CircleBtn';
 import CardBackground from '../assets/cardFrontBg.png';
 import DemoBankCardLabel from '../assets/cardLabel.png';
 import BtcMock from '../assets/btc-mock.png';
@@ -142,11 +142,10 @@ export function Card({ scrollX, paginationIndex, goToSecondSlide = () => {} }) {
 
             <Image source={DemoBankCardLabel} style={styles.frontCardLabel}/>
             <View style={styles.frontCardNameWrapper}>
-              <CircleBtn
+              <Circle
                 style={{ marginRight: 12 }}
                 size={45}
                 contentSize={33}
-                label={null}
                 imageSource={BtcMock}
               />
               <View style={styles.divider} />

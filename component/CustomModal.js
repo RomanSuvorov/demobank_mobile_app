@@ -1,23 +1,39 @@
 import React, { useCallback } from 'react';
 import { View, Modal, Pressable, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { CustomText } from './CustomText';
 import { CustomButton } from './CustomButton';
 import { CloseIcon } from './Icons';
 import { deviceSize } from '../sdk/helper';
+import { dark } from '../styles/color.theme';
 import SuccessImage from '../assets/successImage.png';
+import Types from '../store/app/types';
 
 const { height } = deviceSize;
 
-export const CustomModal = ({ navigation, route }) => {
-  const { type, text, closeOnOverlay = false } = route.params;
+export const CustomModal = ({ navigation }) => {
+  const modalType = useSelector(state => state.app.modal.type);
+  const modalText = useSelector(state => state.app.modal.text);
+  const modalCloseOnOverlay = useSelector(state => state.app.modal.closeOnOverlay);
+  const modalOnClose = useSelector(state => state.app.modal.onClose);
+  const modalOnCloseText = useSelector(state => state.app.modal.onCloseText);
+  const modalIsFullScreen = useSelector(state => state.app.modal.isFullScreen);
+  const dispatch = useDispatch();
 
   const handlePressOverlay = () => {
-    navigation.popToTop();
+    if (!modalIsFullScreen) {
+      navigation.popToTop();
+      dispatch({ type: Types.CLOSE_MODAL });
+    }
+
+    if (modalOnClose && typeof modalOnClose === "function") {
+      modalOnClose();
+    }
   };
 
   const getColor = useCallback(() => {
-    switch (type) {
+    switch (modalType) {
       case "error":
         return "danger";
       case "success":
@@ -25,7 +41,9 @@ export const CustomModal = ({ navigation, route }) => {
       default:
         return "greySecondary";
     }
-  }, [type]);
+  }, [modalType]);
+
+  const HEIGHT_OF_MODAL_CONTAINER = modalIsFullScreen ? height : height * 0.5;
 
   return (
     <Modal
@@ -35,27 +53,47 @@ export const CustomModal = ({ navigation, route }) => {
     >
       <Pressable
         style={styles.modalOverlay}
-        onPress={closeOnOverlay ? handlePressOverlay : null}
+        onPress={modalCloseOnOverlay ? handlePressOverlay : null}
       />
-      <View style={styles.modalWrapper}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity
-            style={styles.modalClose}
-            onPress={handlePressOverlay}
-          >
-            <CloseIcon />
-          </TouchableOpacity>
-          <Image source={SuccessImage} style={styles.modalImage} />
-          <View style={styles.modalContent}>
+      <View style={[styles.modalWrapper, { margin: modalIsFullScreen ? 0 : 18, }]}>
+        <View style={[
+          styles.modalContainer,
+          {
+            height: HEIGHT_OF_MODAL_CONTAINER,
+            backgroundColor: modalIsFullScreen ? dark : "white",
+          }
+          ]}
+        >
+          {
+            !modalIsFullScreen && (
+              <TouchableOpacity
+                style={styles.modalClose}
+                onPress={handlePressOverlay}
+              >
+                <CloseIcon />
+              </TouchableOpacity>
+            )
+          }
+
+          <Image
+            source={SuccessImage}
+            style={[styles.modalImage, {
+              height: HEIGHT_OF_MODAL_CONTAINER * 0.75,
+              top: modalIsFullScreen ? 0 : (-HEIGHT_OF_MODAL_CONTAINER * 0.75) * 0.1,
+              position: modalIsFullScreen ? "relative" : "absolute",
+            }]}
+          />
+          <View style={[styles.modalContent, { justifyContent: modalIsFullScreen ? "flex-start" : "flex-end" }]}>
             <CustomText
               size={12}
               color={getColor()}
               style={styles.modalText}
+              align={'center'}
             >
-              {text}
+              {modalText}
             </CustomText>
             <CustomButton onPress={handlePressOverlay}>
-              OK
+              {modalOnCloseText}
             </CustomButton>
           </View>
         </View>
@@ -76,11 +114,8 @@ const styles = StyleSheet.create({
   modalWrapper: {
     flex: 1,
     justifyContent: "center",
-    margin: 18,
   },
   modalContainer: {
-    height: height * 0.5,
-    backgroundColor: "white",
     alignItems: "center",
     borderRadius: 10,
     paddingHorizontal: 12,
@@ -88,14 +123,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   modalImage: {
-    height: (height * 0.5) * 0.75,
     width: "100%",
-    top: (-(height * 0.5) * 0.75) * 0.1,
     resizeMode: "contain",
-    position: "absolute",
   },
   modalContent: {
-    justifyContent: "flex-end",
     flex: 1,
   },
   modalText: {

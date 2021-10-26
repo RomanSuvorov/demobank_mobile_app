@@ -84,6 +84,7 @@ export const WalletBalanceScreen = React.memo(({
         currentPosition={currentPosition}
         content={() => (
           <BottomSheetSectionList
+            showsVerticalScrollIndicator ={false}
             sections={MOCK_DATA}
             keyExtractor={(item) => item.id}
             renderSectionHeader={({ section: { title } }) => <TransactionHeader title={title} />}

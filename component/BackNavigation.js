@@ -13,7 +13,10 @@ export function BackNavigation({ title, navigation, ...props }) {
   const handleGoBack = () => navigation.goBack();
 
   return (
-    <TouchableOpacity style={[styles.container, { height: headerHeight - StatusBarHeight }]} onPress={handleGoBack}>
+    <TouchableOpacity
+      style={[styles.container, { height: headerHeight - StatusBarHeight }]}
+      onPress={handleGoBack}
+    >
       <BackArrow color={props.tintColor} />
       <CustomText
         size={16}

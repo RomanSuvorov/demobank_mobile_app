@@ -21,12 +21,12 @@ export function TransactionItem({ item, onPress, withShadow }) {
         />
       )}
 
-      {!!item.Svg && (
+      {!!item.svg && (
         <CircleBtn
           size={45}
           contentSize={24}
           label={null}
-          Icon={item.Svg}
+          Icon={item.svg}
           withShadow={withShadow}
         />
       )}
