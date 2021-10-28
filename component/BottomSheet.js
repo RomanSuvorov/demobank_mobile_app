@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import BS from '@gorhom/bottom-sheet';
 
@@ -30,9 +30,8 @@ export function BottomSheet({
   content = null,
   enableOverDrag = false,
   setScrollEnabled = () => {},
+  bottomSheetRef = null,
 }) {
-  const bottomSheetRef = useRef(null);
-
   return (
     <View style={styles.container}>
       <BS
@@ -44,6 +43,7 @@ export function BottomSheet({
         animatedPosition={currentPosition}
         enableOverDrag={enableOverDrag}
         onChange={(index) => setScrollEnabled(index !== 1)}
+        keyboardBehavior={"extend"}
       >
         {content}
       </BS>

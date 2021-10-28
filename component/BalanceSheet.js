@@ -19,7 +19,7 @@ const HORIZONTAL_PADDING_BALANCE = width * 0.093;
 
 export function BalanceSheet({ currentIndex }) {
   const [widthOfBalanceString, setWidthOfBalanceString] = useState(0);
-  const address = useSelector(state => state.wallet.address);
+  const address = useSelector(state => state.wallet.activeWallet.address);
 
   const actionsContainerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(

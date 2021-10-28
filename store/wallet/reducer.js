@@ -5,10 +5,12 @@ const initialStore = {
   loading: false,
   error: null,
 
-  address: null,
-  privateKey: null,
-
   isAuthenticated: false,
+  wallets: [],
+  activeWallet: {
+    address: null,
+    privateKey: null,
+  }
 };
 
 const reducer = {
@@ -17,9 +19,12 @@ const reducer = {
     draft.loading = true;
   },
 
-  [Types.WALLET_LOAD_SUCCESS]: (draft, payload) => {
-    draft.address = payload.address;
-    draft.privateKey = payload.privateKey;
+  [Types.WALLET_SET_ACTIVE]: (draft, payload) => {
+    draft.activeWallet = draft.wallets.find(wallet => wallet.address === payload);
+  },
+
+  [Types.WALLET_LIST_LOAD_SUCCESS]:(draft, payload) => {
+    draft.wallets = payload;
   },
 
   [Types.WALLET_LOAD_ERROR]: (draft, payload) => {

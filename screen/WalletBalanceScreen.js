@@ -63,6 +63,7 @@ export const WalletBalanceScreen = React.memo(({
   currentPosition,
   currentIndex,
   setScrollEnabled,
+  bottomSheetRef,
 }) => {
   const snapPoints = useMemo(() => [GLOB_VAR.INITIAL_SNAP_POINT, GLOB_VAR.SECOND_SNAP_POINT_BALANCE], []);
 
@@ -84,7 +85,7 @@ export const WalletBalanceScreen = React.memo(({
         currentPosition={currentPosition}
         content={() => (
           <BottomSheetSectionList
-            showsVerticalScrollIndicator ={false}
+            showsVerticalScrollIndicator={false}
             sections={MOCK_DATA}
             keyExtractor={(item) => item.id}
             renderSectionHeader={({ section: { title } }) => <TransactionHeader title={title} />}
@@ -94,6 +95,7 @@ export const WalletBalanceScreen = React.memo(({
         )}
         enableOverDrag={true}
         setScrollEnabled={setScrollEnabled}
+        bottomSheetRef={bottomSheetRef}
       />
     </View>
   );

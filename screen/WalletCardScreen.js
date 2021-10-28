@@ -1,11 +1,12 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
+import { useSelector } from 'react-redux';
 
 import { BottomSheet } from '../component/BottomSheet';
 import { CardSheet } from '../component/CardSheet';
 import { TransactionHeader } from '../component/Transaction/TransactionHeader';
 import { TransactionItem } from '../component/Transaction/TransactionItem';
+import { SettingsWalletItem } from './SettingsWalletItemScreen';
 import { BlockIcon, FingerPrintIcon, LockOpenIcon, SettingsIcon } from '../component/Icons';
 import { GLOB_VAR } from '../styles/global';
 import { deviceSize, StatusBarHeight } from '../sdk/helper';
@@ -25,38 +26,45 @@ const listData = [
 ];
 
 export const WalletCardScreen = React.memo(({
+  navigation,
   currentPosition,
   currentIndex,
   paginationIndex,
   setScrollEnabled,
   scrollX,
-  goToSecondSlide,
+  goToSlide,
+  bottomSheetRef,
 }) => {
+  const activeWallet = useSelector(state => state.wallet.activeWallet);
   const snapPoints = useMemo(() => [GLOB_VAR.INITIAL_SNAP_POINT, GLOB_VAR.SECOND_SNAP_POINT_CARD], []);
 
   return (
     <View style={styles.container}>
       <CardSheet
         currentIndex={currentIndex}
-        currentPosition={currentPosition}
         scrollX={scrollX}
         paginationIndex={paginationIndex}
-        goToSecondSlide={goToSecondSlide}
+        goToSlide={goToSlide}
       />
       <BottomSheet
         snapPoints={snapPoints}
         currentIndex={currentIndex}
         currentPosition={currentPosition}
         content={() => (
-          <BottomSheetSectionList
+          <SettingsWalletItem
+            navigation={navigation}
+            walletAddress={activeWallet.address}
+          />
+          /*<SectionList
             sections={listData}
             keyExtractor={(item) => item.title}
             renderSectionHeader={() => <TransactionHeader title={"Настройки"} />}
             renderItem={({ item }) => <TransactionItem item={item} withShadow={false} onPress={(item) => console.log(item.title)} />}
             contentContainerStyle={styles.bottomSheetContainer}
-          />
+          />*/
         )}
         setScrollEnabled={setScrollEnabled}
+        bottomSheetRef={bottomSheetRef}
       />
     </View>
   );

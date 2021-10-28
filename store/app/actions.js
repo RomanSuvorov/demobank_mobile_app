@@ -10,12 +10,21 @@ export const appStartAction = () => async (dispatch) => {
   dispatch({ type: Types.APP_START });
 
   try {
-    const stringifiedWallet = await getValueFromDeviceStorage(SECURE_STORE_NAMES.WALLET);
+    // get all wallets from secure store
+    const stringifiedWallets = await getValueFromDeviceStorage(SECURE_STORE_NAMES.WALLETS);
+    if (!stringifiedWallets) {
+      dispatch({ type: WalletTypes.CHANGE_AUTHENTICATED, payload: false });
+      return;
+    }
 
-    if (!stringifiedWallet) return;
-
-    const wallet = JSON.parse(stringifiedWallet);
-    dispatch({ type: WalletTypes.WALLET_LOAD_SUCCESS, payload: wallet });
+    const wallets = JSON.parse(stringifiedWallets);
+    // stored wallets from secure store to redux store
+    dispatch({ type: WalletTypes.WALLET_LIST_LOAD_SUCCESS, payload: wallets });
+    // get active wallet address
+    const activeWallet = JSON.parse(await AsyncStorage.getItem(SECURE_STORE_NAMES.ACTIVE_WALLET_ADDRESS));
+    // set active wallet for redux store
+    dispatch({ type: WalletTypes.WALLET_SET_ACTIVE, payload: activeWallet || wallets[0].address });
+    // push user to signed in app with active wallet
     dispatch({ type: WalletTypes.CHANGE_AUTHENTICATED, payload: true });
   } catch (e) {
     console.error(e);

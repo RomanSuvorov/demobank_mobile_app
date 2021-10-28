@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import {
   useSharedValue,
@@ -23,10 +23,12 @@ const screens = [
   WalletCardScreen,
 ];
 
-export function WalletScreen({ navigation }) {
+export function WalletTabScreen({ navigation }) {
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const activeSlide = useSelector(state => state.app.activeSlide);
   const scrollRef = useRef(null);
+  const bSheetBalanceRef = useRef(null);
+  const bSheetCardRef = useRef(null);
   const dispatch = useDispatch();
   const scrollX = useSharedValue(0);
   const currentBalancePosition = useSharedValue(0);
@@ -37,6 +39,17 @@ export function WalletScreen({ navigation }) {
   const paginationIndex = useDerivedValue(() =>
     activeSlide === 0 ? currentBalanceIndex.value : currentCardIndex.value
   );
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      goToSlide(0);
+      setScrollEnabled(true);
+      bSheetBalanceRef.current.snapToIndex(0);
+      bSheetCardRef.current.snapToIndex(0);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const paginationAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -50,11 +63,12 @@ export function WalletScreen({ navigation }) {
 
   const handleScroll = ({ nativeEvent }) => scrollX.value = nativeEvent.contentOffset.x;
 
-  const goToSecondSlide = () => {
-    if (scrollRef && scrollRef.current) {
-      scrollRef.current.scrollToEnd({ animated: true });
-      dispatch({ type: AppType.CHANGE_ACTIVE_SLIDE, payload: 1 });
-    }
+  const goToSlide = (number) => {
+    (number === 0)
+      ? scrollRef.current.scrollTo({ x: 0, y: 0, animated: false })
+      : scrollRef.current.scrollToEnd({ animated: true});
+
+    dispatch({ type: AppType.CHANGE_ACTIVE_SLIDE, payload: number });
   };
 
   const handleChangeSlide = ({ nativeEvent }) => {
@@ -81,6 +95,7 @@ export function WalletScreen({ navigation }) {
           currentPosition={currentBalancePosition}
           currentIndex={currentBalanceIndex}
           setScrollEnabled={setScrollEnabled}
+          bottomSheetRef={bSheetBalanceRef}
         />
         <WalletCardScreen
           navigation={navigation}
@@ -89,7 +104,8 @@ export function WalletScreen({ navigation }) {
           paginationIndex={paginationIndex}
           setScrollEnabled={setScrollEnabled}
           scrollX={scrollX}
-          goToSecondSlide={goToSecondSlide}
+          goToSlide={goToSlide}
+          bottomSheetRef={bSheetCardRef}
         />
       </ScrollView>
       <Pagination

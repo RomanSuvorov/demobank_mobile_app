@@ -7,14 +7,14 @@ import { CustomText } from './CustomText';
 import { BackArrow } from './Icons';
 import { StatusBarHeight } from '../sdk/helper';
 
-export function BackNavigation({ title, navigation, ...props }) {
+export function BackNavigation({ title, navigation, style, ...props }) {
   const headerHeight = useHeaderHeight();
 
   const handleGoBack = () => navigation.goBack();
 
   return (
     <TouchableOpacity
-      style={[styles.container, { height: headerHeight - StatusBarHeight }]}
+      style={[styles.container, { height: headerHeight - StatusBarHeight }, style]}
       onPress={handleGoBack}
     >
       <BackArrow color={props.tintColor} />

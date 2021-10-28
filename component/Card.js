@@ -38,11 +38,11 @@ const { width } = deviceSize;
 const CARD_FLIP_DURATION = 800;
 const CARD_SHORT_FLIP_DURATION = 500;
 
-export function Card({ scrollX, paginationIndex, goToSecondSlide = () => {} }) {
+export function Card({ scrollX, paginationIndex, goToSlide = () => {} }) {
   const progress = useSharedValue(0);
   const cardAnimatedValue = useSharedValue(0);
   const activeSlide = useSelector(state => state.app.activeSlide);
-  const address = useSelector(state => state.wallet.address);
+  const address = useSelector(state => state.wallet.activeWallet.address);
   const [isFront, setIsFront] = useState(true)
 
   const frontCardAnimatedStyle = useAnimatedStyle(() => ({
@@ -93,7 +93,7 @@ export function Card({ scrollX, paginationIndex, goToSecondSlide = () => {} }) {
     if (progress.value !== 0) return;
 
     if (activeSlide === 0) {
-      goToSecondSlide();
+      goToSlide(1);
       return;
     }
 

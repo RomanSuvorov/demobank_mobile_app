@@ -19,10 +19,9 @@ import { getStyle, StatusBarHeight } from '../sdk/helper';
 
 export function CardSheet({
   currentIndex,
-  currentPosition,
   scrollX,
   paginationIndex,
-  goToSecondSlide,
+  goToSlide,
 }) {
   const progressBarWrapperAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -46,7 +45,7 @@ export function CardSheet({
       <Card
         scrollX={scrollX}
         paginationIndex={paginationIndex}
-        goToSecondSlide={goToSecondSlide}
+        goToSlide={goToSlide}
       />
 
       <Animated.View style={progressBarWrapperStyle}>

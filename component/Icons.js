@@ -401,3 +401,22 @@ export function ThreeVerticalDots(props) {
     </Svg>
   );
 }
+
+export function ArrowRightIcon(props) {
+  return (
+    <Svg
+      width={7}
+      height={7}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M1 1l4 2.5L1 6"
+        stroke="#fff"
+        strokeWidth={2}
+        strokeLinecap="round"
+      />
+    </Svg>
+  );
+}

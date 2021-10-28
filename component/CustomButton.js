@@ -15,6 +15,7 @@ export function CustomButton({
   textSize,
   onPress,
   Icon,
+  iconPosition,
 }) {
   return (
     <TouchableOpacity
@@ -28,7 +29,7 @@ export function CustomButton({
       disabled={disabled || loading}
       onPress={onPress}
     >
-      {!!Icon &&  (
+      {!!Icon && (iconPosition === "left") &&  (
         <View style={[styles.icon, { paddingRight: !!children ? 12 : 0, }]}>
           {Icon}
         </View>
@@ -45,6 +46,11 @@ export function CustomButton({
           </CustomText>
         )
       }
+      {!!Icon && (iconPosition === "right") &&  (
+        <View style={[styles.icon, { paddingLeft: !!children ? 12 : 0, }]}>
+          {Icon}
+        </View>
+      )}
       {
         loading && (
           <View style={[
@@ -66,6 +72,7 @@ CustomButton.propTypes = {
   isLarge: PropTypes.bool,
   style: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
   textSize: PropTypes.number,
+  iconPosition: PropTypes.oneOf(["left", "right"]),
   onPress: PropTypes.func.isRequired,
 };
 
@@ -76,6 +83,7 @@ CustomButton.defaultProps = {
   isLarge: false,
   style: {},
   textSize: 12,
+  iconPosition: "left",
   onPress: () => {},
 };
 

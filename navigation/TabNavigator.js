@@ -3,10 +3,10 @@ import { Image, ImageBackground, View, StyleSheet, TouchableOpacity } from 'reac
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { WalletScreen } from '../screen/WalletScreen';
-import { ExchangeScreen } from '../screen/ExchangeScreen';
-import { AnalyticsScreen } from '../screen/AnalyticsScreen';
-import { SettingsScreen } from '../screen/SettingsScreen';
+import { WalletTabScreen } from '../screen/WalletTabScreen';
+import { ExchangeTabScreen } from '../screen/ExchangeTabScreen';
+import { AnalyticsTabScreen } from '../screen/AnalyticsTabScreen';
+import { SettingsTabScreen } from '../screen/SettingsTabScreen';
 import { AnalyticsIcon, ExchangeIcon, SettingsIcon, WalletIcon } from '../component/Icons';
 import TabNavigatorBgImage from '../assets/backgroundImage.png';
 import TabShadow from '../assets/tabShadow.png';
@@ -76,7 +76,7 @@ export function TabNavigator() {
               <LinearGradient
                 colors={['rgba(22,26,29,0)', dark]}
                 style={styles.barBackgroundGradient}
-                locations={[0, 0.64]}
+                locations={[0, 0.65]}
               />
             )}
           </>
@@ -107,28 +107,28 @@ export function TabNavigator() {
       >
         <Tab.Screen
           name={SCREEN_NAMES.WALLET_SCREEN}
-          component={WalletScreen}
+          component={WalletTabScreen}
           options={{
             tabBarLabel: "Wallet"
           }}
         />
         <Tab.Screen
           name={SCREEN_NAMES.EXCHANGE_SCREEN}
-          component={ExchangeScreen}
+          component={ExchangeTabScreen}
           options={{
             tabBarLabel: "Exchange"
           }}
         />
         <Tab.Screen
           name={SCREEN_NAMES.ANALYTICS_SCREEN}
-          component={AnalyticsScreen}
+          component={AnalyticsTabScreen}
           options={{
             tabBarLabel: "Analytics"
           }}
         />
         <Tab.Screen
           name={SCREEN_NAMES.SETTINGS_SCREEN}
-          component={SettingsScreen}
+          component={SettingsTabScreen}
           options={{
             tabBarLabel: "Settings"
           }}

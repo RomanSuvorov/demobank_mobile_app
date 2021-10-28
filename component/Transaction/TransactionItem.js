@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { CustomText } from '../CustomText';
-import { CircleBtn } from '../CircleBtn';
+import { Circle } from '../CircleBtn';
 import { greyPrimary } from '../../styles/color.theme';
 
 export function TransactionItem({ item, onPress, withShadow }) {
@@ -12,7 +12,7 @@ export function TransactionItem({ item, onPress, withShadow }) {
       onPress={() => onPress(item)}
     >
       {!!item.logo && (
-        <CircleBtn
+        <Circle
           size={45}
           contentSize={33}
           label={null}
@@ -22,7 +22,7 @@ export function TransactionItem({ item, onPress, withShadow }) {
       )}
 
       {!!item.svg && (
-        <CircleBtn
+        <Circle
           size={45}
           contentSize={24}
           label={null}

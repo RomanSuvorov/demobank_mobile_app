@@ -14,11 +14,18 @@ const HEIGHT_OF_CONTAINER = VERTICAL_PADDING * 2 + CIRCLE_SIZE;
 const EDIT_BUTTON_WIDTH = 48;
 
 export function WalletItem({ item, chosenItem, onItemPress, onActionPress }) {
+  const handleItemPress = () => {
+    onItemPress(item);
+  };
+
+  const handleActionPress = () => {
+    onActionPress(item);
+  };
 
   return (
     <Pressable
       style={styles.container}
-      onPress={onItemPress}
+      onPress={handleItemPress}
     >
       <Circle
         Icon={WalletIcon}
@@ -35,7 +42,7 @@ export function WalletItem({ item, chosenItem, onItemPress, onActionPress }) {
           style={{ letterSpacing: 1.115 }}
           numberOfLines={1}
         >
-          Основной кошелек
+          {item.name}
         </CustomText>
         <CustomText
           size={12}
@@ -47,7 +54,7 @@ export function WalletItem({ item, chosenItem, onItemPress, onActionPress }) {
       </View>
       <TouchableOpacity
         style={styles.editAction}
-        onPress={onActionPress}
+        onPress={handleActionPress}
       >
         <ThreeVerticalDots />
       </TouchableOpacity>
