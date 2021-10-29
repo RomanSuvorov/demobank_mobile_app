@@ -8,52 +8,52 @@ import { TransactionHeader } from '../component/Transaction/TransactionHeader';
 import { TransactionItem } from '../component/Transaction/TransactionItem';
 import { GLOB_VAR } from '../styles/global';
 import { deviceSize, StatusBarHeight } from '../sdk/helper';
-import { SCREEN_NAMES } from '../styles/constants';
+import { SCREEN_NAMES, DEFAULT_RESOURCES } from '../styles/constants';
 
 const { width, height } = deviceSize;
 
 const MOCK_DATA = [
   {
     title: "Сегодня",
-    data: [{ title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 1, logo: require("../assets/btc-mock.png"), url: "https://google.com" }],
+    data: [{ title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 1, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" }],
   },
   {
     title: "Вчера",
     data: [
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "34.865", curr: "BTC", id: 2, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
-      { title: "Ethereum", subTitle: "DeMo Bank", sum: "2.343", curr: "ETH", id: 3, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
+      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "34.865", curr: "BTC", id: 2, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
+      { title: "Ethereum", subTitle: "DeMo Bank", sum: "2.343", curr: "ETH", id: 3, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
     ],
   },
   {
     title: "20 мая",
     data: [
-      { title: "SomeCoin", subTitle: "DeMo Bank", sum: "4.865", curr: "SMC", id: 4, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-64.865", curr: "BTC", id: 5, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
+      { title: "SomeCoin", subTitle: "DeMo Bank", sum: "4.865", curr: "SMC", id: 4, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
+      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-64.865", curr: "BTC", id: 5, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
     ],
   },
   {
     title: "20 мая 2020",
     data: [
-      { title: "Another", subTitle: "Very loooooooooooooooooooooong text of transaction", sum: "-34.865", curr: "ACO", id: 6, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 7, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
+      { title: "Another", subTitle: "Very loooooooooooooooooooooong text of transaction", sum: "-34.865", curr: "ACO", id: 6, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
+      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 7, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
     ],
   },
   {
     title: "10 мая 2020",
     data: [
-      { title: "Another", subTitle: "Very loooooooooooooooooooooong text of transaction", sum: "-34.865", curr: "ACO", id: 8, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 9, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
+      { title: "Another", subTitle: "Very loooooooooooooooooooooong text of transaction", sum: "-34.865", curr: "ACO", id: 8, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
+      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 9, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
     ],
   },
   {
     title: "1 мая 2020",
     data: [
-      { title: "Another", subTitle: "Very loooooooooooooooooooooong text of transaction", sum: "-34.865", curr: "ACO", id: 10, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 11, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 12, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 13, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 14, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 15, logo: require("../assets/btc-mock.png"), url: "https://google.com" },
+      { title: "Another", subTitle: "Very loooooooooooooooooooooong text of transaction", sum: "-34.865", curr: "ACO", id: 10, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
+      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 11, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
+      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 12, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
+      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 13, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
+      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 14, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
+      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 15, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
     ],
   },
 ];

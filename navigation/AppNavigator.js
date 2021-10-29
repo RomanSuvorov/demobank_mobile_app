@@ -4,7 +4,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { TabNavigator } from './TabNavigator';
 import { DetailsScreen } from '../screen/DetailsScreen';
-import { dark, textWhite } from '../styles/color.theme';
+import { GlobalSettingsScreen } from '../screen/GlobalSettingsScreen';
+import { ServerSettingsScreen } from '../screen/ServerSettingsScreen';
+import { SecuritySettingsScreen } from '../screen/SecuritySettingsScreen';
+import { BackNavigation } from '../component/BackNavigation';
+import { dark, lightDark, textWhite, active } from '../styles/color.theme';
 import { SCREEN_NAMES } from '../styles/constants';
 
 const AppStack = createNativeStackNavigator();
@@ -23,6 +27,81 @@ export function AppNavigator() {
           headerStyle: styles.headerStyle,
           headerTintColor: textWhite,
         }}
+      />
+      <AppStack.Screen
+        name={SCREEN_NAMES.GLOBAL_SETTINGS_SCREEN}
+        component={GlobalSettingsScreen}
+        options={({ navigation }) => ({
+          headerShown: true,
+          animation: "fade",
+          title: "Настройки приложения",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontFamily: "Play-Bold",
+            fontSize: 16,
+            fontWeight: "normal",
+          },
+          headerTintColor: active,
+          headerLeft: (props) => (
+            <BackNavigation
+              title={"Назад"}
+              navigation={navigation}
+              {...props}
+            />
+          ),
+          headerStyle: { backgroundColor: lightDark },
+          headerShadowVisible: false,
+        })}
+      />
+      <AppStack.Screen
+        name={SCREEN_NAMES.SERVER_SETTINGS_SCREEN}
+        component={ServerSettingsScreen}
+        options={({ navigation }) => ({
+          headerShown: true,
+          animation: "fade",
+          title: "Настройки сервера",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontFamily: "Play-Bold",
+            fontSize: 16,
+            fontWeight: "normal",
+          },
+          headerTintColor: active,
+          headerLeft: (props) => (
+            <BackNavigation
+              title={"Назад"}
+              navigation={navigation}
+              {...props}
+            />
+          ),
+          headerStyle: { backgroundColor: lightDark },
+          headerShadowVisible: false,
+        })}
+      />
+      <AppStack.Screen
+        name={SCREEN_NAMES.SECURITY_SETTINGS_SCREEN}
+        component={SecuritySettingsScreen}
+        options={({ navigation }) => ({
+          headerShown: true,
+          animation: "fade",
+          title: "Настройки безопасности",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontFamily: "Play-Bold",
+            fontSize: 16,
+            fontWeight: "normal",
+          },
+          headerTintColor: active,
+          headerLeft: (props) => (
+            <BackNavigation
+              title={"Назад"}
+              navigation={navigation}
+              {...props}
+            />
+          ),
+          headerStyle: { backgroundColor: lightDark },
+          headerShadowVisible: false,
+        })}
       />
     </AppStack.Navigator>
   )

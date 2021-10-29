@@ -5,12 +5,11 @@ import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useHeaderHeight } from '@react-navigation/elements';
 
 import { CustomText } from '../component/CustomText';
-import { CustomButton } from '../component/CustomButton';
+import { GoToButton } from '../component/GoToButton';
 import { CustomInput } from '../component/CustomInput';
-import { ArrowRightIcon } from '../component/Icons';
 import { changeWalletName } from '../store/wallet/actions';
 import { deviceSize, StatusBarHeight } from '../sdk/helper';
-import { greySecondary, lightDark } from '../styles/color.theme';
+import { greySecondary } from '../styles/color.theme';
 
 const { height } = deviceSize;
 
@@ -41,15 +40,12 @@ export function SettingsWalletItem({ walletAddress, navigation }) {
       >
         Варианты для резервного копирования
       </CustomText>
-      <CustomButton
+      <GoToButton
         disabled={true}
-        textSize={14}
-        Icon={<ArrowRightIcon />}
-        iconPosition={'right'}
-        style={[styles.button, { marginBottom: 12 }]}
+        style={[{ marginBottom: 12 }]}
       >
         Показать секретную фразу
-      </CustomButton>
+      </GoToButton>
       <CustomText
         color={'greySecondary'}
         size={12}
@@ -64,15 +60,9 @@ export function SettingsWalletItem({ walletAddress, navigation }) {
       >
         Открытые ключи аккаунта
       </CustomText>
-      <CustomButton
-        disabled={true}
-        textSize={14}
-        Icon={<ArrowRightIcon />}
-        iconPosition={'right'}
-        style={[styles.button]}
-      >
+      <GoToButton disabled={true}>
         Экспортировать открытые ключи
-      </CustomButton>
+      </GoToButton>
     </BottomSheetScrollView>
   );
 }
@@ -93,10 +83,4 @@ const styles = StyleSheet.create({
   nameInput: {
     marginBottom: 36,
   },
-  button: {
-    backgroundColor: lightDark,
-    height: 48,
-    width: "100%",
-    justifyContent: "space-between",
-  }
 });

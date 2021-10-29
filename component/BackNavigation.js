@@ -42,6 +42,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 6,
+    paddingRight: 6,
   },
 });

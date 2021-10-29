@@ -3,12 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 
-import { CustomButton } from '../component/CustomButton';
+import { GoToButton } from '../component/GoToButton';
 import { CustomText } from '../component/CustomText';
 import { WalletItem } from '../component/WalletItem';
 import { SettingsIcon, AddIcon } from '../component/Icons';
 import { changeActiveWallet } from '../store/wallet/actions';
-import { lightDark, textWhite, greyPrimary } from '../styles/color.theme';
+import { textWhite, greyPrimary } from '../styles/color.theme';
 import { deviceSize } from '../sdk/helper';
 import { SCREEN_NAMES } from '../styles/constants';
 import AppTypes from '../store/app/types';
@@ -34,13 +34,13 @@ export function SettingsWalletListScreen({ navigation }) {
       <BottomSheetFlatList
         ListHeaderComponent={
           <>
-            <CustomButton
+            <GoToButton
+              to={SCREEN_NAMES.GLOBAL_SETTINGS_SCREEN}
               style={styles.settingsButton}
-              textSize={16}
               Icon={<SettingsIcon color={textWhite} />}
             >
               Настройки приложения
-            </CustomButton>
+            </GoToButton>
 
             <View style={styles.multiWalletListHeader}>
               <CustomText
@@ -51,14 +51,13 @@ export function SettingsWalletListScreen({ navigation }) {
               </CustomText>
             </View>
 
-            <CustomButton
+            <GoToButton
               style={styles.settingsButton}
-              textSize={16}
               Icon={<AddIcon />}
               disabled={true} /* TODO: Add opportunity */
             >
               Новый кошелек
-            </CustomButton>
+            </GoToButton>
           </>
         }
         data={wallets}
@@ -85,9 +84,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
   },
   settingsButton: {
-    backgroundColor: lightDark,
-    height: 48,
-    width: "100%",
     marginBottom: 18,
   },
   multiWalletListHeader: {

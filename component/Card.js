@@ -13,7 +13,6 @@ import { CustomText } from './CustomText';
 import { Circle } from './CircleBtn';
 import CardBackground from '../assets/cardFrontBg.png';
 import DemoBankCardLabel from '../assets/cardLabel.png';
-import BtcMock from '../assets/btc-mock.png';
 import FrameForQR from '../assets/frameForQR.png';
 import FrameForAddress from '../assets/frameForAddress.png';
 import MockQR from '../assets/mockQR.png';
@@ -33,6 +32,7 @@ import {
   HEIGHT_OF_CARD_CONTENT,
 } from '../styles/global';
 import { dark, greyPrimary, textWhite01 } from '../styles/color.theme';
+import { DEFAULT_RESOURCES } from '../styles/constants';
 
 const { width } = deviceSize;
 const CARD_FLIP_DURATION = 800;
@@ -146,7 +146,7 @@ export function Card({ scrollX, paginationIndex, goToSlide = () => {} }) {
                 style={{ marginRight: 12 }}
                 size={45}
                 contentSize={33}
-                imageSource={BtcMock}
+                svgUri={DEFAULT_RESOURCES.graphCoinSvgUri}
               />
               <View style={styles.divider} />
               <CustomText

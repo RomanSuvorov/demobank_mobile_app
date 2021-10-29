@@ -21,6 +21,16 @@ export function TransactionItem({ item, onPress, withShadow }) {
         />
       )}
 
+      {!!item.svgUri && (
+        <Circle
+          size={45}
+          contentSize={33}
+          label={null}
+          svgUri={item.svgUri}
+          withShadow={withShadow}
+        />
+      )}
+
       {!!item.svg && (
         <Circle
           size={45}

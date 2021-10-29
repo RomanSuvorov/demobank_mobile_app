@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { SvgUri } from 'react-native-svg';
 
 import { active, textWhite } from '../styles/color.theme';
 import { CustomText } from './CustomText';
@@ -21,6 +22,7 @@ export function Circle({
   Icon,
   contentSize,
   imageSource,
+  svgUri,
   style,
   iconColor,
   badge,
@@ -45,6 +47,7 @@ export function Circle({
       )}
       {!!Icon && <Icon color={iconColor} size={contentSize} />}
       {!!imageSource && <Image style={{ resizeMode: "contain", width: contentSize, height: contentSize }} source={imageSource} />}
+      {!!svgUri && <SvgUri uri={svgUri} width={contentSize} height={contentSize} />}
       {
         !!badge && (
           <View style={[styles.badge, { zIndex: 3, top: 0, right: 0 }]}>
@@ -59,6 +62,7 @@ export function Circle({
 Circle.propTypes = {
   Icon: PropTypes.func,
   imageSource: PropTypes.any,
+  svgUri: PropTypes.string,
   size: PropTypes.number,
   contentSize: PropTypes.number,
   withShadow: PropTypes.bool,
@@ -70,6 +74,7 @@ Circle.propTypes = {
 Circle.defaultProps = {
   Icon: null,
   imageSource: null,
+  svgUri: null,
   size: DEFAULT_SIZE,
   contentSize: DEFAULT_CONTENT_SIZE,
   withShadow: true,
@@ -123,6 +128,7 @@ CircleBtn.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   Icon: PropTypes.func,
   imageSource: PropTypes.any,
+  svgUri: PropTypes.string,
   style: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
   circleStyle: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
   size: PropTypes.number,
@@ -136,6 +142,7 @@ CircleBtn.defaultProps = {
   label: null,
   Icon: null,
   imageSource: null,
+  svgUri: null,
   style: {},
   circleStyle: {},
   size: DEFAULT_SIZE,
