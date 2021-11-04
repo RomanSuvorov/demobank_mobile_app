@@ -20,6 +20,13 @@ const initialStore = {
     name: "Имя",
     surname: "Фамилия",
   },
+
+  checkNetworkLoading: false,
+  checkNetworkError: undefined,
+  configUrl: undefined,
+  gnn: 0,
+  status: "inactive",
+  network: undefined,
 };
 
 const reducer = {
@@ -55,6 +62,31 @@ const reducer = {
   [Types.CHANGE_PROFILE]: (draft, payload) => {
     draft.profile.name = payload.name;
     draft.profile.surname = payload.surname;
+  },
+
+  [Types.CHECK_NETWORK_START]: draft => {
+    draft.checkNetworkLoading = true;
+  },
+
+  [Types.CHECK_NETWORK_SUCCESS]: (draft, payload) => {
+    draft.configUrl = payload.configUrl || initialStore.configUrl;
+    draft.gnn = payload.gnn || initialStore.gnn;
+    draft.status = payload.status || initialStore.status;
+    draft.network = payload.network || initialStore.network;
+    draft.checkNetworkError = null;
+  },
+
+  [Types.CHANGE_NETWORK_CONFIG]: (draft, payload) => {
+    draft.configUrl = payload.configUrl || initialStore.configUrl;
+    draft.network = payload.network || initialStore.network;
+  },
+
+  [Types.CHECK_NETWORK_ERROR]: (draft, payload) => {
+    draft.checkNetworkError = payload;
+  },
+
+  [Types.CHECK_NETWORK_FINISH]: draft => {
+    draft.checkNetworkLoading = false;
   },
 };
 

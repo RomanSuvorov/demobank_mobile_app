@@ -8,7 +8,7 @@ import { AppLoadingScreen } from '../screen/AppLoadingScreen';
 import { CustomModal } from '../component/CustomModal';
 import { AppNavigator } from './AppNavigator';
 import { AuthorizationNavigator } from './AuthorizationNavigator';
-import { appStartAction } from '../store/app/actions';
+import { appStartAction, checkGraphNetwork } from '../store/app/actions';
 import { greyPrimary } from '../styles/color.theme';
 import { navigationRef } from '../sdk/helper';
 import { SCREEN_NAMES } from '../styles/constants';
@@ -25,11 +25,13 @@ const DemobankTheme = {
 const Stack = createNativeStackNavigator();
 export function RootNavigator() {
   const appLoading = useSelector(state => state.app.loading);
+  const checkNetworkLoading = useSelector(state => state.app.checkNetworkLoading);
   const isAuthenticated = useSelector(state => state.wallet.isAuthenticated);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(appStartAction());
+  useEffect(async () => {
+    await dispatch(appStartAction());
+    await dispatch(checkGraphNetwork());
   }, []);
 
   return (
@@ -42,14 +44,14 @@ export function RootNavigator() {
         translucent={true}
       />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {/* wait for wallets loading and checking server */}
         {
-          appLoading ? (
+          (appLoading || checkNetworkLoading) ? (
             <Stack.Group>
               <Stack.Screen
                 name={SCREEN_NAMES.APP_LOADING_SCREEN}
                 component={AppLoadingScreen}
               />
-
             </Stack.Group>
           ) : (
             <Stack.Group>

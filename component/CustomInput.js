@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 46,
-    flex: 1,
+    width: "100%",
     borderBottomWidth: 1,
     color: textWhite,
     paddingHorizontal: 12,

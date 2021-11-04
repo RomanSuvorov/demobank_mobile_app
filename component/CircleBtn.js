@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 
-import { active, textWhite } from '../styles/color.theme';
+import { active, greySecondary, textWhite } from '../styles/color.theme';
 import { CustomText } from './CustomText';
 import Shadow from '../assets/grayShadow.png';
 
@@ -20,6 +20,7 @@ export function Circle({
   withShadow,
   size,
   Icon,
+  disabled,
   contentSize,
   imageSource,
   svgUri,
@@ -28,7 +29,11 @@ export function Circle({
   badge,
 }) {
   return (
-    <View style={[styles.circle, { width: size, height: size, borderRadius: size / 2 }, style]}>
+    <View style={[
+      styles.circle,
+      { width: size, height: size, borderRadius: size / 2 },
+      style,
+    ]}>
       {withShadow && (
         <Image
           style={[
@@ -45,7 +50,7 @@ export function Circle({
           source={Shadow}
         />
       )}
-      {!!Icon && <Icon color={iconColor} size={contentSize} />}
+      {!!Icon && <Icon color={disabled ? greySecondary : iconColor} size={contentSize} />}
       {!!imageSource && <Image style={{ resizeMode: "contain", width: contentSize, height: contentSize }} source={imageSource} />}
       {!!svgUri && <SvgUri uri={svgUri} width={contentSize} height={contentSize} />}
       {
@@ -66,6 +71,7 @@ Circle.propTypes = {
   size: PropTypes.number,
   contentSize: PropTypes.number,
   withShadow: PropTypes.bool,
+  disabled: PropTypes.bool,
   style: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
   iconColor: PropTypes.string,
   Badge: PropTypes.any,
@@ -78,6 +84,7 @@ Circle.defaultProps = {
   size: DEFAULT_SIZE,
   contentSize: DEFAULT_CONTENT_SIZE,
   withShadow: true,
+  disabled: false,
   style: {},
   iconColor: textWhite,
   Badge: null,
@@ -86,6 +93,7 @@ Circle.defaultProps = {
 export function CircleBtn({
   label,
   Icon,
+  disabled,
   imageSource,
   style,
   circleStyle,
@@ -98,6 +106,7 @@ export function CircleBtn({
   return (
     <TouchableOpacity
       style={[styles.container, style]}
+      disabled={disabled}
       onPress={onPress}
     >
       <Circle
@@ -106,13 +115,14 @@ export function CircleBtn({
         Icon={Icon}
         contentSize={contentSize}
         imageSource={imageSource}
-        style={circleStyle}
+        style={[circleStyle]}
         badge={badge}
+        disabled={disabled}
       />
       {label && (
         <CustomText
           size={12}
-          color={"greyPrimary"}
+          color={disabled ? 'greySecondary' : 'greyPrimary'}
           align={"center"}
           style={[styles.label]}
           numberOfLines={2}
@@ -127,6 +137,7 @@ export function CircleBtn({
 CircleBtn.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   Icon: PropTypes.func,
+  disabled: PropTypes.bool,
   imageSource: PropTypes.any,
   svgUri: PropTypes.string,
   style: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
@@ -141,6 +152,7 @@ CircleBtn.propTypes = {
 CircleBtn.defaultProps = {
   label: null,
   Icon: null,
+  disabled: false,
   imageSource: null,
   svgUri: null,
   style: {},
