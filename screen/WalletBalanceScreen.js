@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
 import { BottomSheetSectionList } from '@gorhom/bottom-sheet';
 import {
@@ -64,6 +65,29 @@ const MOCK_DATA = [
   // },
 ];
 
+const MOCK = [
+  {
+    timestamp: 1636120338000,
+    amount: 200,
+  },
+  {
+    timestamp: 1636130338000,
+    amount: 200,
+  },
+  {
+    timestamp: 1636502340000, // 2021-11-09 23 59 00
+    amount: 200,
+  },
+  {
+    timestamp: 1636502400000, // 2021-11-10 00 00 00
+    amount: 200,
+  },
+  {
+    timestamp: 1636416000000, // 2021-11-09 00 00 00
+    amount: 200,
+  },
+]
+
 export const WalletBalanceScreen = React.memo(({
   navigation,
   currentPosition,
@@ -71,7 +95,45 @@ export const WalletBalanceScreen = React.memo(({
   setScrollEnabled,
   bottomSheetRef,
 }) => {
+  const transactions = useSelector(state => state.wallet.transactions);
+  const [formattedTransactions, setFormattedTransactions] = useState([]);
   const snapPoints = useMemo(() => [GLOB_VAR.INITIAL_SNAP_POINT, GLOB_VAR.SECOND_SNAP_POINT_BALANCE], []);
+
+
+
+  const getTitleByDayAmount = (dayAmount) => {
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+
+    const date = new Date(1000 * 60 * 60 * 24 * dayAmount);
+    console.log(date.toLocaleDateString());
+  };
+
+  const handleFormatList = (list) => {
+    const groupedDataObj = MOCK.reduce((result, current) => {
+      let date = new Date(current.timestamp);
+      date = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
+      result[date] = result[date] || [];
+      result[date].push(current);
+      return result;
+    }, {});
+
+    let result = [];
+    for (const value in groupedDataObj) {
+      result.push({ title: getTitleByDayAmount(value), data: groupedDataObj[value] });
+    }
+
+    console.log('result', result);
+  };
+
+
+
+  useEffect(() => {
+    const formattedList = handleFormatList(transactions);
+    // console.log(formattedList);
+    // setFormattedTransactions(formattedList);
+  }, []);
 
   const handleGetDetails = ({ id, url }) => {
     navigation.navigate(SCREEN_NAMES.DETAILS_SCREEN, { url: url, id: id });
@@ -111,10 +173,18 @@ export const WalletBalanceScreen = React.memo(({
         content={() => (
           <BottomSheetSectionList
             showsVerticalScrollIndicator={false}
-            sections={MOCK_DATA}
-            keyExtractor={(item) => item.id}
-            renderSectionHeader={({ section: { title } }) => <TransactionHeader title={title} />}
-            renderItem={({ item }) => <TransactionItem item={item} onPress={handleGetDetails} />}
+            sections={formattedTransactions}
+            keyExtractor={(item, index) => {
+              // console.log("item", item);
+              return index
+            }}
+            // renderSectionHeader={(data) => console.log(data)}
+            // renderSectionHeader={({ section: { title } }) => <TransactionHeader title={title} />}
+            renderItem={({item}) => {
+              // console.log("renderItem", item);
+              return <View>{item.block}</View>
+            }}
+            // renderItem={({ item }) => <TransactionItem item={item} onPress={handleGetDetails} />}
             contentContainerStyle={styles.bottomSheetContainer}
             ListEmptyComponent={(
               <EmptyList
