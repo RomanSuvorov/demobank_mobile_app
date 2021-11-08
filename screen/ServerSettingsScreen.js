@@ -12,6 +12,8 @@ export function ServerSettingsScreen({ navigation }) {
   const [configUrlTemp, setConfigUrlTemp] = useState("");
   const [networkTemp, setNetworkTemp] = useState("");
   const configUrl = useSelector(state => state.app.configUrl);
+  const gnn = useSelector(state => state.app.gnn);
+  const status = useSelector(state => state.app.status);
   const network = useSelector(state => state.app.network);
   const dispatch = useDispatch();
 
@@ -28,6 +30,10 @@ export function ServerSettingsScreen({ navigation }) {
     setNetworkTemp(value);
   };
 
+  const checkIfChanged = () => {
+    return configUrlTemp === configUrl && networkTemp === network;
+  };
+
   const handleSaveChange = () => {
     dispatch(saveServerAction({ configUrl: configUrlTemp, network: networkTemp }));
   };
@@ -38,7 +44,7 @@ export function ServerSettingsScreen({ navigation }) {
         label={"URL-адрес конфигурации"}
         placeholder={"config URL"}
         defaultValue={configUrlTemp}
-        containerStyle={styles.input}
+        containerStyle={styles.inputContainer}
         onChangeText={handleChangeConfigUrl}
       />
 
@@ -46,11 +52,30 @@ export function ServerSettingsScreen({ navigation }) {
         label={"Blockchain ID"}
         placeholder={"blockchainID"}
         defaultValue={networkTemp}
-        containerStyle={styles.input}
+        containerStyle={styles.inputContainer}
         onChangeText={handleChangeNetwork}
       />
 
+      <CustomInput
+        label={"Количество узлов:"}
+        editable={false}
+        direction={'row'}
+        containerStyle={[styles.readOnlyInputContainer]}
+        inputStyle={styles.readOnlyInput}
+        value={gnn}
+      />
+
+      <CustomInput
+        label={"Статус сервера:"}
+        editable={false}
+        direction={'row'}
+        containerStyle={[styles.inputContainer, styles.readOnlyInputContainer]}
+        inputStyle={styles.readOnlyInput}
+        value={status}
+      />
+
       <CustomButton
+        disabled={checkIfChanged()}
         onPress={handleSaveChange}
       >
         Сохранить
@@ -66,7 +91,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingVertical: StatusBarHeight,
   },
-  input: {
+  inputContainer: {
     marginBottom: 36,
+  },
+  readOnlyInputContainer: {
+    justifyContent: "space-between"
+  },
+  readOnlyInput: {
+    borderBottomWidth: 0,
+    textAlign: "right",
+    width: "60%",
   },
 });

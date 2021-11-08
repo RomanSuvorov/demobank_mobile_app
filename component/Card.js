@@ -31,7 +31,7 @@ import {
   WALLETS_ICON_BOX_HEIGHT,
   HEIGHT_OF_CARD_CONTENT,
 } from '../styles/global';
-import { dark, greyPrimary, textWhite01 } from '../styles/color.theme';
+import { dark, greyPrimary, textWhite01, darkGrey } from '../styles/color.theme';
 import { DEFAULT_RESOURCES } from '../styles/constants';
 
 const { width } = deviceSize;
@@ -42,7 +42,7 @@ export function Card({ scrollX, paginationIndex, goToSlide = () => {} }) {
   const progress = useSharedValue(0);
   const cardAnimatedValue = useSharedValue(0);
   const activeSlide = useSelector(state => state.app.activeSlide);
-  const address = useSelector(state => state.wallet.activeWallet.address);
+  const address = useSelector(state => state.wallet.address);
   const [isFront, setIsFront] = useState(true)
 
   const frontCardAnimatedStyle = useAnimatedStyle(() => ({
@@ -191,6 +191,8 @@ const styles = StyleSheet.create({
     backfaceVisibility: "hidden",
     backgroundColor: dark,
     borderRadius: 10,
+    borderColor: darkGrey,
+    borderWidth: 1,
   },
   cardBg: {
     width: CARD_WIDTH,

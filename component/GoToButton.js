@@ -21,7 +21,9 @@ export function GoToButton({
       onPress();
     }
 
-    navigate(to);
+    if (to) {
+      navigate(to);
+    }
   };
 
   return (

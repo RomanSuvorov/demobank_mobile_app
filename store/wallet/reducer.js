@@ -5,26 +5,27 @@ const initialStore = {
   loading: false,
   error: null,
 
+  walletsLoading: false,
+  walletsError: undefined,
+
   isAuthenticated: false,
   wallets: [],
-  activeWallet: {
-    address: null,
-    privateKey: null,
-  }
+
+  address: null,
+  balance: 0,
+  transactions: [],
 };
 
 const reducer = {
-  // generating or importing
+  // generating or importing wallet (or checking balance)
   [Types.WALLET_LOAD_START]: draft => {
     draft.loading = true;
   },
 
-  [Types.WALLET_SET_ACTIVE]: (draft, payload) => {
-    draft.activeWallet = draft.wallets.find(wallet => wallet.address === payload);
-  },
-
-  [Types.WALLET_LIST_LOAD_SUCCESS]:(draft, payload) => {
-    draft.wallets = payload;
+  [Types.WALLET_LOAD_SUCCESS]: (draft, payload) => {
+    draft.address = payload.address;
+    draft.balance = payload.balance;
+    draft.transactions = payload.transactions;
   },
 
   [Types.WALLET_LOAD_ERROR]: (draft, payload) => {
@@ -33,6 +34,23 @@ const reducer = {
 
   [Types.WALLET_LOAD_FINISH]: draft => {
     draft.loading = false;
+  },
+
+  // wallets
+  [Types.WALLET_LIST_LOAD_START]: draft => {
+    draft.walletsLoading = true;
+  },
+
+  [Types.WALLET_LIST_LOAD_SUCCESS]: (draft, payload) => {
+    draft.wallets = payload;
+  },
+
+    [Types.WALLET_LIST_LOAD_ERROR]: (draft, payload) => {
+    draft.walletsError = payload;
+  },
+
+  [Types.WALLET_LIST_LOAD_FINISH]: draft => {
+    draft.walletsLoading = false;
   },
 
   [Types.CHANGE_AUTHENTICATED]: (draft, payload) => {

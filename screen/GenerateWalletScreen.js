@@ -17,10 +17,11 @@ export function GenerateWalletScreen({}) {
   const [isAgreed, setIsAgreed] = useState(false);
   const headerHeight = useHeaderHeight();
   const loading = useSelector(state => state.wallet.loading);
+  const isAuthenticated = useSelector(state => state.wallet.isAuthenticated);
   const dispatch = useDispatch();
 
   const handleContinue = () => {
-    dispatch(generateWalletAction());
+    dispatch(generateWalletAction({ isAuthenticated }));
   };
 
   const handleChangeAgreeState = (checked) => setIsAgreed(checked);

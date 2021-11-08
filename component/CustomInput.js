@@ -35,9 +35,9 @@ export const CustomInput = ({
       ]}
     >
       <CustomText
-        size={12}
+        size={direction === "column" ? 12 : 14}
         color={'greySecondary'}
-        style={[styles.label]}
+        style={[styles.label, { lineHeight: direction === "column" ? 14 : 42 }]}
       >
         {label}
       </CustomText>
@@ -50,7 +50,7 @@ export const CustomInput = ({
             editable={editable}
             autoFocus={autoFocus}
             selectionColor={selectionColor}
-            style={[styles.input, inputStyle, { borderBottomColor: isFocused ? active : textWhite }]}
+            style={[styles.input, { borderBottomColor: isFocused ? active : textWhite }, inputStyle]}
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
             onChangeText={onChangeText}
@@ -64,7 +64,7 @@ export const CustomInput = ({
             editable={editable}
             autoFocus={autoFocus}
             selectionColor={selectionColor}
-            style={[styles.input, inputStyle, { borderBottomColor: isFocused ? active : textWhite }]}
+            style={[styles.input, { borderBottomColor: isFocused ? active : textWhite }, inputStyle]}
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
             onChangeText={onChangeText}
@@ -81,11 +81,10 @@ const styles = StyleSheet.create({
   container: {},
   label: {
     paddingHorizontal: 12,
-    lineHeight: 14,
     marginBottom: 6,
   },
   input: {
-    height: 46,
+    height: 42,
     width: "100%",
     borderBottomWidth: 1,
     color: textWhite,
@@ -96,7 +95,7 @@ const styles = StyleSheet.create({
 });
 
 CustomInput.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  value: PropTypes.string,
   label: PropTypes.string,
   placeholder: PropTypes.string,
   placeholderTextColor: PropTypes.string,

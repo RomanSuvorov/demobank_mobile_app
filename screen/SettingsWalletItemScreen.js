@@ -3,13 +3,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet } from 'react-native';
 import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import { useHeaderHeight } from '@react-navigation/elements';
+import { AntDesign } from '@expo/vector-icons';
 
 import { CustomText } from '../component/CustomText';
 import { GoToButton } from '../component/GoToButton';
 import { CustomInput } from '../component/CustomInput';
+import { CustomButton } from '../component/CustomButton';
 import { changeWalletName } from '../store/wallet/actions';
+import { showModalAction } from '../store/modal/actions';
+import { deleteWalletAction } from '../store/wallet/actions';
 import { deviceSize, StatusBarHeight } from '../sdk/helper';
-import { greySecondary } from '../styles/color.theme';
+import { danger07, danger, greySecondary } from '../styles/color.theme';
+import { SCREEN_NAMES } from '../styles/constants';
 
 const { height } = deviceSize;
 
@@ -22,11 +27,28 @@ export function SettingsWalletItem({ walletAddress, navigation }) {
     dispatch(changeWalletName({ newName: value, walletAddress: wallet.address }));
   };
 
+  const handleDelete = () => {
+    dispatch(deleteWalletAction({ address: walletAddress }));
+    navigation.navigate(SCREEN_NAMES.SETTINGS_WALLET_LIST);
+  };
+
+  const showDeleteModal = () => {
+    dispatch(showModalAction({
+      type: "info",
+      text: `Вы действительно хотите удалить кошелек ${wallet.name}?\nСоветуем Вам сохранить privateKey для востановления`,
+      closeOnOverlay: true,
+      onCloseText: "Отмена",
+      onClick: handleDelete,
+      onClickText: "Удалить",
+      onClickBgColor: danger,
+    }));
+  };
+
   return (
     <BottomSheetScrollView style={[styles.container, { paddingTop: !!headerHeight ? headerHeight : StatusBarHeight  }]}>
       <CustomInput
         isInsideBottomSheet={true}
-        defaultValue={wallet.name}
+        defaultValue={wallet?.name}
         label={"Имя"}
         placeholder={"Введите имя кошелька..."}
         autoFocus={true}
@@ -60,9 +82,22 @@ export function SettingsWalletItem({ walletAddress, navigation }) {
       >
         Открытые ключи аккаунта
       </CustomText>
-      <GoToButton disabled={true}>
+      <GoToButton
+        disabled={true}
+        style={{ marginBottom: 42 }}
+      >
         Экспортировать открытые ключи
       </GoToButton>
+
+      <CustomButton
+        style={{ backgroundColor: danger07 }}
+        textSize={14}
+        Icon={<AntDesign name="delete" size={18} color="white" />}
+        iconPosition={'right'}
+        onPress={showDeleteModal}
+      >
+        Удалить кошелек
+      </CustomButton>
     </BottomSheetScrollView>
   );
 }

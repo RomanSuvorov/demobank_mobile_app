@@ -13,6 +13,8 @@ export function CustomButton({
   isLarge,
   style,
   textSize,
+  textStyle,
+  textColor,
   onPress,
   Icon,
   iconPosition,
@@ -39,8 +41,9 @@ export function CustomButton({
           <CustomText
             size={textSize}
             type={"bold"}
-            color={type === "transparent" ? "greySecondary" : "textWhite"}
+            color={textColor ? textColor : (type === "transparent") ? "greySecondary" : "textWhite"}
             align={"center"}
+            style={textStyle}
           >
             {children}
           </CustomText>
@@ -72,6 +75,8 @@ CustomButton.propTypes = {
   isLarge: PropTypes.bool,
   style: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
   textSize: PropTypes.number,
+  textStyle: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
+  textColor: PropTypes.string,
   iconPosition: PropTypes.oneOf(["left", "right"]),
   onPress: PropTypes.func.isRequired,
 };
@@ -83,6 +88,8 @@ CustomButton.defaultProps = {
   isLarge: false,
   style: {},
   textSize: 12,
+  textStyle: {},
+  textColor: undefined,
   iconPosition: "left",
   onPress: () => {},
 };

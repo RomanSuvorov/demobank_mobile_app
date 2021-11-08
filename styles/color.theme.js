@@ -1,5 +1,6 @@
 export const success = "#77C190";
-export const danger = "#D12A48";
+export const danger = "#d12a48";
+export const danger07 = "rgba(209, 42, 72, 0.7)";
 export const dark = "#161A1D";
 export const lightDark = "#22272D";
 export const darkGrey = "#41464D";

@@ -66,7 +66,7 @@ const Dot = ({ active }) => {
 export function AppLoadingScreen() {
   const [activeDot, setActiveDot] = useState(1)
   const checkNetworkLoading = useSelector(state => state.app.checkNetworkLoading);
-  const loading = useSelector(state => state.app.loading);
+  const walletsLoading = useSelector(state => state.wallet.walletsLoading);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -79,7 +79,7 @@ export function AppLoadingScreen() {
   const getLoadingText = () => {
     if (checkNetworkLoading) {
       return "Проверка сервера";
-    } else if (loading) {
+    } else if (walletsLoading) {
       return "Проверка локальных данных";
     }
   }

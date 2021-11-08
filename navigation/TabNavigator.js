@@ -112,20 +112,20 @@ export function TabNavigator() {
             tabBarLabel: "Wallet"
           }}
         />
-        <Tab.Screen
-          name={SCREEN_NAMES.EXCHANGE_SCREEN}
-          component={ExchangeTabScreen}
-          options={{
-            tabBarLabel: "Exchange"
-          }}
-        />
-        <Tab.Screen
-          name={SCREEN_NAMES.ANALYTICS_SCREEN}
-          component={AnalyticsTabScreen}
-          options={{
-            tabBarLabel: "Analytics"
-          }}
-        />
+        {/*<Tab.Screen*/}
+        {/*  name={SCREEN_NAMES.EXCHANGE_SCREEN}*/}
+        {/*  component={ExchangeTabScreen}*/}
+        {/*  options={{*/}
+        {/*    tabBarLabel: "Exchange"*/}
+        {/*  }}*/}
+        {/*/>*/}
+        {/*<Tab.Screen*/}
+        {/*  name={SCREEN_NAMES.ANALYTICS_SCREEN}*/}
+        {/*  component={AnalyticsTabScreen}*/}
+        {/*  options={{*/}
+        {/*    tabBarLabel: "Analytics"*/}
+        {/*  }}*/}
+        {/*/>*/}
         <Tab.Screen
           name={SCREEN_NAMES.SETTINGS_SCREEN}
           component={SettingsTabScreen}

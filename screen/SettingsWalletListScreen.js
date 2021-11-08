@@ -7,7 +7,7 @@ import { GoToButton } from '../component/GoToButton';
 import { CustomText } from '../component/CustomText';
 import { WalletItem } from '../component/WalletItem';
 import { SettingsIcon, AddIcon } from '../component/Icons';
-import { changeActiveWallet } from '../store/wallet/actions';
+import { getWalletDataAction } from '../store/wallet/actions';
 import { textWhite, greyPrimary } from '../styles/color.theme';
 import { deviceSize } from '../sdk/helper';
 import { SCREEN_NAMES } from '../styles/constants';
@@ -17,11 +17,12 @@ const { height } = deviceSize;
 
 export function SettingsWalletListScreen({ navigation }) {
   const wallets = useSelector(state => state.wallet.wallets);
-  const activeWallet = useSelector(state => state.wallet.activeWallet);
+  const address = useSelector(state => state.wallet.address);
+  const loading = useSelector(state => state.wallet.loading);
   const dispatch = useDispatch();
 
   const changeWallet = (wallet) => {
-    dispatch(changeActiveWallet(wallet.address));
+    dispatch(getWalletDataAction({ address: wallet.address }));
     dispatch({ type: AppTypes.CHANGE_ACTIVE_SLIDE, payload: 0 });
     navigation.navigate(SCREEN_NAMES.WALLET_SCREEN);
   };
@@ -52,9 +53,9 @@ export function SettingsWalletListScreen({ navigation }) {
             </View>
 
             <GoToButton
+              to={SCREEN_NAMES.AUTHORIZATION_NAVIGATOR}
               style={styles.settingsButton}
               Icon={<AddIcon />}
-              disabled={true} /* TODO: Add opportunity */
             >
               Новый кошелек
             </GoToButton>
@@ -62,16 +63,18 @@ export function SettingsWalletListScreen({ navigation }) {
         }
         data={wallets}
         showsVerticalScrollIndicator ={false}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <WalletItem
+            index={index}
+            loading={loading}
             item={item}
-            chosenItem={activeWallet.address === item.address}
+            chosenItem={address === item.address}
             onItemPress={changeWallet}
             onActionPress={goToWalletSettings}
           />
         )}
         keyExtractor={(item) => item.address}
-        extraData={activeWallet}
+        extraData={address}
         style={styles.container}
       />
   )

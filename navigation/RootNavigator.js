@@ -8,10 +8,13 @@ import { AppLoadingScreen } from '../screen/AppLoadingScreen';
 import { CustomModal } from '../component/CustomModal';
 import { AppNavigator } from './AppNavigator';
 import { AuthorizationNavigator } from './AuthorizationNavigator';
-import { appStartAction, checkGraphNetwork } from '../store/app/actions';
-import { greyPrimary } from '../styles/color.theme';
+import { checkGraphNetwork } from '../store/app/actions';
+import { NetworkUrlErrorScreen } from '../screen/NetworkUrlErrorScreen';
+import { ServerSettingsScreen } from '../screen/ServerSettingsScreen';
+import { active, greyPrimary, lightDark } from '../styles/color.theme';
 import { navigationRef } from '../sdk/helper';
 import { SCREEN_NAMES } from '../styles/constants';
+import { BackNavigation } from '../component/BackNavigation';
 
 const DemobankTheme = {
   ...DefaultTheme,
@@ -24,15 +27,80 @@ const DemobankTheme = {
 
 const Stack = createNativeStackNavigator();
 export function RootNavigator() {
-  const appLoading = useSelector(state => state.app.loading);
-  const checkNetworkLoading = useSelector(state => state.app.checkNetworkLoading);
+  const walletsLoading = useSelector(state => state.wallet.walletsLoading);
   const isAuthenticated = useSelector(state => state.wallet.isAuthenticated);
+  const checkNetworkLoading = useSelector(state => state.app.checkNetworkLoading);
+  const checkNetworkError = useSelector(state => state.app.checkNetworkError);
   const dispatch = useDispatch();
 
-  useEffect(async () => {
-    await dispatch(appStartAction());
-    await dispatch(checkGraphNetwork());
+  useEffect(() => {
+    dispatch(checkGraphNetwork());
   }, []);
+
+  const renderContent = () => {
+    if (checkNetworkError) {
+      return (
+        <Stack.Group>
+          <Stack.Screen
+            name={SCREEN_NAMES.NETWORK_URL_ERROR_SCREEN}
+            component={NetworkUrlErrorScreen}
+          />
+          <Stack.Screen
+            name={SCREEN_NAMES.SERVER_SETTINGS_SCREEN}
+            component={ServerSettingsScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              animation: "fade",
+              title: "Настройки сервера",
+              headerTitleAlign: "center",
+              headerTitleStyle: {
+                fontFamily: "Play-Bold",
+                fontSize: 16,
+                fontWeight: "normal",
+              },
+              headerTintColor: active,
+              headerLeft: (props) => (
+                <BackNavigation
+                  title={"Назад"}
+                  navigation={navigation}
+                  {...props}
+                />
+              ),
+              headerStyle: { backgroundColor: lightDark },
+              headerShadowVisible: false,
+            })}
+          />
+        </Stack.Group>
+      );
+    }
+
+    if (walletsLoading || checkNetworkLoading) {
+      return (
+        <Stack.Group>
+          <Stack.Screen
+            name={SCREEN_NAMES.APP_LOADING_SCREEN}
+            component={AppLoadingScreen}
+          />
+        </Stack.Group>
+      );
+    }
+
+    return (
+      <Stack.Group>
+        {isAuthenticated ? (
+          <Stack.Screen
+            name={SCREEN_NAMES.APP_NAVIGATOR}
+            component={AppNavigator}
+          />
+        ) : (
+          <Stack.Screen
+            name={SCREEN_NAMES.AUTHORIZATION_NAVIGATOR}
+            component={AuthorizationNavigator}
+          />
+        )}
+      </Stack.Group>
+    )
+  };
 
   return (
     <NavigationContainer
@@ -44,38 +112,12 @@ export function RootNavigator() {
         translucent={true}
       />
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* wait for wallets loading and checking server */}
-        {
-          (appLoading || checkNetworkLoading) ? (
-            <Stack.Group>
-              <Stack.Screen
-                name={SCREEN_NAMES.APP_LOADING_SCREEN}
-                component={AppLoadingScreen}
-              />
-            </Stack.Group>
-          ) : (
-            <Stack.Group>
-              {isAuthenticated ? (
-                <Stack.Screen
-                  name={SCREEN_NAMES.APP_NAVIGATOR}
-                  component={AppNavigator}
-                />
-              ) : (
-                <Stack.Screen
-                  name={SCREEN_NAMES.AUTHORIZATION_NAVIGATOR}
-                  component={AuthorizationNavigator}
-                />
-              )}
-            </Stack.Group>
-          )
-        }
+        {renderContent()}
 
-        <Stack.Group
-          screenOptions={{
+        <Stack.Group screenOptions={{
             presentation: "transparentModal",
             animation: "fade",
-          }}
-        >
+          }}>
           <Stack.Screen
             name={SCREEN_NAMES.MODAL_SCREEN}
             component={CustomModal}

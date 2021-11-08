@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Pressable, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, Pressable, View, StyleSheet, ActivityIndicator } from 'react-native';
 
 import { Circle } from './CircleBtn';
 import { CustomText } from './CustomText';
@@ -13,7 +13,7 @@ const CIRCLE_SIZE = 45;
 const HEIGHT_OF_CONTAINER = VERTICAL_PADDING * 2 + CIRCLE_SIZE;
 const EDIT_BUTTON_WIDTH = 48;
 
-export function WalletItem({ item, chosenItem, onItemPress, onActionPress }) {
+export function WalletItem({ item, chosenItem, loading, index, onItemPress, onActionPress }) {
   const handleItemPress = () => {
     onItemPress(item);
   };
@@ -32,7 +32,7 @@ export function WalletItem({ item, chosenItem, onItemPress, onActionPress }) {
         iconColor={active}
         size={CIRCLE_SIZE}
         contentSize={23}
-        badge={chosenItem ? <CheckIcon /> : null}
+        badge={chosenItem ? <CheckIcon /> : (index === 0 && loading) ? <ActivityIndicator color={"white"} size={16} /> : null}
         style={styles.circleWrapper}
       />
       <View style={styles.walletName}>
