@@ -10,6 +10,7 @@ import { PADDING_TOP_FROM_NAVIGATION_HEADER } from '../styles/global';
 import { deviceSize } from '../sdk/helper';
 import AreYouAgreeImage from '../assets/areYouAgreeImage.png';
 import { generateWalletAction } from '../store/wallet/actions';
+import { dark } from '../styles/color.theme';
 
 const { width, height } = deviceSize;
 
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
     paddingTop: PADDING_TOP_FROM_NAVIGATION_HEADER,
     justifyContent: "space-between",
     alignItems: "center",
+    backgroundColor: dark,
   },
   headerText: {
     paddingHorizontal: 36,

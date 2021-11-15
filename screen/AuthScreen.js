@@ -8,6 +8,7 @@ import { Pagination } from '../component/Pagination';
 import { deviceSize, StatusBarHeight } from '../sdk/helper';
 import { PAGINATION_HEIGHT} from '../styles/global';
 import { SCREEN_NAMES } from '../styles/constants';
+import { dark } from '../styles/color.theme';
 
 const { width, height } = deviceSize;
 const slides = [
@@ -46,6 +47,7 @@ export function AuthScreen({ navigation }) {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         overScrollMode={"never"}
+        scrollEventThrottle={16}
         onScroll={handleScroll}
       >
         {
@@ -107,6 +109,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: StatusBarHeight,
+    backgroundColor: dark,
   },
   slides: {
     flex: 1,

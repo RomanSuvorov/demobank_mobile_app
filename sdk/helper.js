@@ -3,9 +3,11 @@ import { compose, createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxPromise from 'redux-promise';
 import thunk from 'redux-thunk';
 import produce from 'immer';
-import { Platform, Dimensions, StatusBar } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { createNavigationContainerRef } from '@react-navigation/native';
+import Constants from 'expo-constants';
+import { Easing } from "react-native-reanimated";
 
 // redux
 export const createReduxStore = _configureStore;
@@ -28,20 +30,26 @@ export const createReducer = (cases = {}, defaultState = {}) =>
 
 
 // size
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("screen");
 
-const X_WIDTH = 375;
-const XS_MAX_WIDTH = 414;
-const X_HEIGHT = 812;
-const XS_MAX_HEIGHT = 896;
-
-export const isIPhoneX = () => Platform.OS === "ios" && !Platform.isPad && !Platform.isTV
-  ? width === X_WIDTH && height === X_HEIGHT || width === XS_MAX_WIDTH && height === XS_MAX_HEIGHT
-  : false;
+function isIphoneWithNotch() {
+  return (
+    Platform.OS === 'ios' &&
+    !Platform.isPad &&
+    !Platform.isTVOS &&
+    (
+      height === 780 || width === 780 ||
+      height === 812 || width === 812 ||
+      height === 844 || width === 844 ||
+      height === 896 || width === 896 ||
+      height === 926 || width === 926
+    )
+  );
+}
 
 export const StatusBarHeight = Platform.select({
-  ios: isIPhoneX() ? 44 : 20,
-  android: StatusBar.currentHeight,
+  ios: isIphoneWithNotch() ? Constants.statusBarHeight / 2 : Constants.statusBarHeight,
+  android: Constants.statusBarHeight,
   default: 0,
 });
 
@@ -73,4 +81,23 @@ export async function getValueFromDeviceStorage(key, options) {
 
 export async function deleteValueFromDeviceStorage(key, options) {
   return await SecureStore.deleteItemAsync(key, options);
+}
+
+export function onIOSBottomSheetIndexChange({ index, scrollingSetter, listRef }) {
+  if (index === 1) {
+    listRef.current.getScrollResponder().scrollTo({ y: 20, animated: true });
+    scrollingSetter(true);
+  } else {
+    scrollingSetter(false);
+  }
+}
+
+export function onIOSBottomSheetListScroll({ y, scrollingSetter, bsRef }) {
+  if (y <= 0) {
+    scrollingSetter(false);
+    bsRef.current.snapToIndex(0, {
+      duration: 300,
+      easing: Easing.quad,
+    });
+  }
 }

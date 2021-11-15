@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StatusBar } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,7 +21,7 @@ const DemobankTheme = {
   colors: {
     ...DefaultTheme.colors,
     text: greyPrimary,
-    background: "transparent",
+    background: lightDark,
   },
 };
 
@@ -50,7 +50,7 @@ export function RootNavigator() {
             component={ServerSettingsScreen}
             options={({ navigation }) => ({
               headerShown: true,
-              animation: "fade",
+              animation: Platform.OS === "ios" ? "default" : "slide_from_right",
               title: "Настройки сервера",
               headerTitleAlign: "center",
               headerTitleStyle: {
@@ -109,6 +109,7 @@ export function RootNavigator() {
     >
       <StatusBar
         backgroundColor={"transparent"}
+        barStyle={"light-content"}
         translucent={true}
       />
       <Stack.Navigator screenOptions={{ headerShown: false }}>

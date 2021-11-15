@@ -1340,20 +1340,20 @@
     lodash.pick "^4.4.0"
     lodash.template "^4.5.0"
 
-"@gorhom/bottom-sheet@^4.0.0-alpha.30":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-4.1.2.tgz#c648f47d0853fa3cf7279813dad6de8dbf2e6e72"
-  integrity sha512-nSKSkUDEzRaMTv1PN5CVy1aZLYvenDZrxtSQLB1JOb8qRF4jRqgJc3I2Hil9lB9MeyrtiC07a3Q2m/HccN1FxQ==
+"@gorhom/bottom-sheet@^4":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-4.1.3.tgz#bd9573a80882f60b116991148d43b8276b01f6c7"
+  integrity sha512-Ajjxf17oNqoAVxHNrl8Mj56pcTjpGBvocpcibYX3D0pm10rdCRUqxZ29uSwywS+V8HhkXVSoLoLswv0JvcDh+Q==
   dependencies:
-    "@gorhom/portal" "^1.0.9"
+    "@gorhom/portal" "^1.0.11"
     invariant "^2.2.4"
     nanoid "^3.1.20"
     react-native-redash "^16.1.1"
 
-"@gorhom/portal@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.9.tgz#bd66e0e27e49fa3163b89c4c23661f31471a6343"
-  integrity sha512-tQUBKf1kDLK1l+0duYBxRqNMtdIrOAIp2H36Bc7/qUZXRxP1rUvj7EMmv6tdlKN/MzEiKPGx9wY0EmOYTjXIFQ==
+"@gorhom/portal@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@gorhom/portal/-/portal-1.0.11.tgz#4224d45fea25e70d7e55af3b67249bad0ac9359b"
+  integrity sha512-Vrh2hAVp8ZToJ1a1NbYnehNzdJTxJv1BF3vMNbz1pnJIqm0nbi2W51piVvfiqohCDAegOyCCH1j/AEhW2cJYTA==
   dependencies:
     nanoid "^3.1.23"
 
@@ -3011,7 +3011,7 @@ expo-clipboard@~1.1.0:
   resolved "https://registry.yarnpkg.com/expo-clipboard/-/expo-clipboard-1.1.0.tgz#15855993d0cbb451db9003475844ada901da713f"
   integrity sha512-4A+X/OMZiK8ubXvfuNJ8L9iDLmrkwO9rdHIgU3ywhBQ3NlD2nqEVcN4ZHdD7cn4/WkmP/bu/LWeTdvVuyufO8Q==
 
-expo-constants@~11.0.2:
+expo-constants@~11.0.1, expo-constants@~11.0.2:
   version "11.0.2"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-11.0.2.tgz#069930145908fef7d76bf72a1a874a1d4621af82"
   integrity sha512-CVjM+FbOMe/nFOSly5lnj0seMAYsjjc6+q3X8nIXG+gtw9iNBLwMX3Fz308rxiaPRJw+TBdd5/mcGJdNfoS+ew==
@@ -4711,7 +4711,12 @@ nan@^2.12.1:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.15.0.tgz#3f34a473ff18e15c1b5626b62903b5ad6e665fee"
   integrity sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==
 
-nanoid@^3.1.20, nanoid@^3.1.23:
+nanoid@^3.1.20:
+  version "3.1.30"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.30.tgz#63f93cc548d2a113dc5dfbc63bfa09e2b9b64362"
+  integrity sha512-zJpuPDwOv8D2zq2WRoMe1HsfZthVewpel9CAvTfc/2mBD1uUT/agc5f7GHGWXlYkFvi1mVxe4IjvP2HNrop7nQ==
+
+nanoid@^3.1.23:
   version "3.1.29"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.29.tgz#214fb2d7a33e1a5bef4757b779dfaeb6a4e5aeb4"
   integrity sha512-dW2pUSGZ8ZnCFIlBIA31SV8huOGCHb6OwzVCc7A69rb/a+SgPBwfmLvK5TKQ3INPbRkcI8a/Owo0XbiTNH19wg==

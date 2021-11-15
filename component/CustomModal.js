@@ -20,6 +20,7 @@ export const CustomModal = ({ navigation }) => {
   const onClose = useSelector(state => state.modal.onClose);
   const onCloseText = useSelector(state => state.modal.onCloseText);
   const onClick = useSelector(state => state.modal.onClick);
+  const onClickLoading = useSelector(state => state.modal.onClickLoading);
   const onClickText = useSelector(state => state.modal.onClickText);
   const onClickBgColor = useSelector(state => state.modal.onClickBgColor);
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ export const CustomModal = ({ navigation }) => {
   const handlePressOverlay = () => {
     if (!isFullScreen) {
       navigation.popToTop();
-      dispatch({ type: Types.CLOSE_MODAL });
+      dispatch({ type: Types.TOGGLE_MODAL });
     }
 
     if (onClose && typeof onClose === "function") {
@@ -36,8 +37,8 @@ export const CustomModal = ({ navigation }) => {
   };
 
   const handleClick = () => {
-    dispatch({ type: Types.CLOSE_MODAL });
     onClick();
+    dispatch({ type: Types.TOGGLE_MODAL });
   };
 
   const getColor = useCallback(() => {
@@ -107,6 +108,7 @@ export const CustomModal = ({ navigation }) => {
               {
                 !!onClick && (
                   <CustomButton
+                    loading={onClickLoading}
                     style={{ backgroundColor: onClickBgColor, marginLeft: 18 }}
                     onPress={handleClick}
                   >

@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: width - 42,
-    marginBottom: 18,
+    marginBottom: 12,
     alignItems: "center",
   },
   imageStyle: {

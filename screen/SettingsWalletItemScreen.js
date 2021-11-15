@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { StyleSheet } from 'react-native';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { View, StyleSheet } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -12,14 +11,13 @@ import { CustomButton } from '../component/CustomButton';
 import { changeWalletName } from '../store/wallet/actions';
 import { showModalAction } from '../store/modal/actions';
 import { deleteWalletAction } from '../store/wallet/actions';
-import { deviceSize, StatusBarHeight } from '../sdk/helper';
-import { danger07, danger, greySecondary } from '../styles/color.theme';
+import { StatusBarHeight } from '../sdk/helper';
+import { danger07, danger, greySecondary, dark } from '../styles/color.theme';
 import { SCREEN_NAMES } from '../styles/constants';
 
-const { height } = deviceSize;
-
-export function SettingsWalletItem({ walletAddress, navigation }) {
+export function SettingsWalletItem({ walletAddress, navigation, insideBottomSheet = false }) {
   const wallet = useSelector(state => state.wallet.wallets.find(w => w.address === walletAddress));
+  const loading = useSelector(state => state.wallet.loading);
   const dispatch = useDispatch();
   const headerHeight = useHeaderHeight();
 
@@ -28,8 +26,8 @@ export function SettingsWalletItem({ walletAddress, navigation }) {
   };
 
   const handleDelete = () => {
-    dispatch(deleteWalletAction({ address: walletAddress }));
     navigation.navigate(SCREEN_NAMES.SETTINGS_WALLET_LIST);
+    dispatch(deleteWalletAction({ address: walletAddress }));
   };
 
   const showDeleteModal = () => {
@@ -39,19 +37,26 @@ export function SettingsWalletItem({ walletAddress, navigation }) {
       closeOnOverlay: true,
       onCloseText: "Отмена",
       onClick: handleDelete,
+      onClickLoading: loading,
       onClickText: "Удалить",
       onClickBgColor: danger,
     }));
   };
 
   return (
-    <BottomSheetScrollView style={[styles.container, { paddingTop: !!headerHeight ? headerHeight : StatusBarHeight  }]}>
+    <View
+      style={[
+        styles.container,
+        { marginTop: !!headerHeight ? headerHeight : StatusBarHeight  },
+        { paddingTop: insideBottomSheet ? 0 : 20 }
+      ]}
+    >
       <CustomInput
-        isInsideBottomSheet={true}
+        isInsideBottomSheet={insideBottomSheet}
         defaultValue={wallet?.name}
         label={"Имя"}
+        editable={!loading}
         placeholder={"Введите имя кошелька..."}
-        autoFocus={true}
         containerStyle={styles.nameInput}
         onChangeText={handleNameChange}
       />
@@ -63,7 +68,7 @@ export function SettingsWalletItem({ walletAddress, navigation }) {
         Варианты для резервного копирования
       </CustomText>
       <GoToButton
-        disabled={true}
+        disabled={loading}
         style={[{ marginBottom: 12 }]}
       >
         Показать секретную фразу
@@ -83,14 +88,15 @@ export function SettingsWalletItem({ walletAddress, navigation }) {
         Открытые ключи аккаунта
       </CustomText>
       <GoToButton
-        disabled={true}
+        disabled={loading}
         style={{ marginBottom: 42 }}
       >
         Экспортировать открытые ключи
       </GoToButton>
 
       <CustomButton
-        style={{ backgroundColor: danger07 }}
+        loading={loading}
+        style={{ backgroundColor: danger07, height: 42 }}
         textSize={14}
         Icon={<AntDesign name="delete" size={18} color="white" />}
         iconPosition={'right'}
@@ -98,7 +104,7 @@ export function SettingsWalletItem({ walletAddress, navigation }) {
       >
         Удалить кошелек
       </CustomButton>
-    </BottomSheetScrollView>
+    </View>
   );
 }
 
@@ -106,14 +112,15 @@ export function SettingsWalletItemScreen({ navigation, route }) {
   const { walletAddress } = route.params;
 
   return (
-    <SettingsWalletItem walletAddress={walletAddress} navigation={navigation} />
+    <SettingsWalletItem walletAddress={walletAddress} navigation={navigation} insideBottomSheet={false} />
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: height * (0.25 / 2), // half of gradient in bottom navigator
     paddingHorizontal: 18,
+    flex: 1,
+    backgroundColor: dark,
   },
   nameInput: {
     marginBottom: 36,

@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { TabNavigator } from './TabNavigator';
 import { DetailsScreen } from '../screen/DetailsScreen';
 import { GlobalSettingsScreen } from '../screen/GlobalSettingsScreen';
+import { SettingsWalletItemScreen } from '../screen/SettingsWalletItemScreen';
 import { ServerSettingsScreen } from '../screen/ServerSettingsScreen';
 import { SecuritySettingsScreen } from '../screen/SecuritySettingsScreen';
 import { AuthorizationNavigator } from './AuthorizationNavigator';
@@ -35,7 +36,7 @@ export function AppNavigator() {
           component={GlobalSettingsScreen}
           options={({ navigation }) => ({
             headerShown: true,
-            animation: "fade",
+            animation: Platform.OS === "ios" ? "default" : "slide_from_right",
             title: "Настройки приложения",
             headerTitleAlign: "center",
             headerTitleStyle: {
@@ -56,11 +57,31 @@ export function AppNavigator() {
           })}
         />
         <AppStack.Screen
+          name={SCREEN_NAMES.SETTINGS_WALLET_ITEM}
+          component={SettingsWalletItemScreen}
+          options={({ navigation }) => ({
+            headerShown: true,
+            title: null,
+            headerTintColor: active,
+            animation: Platform.OS === "ios" ? "default" : "slide_from_right",
+            headerLeft: (props) => (
+              <BackNavigation
+                title={"Назад"}
+                navigation={navigation}
+                {...props}
+              />
+            ),
+            headerTransparent: true,
+            headerStyle: { backgroundColor: lightDark },
+            headerShadowVisible: false,
+          })}
+        />
+        <AppStack.Screen
           name={SCREEN_NAMES.SERVER_SETTINGS_SCREEN}
           component={ServerSettingsScreen}
           options={({ navigation }) => ({
             headerShown: true,
-            animation: "fade",
+            animation: Platform.OS === "ios" ? "default" : "slide_from_right",
             title: "Настройки сервера",
             headerTitleAlign: "center",
             headerTitleStyle: {
@@ -85,7 +106,7 @@ export function AppNavigator() {
           component={SecuritySettingsScreen}
           options={({ navigation }) => ({
             headerShown: true,
-            animation: "fade",
+            animation: Platform.OS === "ios" ? "default" : "slide_from_right",
             title: "Настройки безопасности",
             headerTitleAlign: "center",
             headerTitleStyle: {
@@ -110,7 +131,7 @@ export function AppNavigator() {
           component={AuthorizationNavigator}
           options={({ navigation }) => ({
             headerShown: true,
-            animation: "fade",
+            animation: Platform.OS === "ios" ? "default" : "slide_from_right",
             title: "Добавление кошелька",
             headerTitleAlign: "center",
             headerTitleStyle: {

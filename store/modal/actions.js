@@ -4,7 +4,7 @@ import { SCREEN_NAMES } from '../../styles/constants';
 
 export const showModalAction = (data) => async (dispatch) => {
   dispatch({
-    type: Types.SHOW_MODAL,
+    type: Types.TOGGLE_MODAL,
     payload: {
       type: data.type,
       text: data.text,
@@ -13,6 +13,7 @@ export const showModalAction = (data) => async (dispatch) => {
       onClose: data.onClose,
       onCloseText: data.onCloseText,
       onClick: data.onClick,
+      onClickLoading: data.onClickLoading,
       onClickText: data.onClickText,
       onClickBgColor: data.onClickBgColor,
     },
