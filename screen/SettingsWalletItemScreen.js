@@ -43,6 +43,14 @@ export function SettingsWalletItem({ walletAddress, navigation, insideBottomShee
     }));
   };
 
+  const showPublicKey = () => {
+    navigation.navigate(SCREEN_NAMES.SETTINGS_WALLET_PUBLIC_KEY, { publicKey: wallet.publicKey });
+  };
+
+  const showPrivateKey = () => {
+    navigation.navigate(SCREEN_NAMES.SETTINGS_WALLET_PRIVATE_KEY, { privateKey: wallet.privateKey });
+  };
+
   return (
     <View
       style={[
@@ -68,7 +76,9 @@ export function SettingsWalletItem({ walletAddress, navigation, insideBottomShee
         Варианты для резервного копирования
       </CustomText>
       <GoToButton
-        disabled={loading}
+        // TODO: add opportunity
+        // disabled={loading}
+        disabled={true}
         style={[{ marginBottom: 12 }]}
       >
         Показать секретную фразу
@@ -80,6 +90,7 @@ export function SettingsWalletItem({ walletAddress, navigation, insideBottomShee
       >
         Если вы потеряете доступ к этому устройству, ваши средства будут утеряны, если вы не сделаете резервное копирование!
       </CustomText>
+
       <CustomText
         color={'greySecondary'}
         size={12}
@@ -90,8 +101,24 @@ export function SettingsWalletItem({ walletAddress, navigation, insideBottomShee
       <GoToButton
         disabled={loading}
         style={{ marginBottom: 42 }}
+        onPress={showPublicKey}
       >
         Экспортировать открытые ключи
+      </GoToButton>
+
+      <CustomText
+        color={'greySecondary'}
+        size={12}
+        style={[{ marginBottom: 12, paddingHorizontal: 12 }]}
+      >
+        Открытые ключи аккаунта
+      </CustomText>
+      <GoToButton
+        disabled={loading}
+        style={{ marginBottom: 42 }}
+        onPress={showPrivateKey}
+      >
+        Экспортировать приватный ключ
       </GoToButton>
 
       <CustomButton

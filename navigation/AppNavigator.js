@@ -9,6 +9,8 @@ import { SettingsWalletItemScreen } from '../screen/SettingsWalletItemScreen';
 import { ServerSettingsScreen } from '../screen/ServerSettingsScreen';
 import { SecuritySettingsScreen } from '../screen/SecuritySettingsScreen';
 import { AuthorizationNavigator } from './AuthorizationNavigator';
+import { WalletPublicKeyScreen } from '../screen/WalletPublicKeyScreen';
+import { WalletPrivateKeyScreen } from '../screen/WalletPrivateKeyScreen';
 import { BackNavigation } from '../component/BackNavigation';
 import { dark, lightDark, textWhite, active } from '../styles/color.theme';
 import { SCREEN_NAMES } from '../styles/constants';
@@ -75,6 +77,60 @@ export function AppNavigator() {
             headerStyle: { backgroundColor: lightDark },
             headerShadowVisible: false,
           })}
+        />
+        <AppStack.Screen
+          name={SCREEN_NAMES.SETTINGS_WALLET_PUBLIC_KEY}
+          component={WalletPublicKeyScreen}
+          options={({ navigation }) => ({
+            headerShown: true,
+            title: "Публичные ключи",
+            headerTitleAlign: "center",
+            headerTitleStyle: {
+              fontFamily: "Play-Bold",
+              fontSize: 16,
+              fontWeight: "normal",
+            },
+            headerTintColor: active,
+            animation: "fade",
+            headerLeft: (props) => (
+              <BackNavigation
+                title={"Назад"}
+                navigation={navigation}
+                {...props}
+              />
+            ),
+            headerTransparent: true,
+            headerStyle: { backgroundColor: lightDark },
+            headerShadowVisible: false,
+            presentation: "transparentModal",
+          })}
+        />
+        <AppStack.Screen
+          name={SCREEN_NAMES.SETTINGS_WALLET_PRIVATE_KEY}
+          component={WalletPrivateKeyScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              title: "Приватные ключи",
+              headerTitleAlign: "center",
+              headerTitleStyle: {
+                fontFamily: "Play-Bold",
+                fontSize: 16,
+                fontWeight: "normal",
+              },
+              headerTintColor: active,
+              animation: "fade",
+              headerLeft: (props) => (
+                <BackNavigation
+                  title={"Назад"}
+                  navigation={navigation}
+                  {...props}
+                />
+              ),
+              headerTransparent: true,
+              headerStyle: { backgroundColor: lightDark },
+              headerShadowVisible: false,
+              presentation: "transparentModal",
+            })}
         />
         <AppStack.Screen
           name={SCREEN_NAMES.SERVER_SETTINGS_SCREEN}

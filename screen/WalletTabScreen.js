@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { ScrollView, View, StyleSheet, Platform } from 'react-native';
 import {
   useSharedValue,
@@ -38,17 +38,6 @@ export function WalletTabScreen({ navigation }) {
   const paginationIndex = useDerivedValue(() => {
     return activeSlide === 0 ? currentBalanceIndex.value : currentCardIndex.value;
   }, [activeSlide]);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', () => {
-      goToSlide(0);
-      setScrollEnabled(true);
-      bSheetBalanceRef.current.snapToIndex(0);
-      bSheetCardRef.current.snapToIndex(0);
-    });
-
-    return unsubscribe;
-  }, [navigation]);
 
   const paginationAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(

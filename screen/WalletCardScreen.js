@@ -87,7 +87,7 @@ export const WalletCardScreen = React.memo(({
           scrollEnabled={Platform.OS === "ios" ? listScrollEnabled : true}
           onScroll={Platform.OS === "ios" ? handleOnScroll : () => {}}
         >
-          <SettingsWalletItem walletAddress={address} insideBottomSheet={true} />
+          <SettingsWalletItem navigation={navigation} walletAddress={address} insideBottomSheet={true} />
         </BottomSheetChildComponent>
       </BottomSheet>
     </View>

@@ -14,6 +14,7 @@ export const generateWalletAction = ({ isAuthenticated }) => async (dispatch, ge
   try {
     let address = undefined;
     let privateKey = undefined;
+    let publicKey = undefined;
 
     // generate new wallet
     await new Promise((resolve) => {
@@ -21,6 +22,7 @@ export const generateWalletAction = ({ isAuthenticated }) => async (dispatch, ge
         const result = createWallet();
         address = result.address;
         privateKey = result.privateKey;
+        publicKey = result.publicKey;
         resolve();
       }, 0);
     });
@@ -33,7 +35,7 @@ export const generateWalletAction = ({ isAuthenticated }) => async (dispatch, ge
     const walletsStringified = await getValueFromDeviceStorage(SECURE_STORE_NAMES.WALLETS);
     const wallets = JSON.parse(walletsStringified) || [];
     // concatenate all previous wallets from secure store with new one
-    const newWallets = [...wallets, { address, privateKey, name: `Основной кошелек ${wallets.length + 1}` }];
+    const newWallets = [...wallets, { address, privateKey, publicKey, name: `Основной кошелек ${wallets.length + 1}` }];
     // save new wallets list to secure store for next sign in process (startApp action)
     await saveToDeviceStorage(SECURE_STORE_NAMES.WALLETS, JSON.stringify(newWallets));
     dispatch({ type: Types.WALLET_LIST_LOAD_SUCCESS, payload: newWallets });

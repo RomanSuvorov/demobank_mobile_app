@@ -9,6 +9,7 @@ import { navigate } from '../sdk/helper';
 
 export function GoToButton({
   to,
+  navigationParams,
   disabled,
   style,
   Icon,
@@ -22,7 +23,7 @@ export function GoToButton({
     }
 
     if (to) {
-      navigate(to);
+      navigate(to, { navigationParams: navigationParams });
     }
   };
 

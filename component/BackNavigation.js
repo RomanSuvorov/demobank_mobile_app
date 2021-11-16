@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
 
 import { CustomText } from './CustomText';
 import { BackArrow } from './Icons';
@@ -14,7 +14,7 @@ export function BackNavigation({ title, navigation, style, ...props }) {
 
   return (
     <TouchableOpacity
-      style={[styles.container, { height: headerHeight - StatusBarHeight }, style]}
+      style={[styles.container, { height: Platform.OS === "ios" ? headerHeight : headerHeight - StatusBarHeight }, style]}
       onPress={handleGoBack}
     >
       <BackArrow color={props.tintColor} />

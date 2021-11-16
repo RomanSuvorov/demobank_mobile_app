@@ -108,7 +108,7 @@ export function Card({ scrollX, paginationIndex, goToSlide = () => {} }) {
 
   const handleCopyAddress = () => {
     setString(address);
-    Alert.alert("Address copied")
+    Alert.alert("Address copied");
   };
 
   const containerAnimatedStyle = useAnimatedStyle(() => ({
