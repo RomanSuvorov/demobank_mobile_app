@@ -5,12 +5,12 @@ import { Text } from 'react-native';
 import { active, danger, success, textWhite, textWhite01, greySecondary, greyPrimary } from '../styles/color.theme';
 
 export function CustomText({
-  type = "regular",
-  size = 14,
-  color = "textWhite",
-  style = {},
+  type,
+  size,
+  color,
+  style,
+  align,
   children,
-  align = "left",
   ...props
 }) {
   const setFontType = (type) => {

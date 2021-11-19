@@ -35,3 +35,23 @@ export const DEFAULT_RESOURCES = {
   graphCoinSvgUri: "https://glcdn.sgp1.digitaloceanspaces.com/graph/coin.svg",
   graphNetworkUrl: "https://core.graph.finance",
 };
+
+export const MONTHS_LIST = [
+  "Января",
+  "Февраля",
+  "Марта",
+  "Апреля",
+  "Мая",
+  "Июня",
+  "Июля",
+  "Августа",
+  "Сентября",
+  "Октября",
+  "Ноября",
+  "Декабря",
+];
+
+export const TRANSACTION_STATUS = {
+  CONFIRMED: "ПОДТВЕРЖДЕНО",
+  UNCONFIRMED: "НЕПОДТВЕРЖДЕНО"
+};

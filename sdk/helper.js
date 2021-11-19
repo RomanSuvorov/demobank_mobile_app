@@ -9,6 +9,8 @@ import { createNavigationContainerRef } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { Easing } from "react-native-reanimated";
 
+import { MONTHS_LIST } from '../styles/constants';
+
 // redux
 export const createReduxStore = _configureStore;
 function _configureStore(reducers) {
@@ -55,11 +57,13 @@ export const StatusBarHeight = Platform.select({
 
 export const deviceSize = { height, width };
 
+
 // styles
 export const getStyle = (styles, animatedStyles, depend) => useMemo(
   () => [styles, animatedStyles],
   [depend]
 );
+
 
 // navigation
 export const navigationRef = createNavigationContainerRef();
@@ -69,6 +73,7 @@ export function navigate(name, params) {
     navigationRef.navigate(name, params);
   }
 }
+
 
 // storage managing
 export async function saveToDeviceStorage(key, value, options) {
@@ -83,6 +88,8 @@ export async function deleteValueFromDeviceStorage(key, options) {
   return await SecureStore.deleteItemAsync(key, options);
 }
 
+
+// ios
 export function onIOSBottomSheetIndexChange({ index, scrollingSetter, listRef }) {
   if (index === 1) {
     listRef.current.getScrollResponder().scrollTo({ y: 20, animated: true });
@@ -100,4 +107,66 @@ export function onIOSBottomSheetListScroll({ y, scrollingSetter, bsRef }) {
       easing: Easing.quad,
     });
   }
+}
+
+
+// date helpers
+function isSameDay(d1, d2) {
+  return d1.getFullYear() === d2.getFullYear()
+    && d1.getMonth() === d2.getMonth()
+    && d1.getDate() === d2.getDate();
+}
+
+function isYesterday(d1, d2) {
+  d1.setDate(d1.getDate() - 1);
+
+  return isSameDay(d1, d2);
+}
+
+function isCurrYear(d1, d2) {
+  return d1.getFullYear() === d2.getFullYear();
+}
+
+export function getTime(value, withTime = true) {
+  const date = new Date(value);
+  const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  return `${date.getDate()} ${MONTHS_LIST[date.getMonth()]} ${date.getFullYear()} ${withTime ? time : ""} (Local)`;
+}
+
+export function getTitleByDate(value) {
+  const curr = new Date();
+  const date = new Date(value);
+
+  let title = "";
+  if (isSameDay(curr, date)) {
+    title = "Сегодня";
+  } else if (isYesterday(curr, date)) {
+    title = "Вчера";
+  } else if (isCurrYear(curr, date)) {
+    title = `${date.getDate()} ${MONTHS_LIST[date.getMonth()]}`;
+  } else {
+    title = `${date.getDate()} ${MONTHS_LIST[date.getMonth()]} ${date.getFullYear()}`;
+  }
+
+  return title;
+}
+
+// transactions grouping
+export function groupingTransactionsList(list) {
+  const groupsObj = list.reduce((groups, current) => {
+    const timestampInDateFormat = new Date(current.timestamp).toJSON();
+    const dateWithoutTime = timestampInDateFormat.split('T')[0];
+
+    groups[dateWithoutTime] = groups[dateWithoutTime] || [];
+    groups[dateWithoutTime].push(current);
+
+    return groups;
+  }, {});
+
+  return Object.keys(groupsObj).map((date) => {
+    return {
+      title: getTitleByDate(date),
+      data: groupsObj[date],
+    };
+  });
 }

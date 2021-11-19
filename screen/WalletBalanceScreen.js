@@ -21,80 +21,12 @@ import {
   StatusBarHeight,
   onIOSBottomSheetIndexChange,
   onIOSBottomSheetListScroll,
+  groupingTransactionsList,
 } from '../sdk/helper';
-import { SCREEN_NAMES, DEFAULT_RESOURCES } from '../styles/constants';
+import { SCREEN_NAMES } from '../styles/constants';
 import { active05 } from '../styles/color.theme';
 
 const { width, height } = deviceSize;
-
-const MOCK_DATA = [
-  {
-    title: "Сегодня",
-    data: [{ title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 1, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" }],
-  },
-  {
-    title: "Вчера",
-    data: [
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "34.865", curr: "BTC", id: 2, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-      { title: "Ethereum", subTitle: "DeMo Bank", sum: "2.343", curr: "ETH", id: 3, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-    ],
-  },
-  {
-    title: "20 мая",
-    data: [
-      { title: "SomeCoin", subTitle: "DeMo Bank", sum: "4.865", curr: "SMC", id: 4, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-64.865", curr: "BTC", id: 5, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-    ],
-  },
-  {
-    title: "20 мая 2020",
-    data: [
-      { title: "Another", subTitle: "Very loooooooooooooooooooooong text of transaction", sum: "-34.865", curr: "ACO", id: 6, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 7, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-    ],
-  },
-  {
-    title: "10 мая 2020",
-    data: [
-      { title: "Another", subTitle: "Very loooooooooooooooooooooong text of transaction", sum: "-34.865", curr: "ACO", id: 8, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 9, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-    ],
-  },
-  {
-    title: "1 мая 2020",
-    data: [
-      { title: "Another", subTitle: "Very loooooooooooooooooooooong text of transaction", sum: "-34.865", curr: "ACO", id: 10, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 11, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 12, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 13, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.865", curr: "BTC", id: 14, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-      { title: "Bitcoin", subTitle: "DeMo Bank", sum: "-34.864", curr: "BTC", id: 15, svgUri: DEFAULT_RESOURCES.graphCoinSvgUri, url: "https://google.com" },
-    ],
-  },
-];
-
-const MOCK = [
-  {
-    timestamp: 1636120338000,
-    amount: 200,
-  },
-  {
-    timestamp: 1636130338000,
-    amount: 200,
-  },
-  {
-    timestamp: 1636502340000, // 2021-11-09 23 59 00
-    amount: 200,
-  },
-  {
-    timestamp: 1636502400000, // 2021-11-10 00 00 00
-    amount: 200,
-  },
-  {
-    timestamp: 1636416000000, // 2021-11-09 00 00 00
-    amount: 200,
-  },
-]
 
 export const WalletBalanceScreen = React.memo(({
   navigation,
@@ -103,11 +35,17 @@ export const WalletBalanceScreen = React.memo(({
   bottomSheetRef,
 }) => {
   const listRef = useRef(null);
+  const address = useSelector(state => state.wallet.address);
+  const balance = useSelector(state => state.wallet.balance);
   const transactions = useSelector(state => state.wallet.transactions);
   const [formattedTransactions, setFormattedTransactions] = useState([]);
   const [listScrollEnabled, setListScrollEnabled] = useState(false);
-
   const snapPoints = useMemo(() => [GLOB_VAR.INITIAL_SNAP_POINT, GLOB_VAR.SECOND_SNAP_POINT_BALANCE], []);
+
+  useEffect(() => {
+    const formattedList = groupingTransactionsList(transactions);
+    setFormattedTransactions(formattedList);
+  }, [transactions]);
 
   const animationOfEmptyImage = useAnimatedStyle(() => ({
     height: interpolate(
@@ -128,44 +66,8 @@ export const WalletBalanceScreen = React.memo(({
     ]
   }));
 
-
-
-  const getTitleByDayAmount = (dayAmount) => {
-    const today = new Date();
-    const yesterday = new Date();
-    yesterday.setDate(today.getDate() - 1);
-
-    const date = new Date(1000 * 60 * 60 * 24 * dayAmount);
-    // console.log(date.toLocaleDateString());
-  };
-
-  const handleFormatList = (list) => {
-    const groupedDataObj = MOCK.reduce((result, current) => {
-      let date = new Date(current.timestamp);
-      date = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
-      result[date] = result[date] || [];
-      result[date].push(current);
-      return result;
-    }, {});
-
-    let result = [];
-    for (const value in groupedDataObj) {
-      result.push({ title: getTitleByDayAmount(value), data: groupedDataObj[value] });
-    }
-
-    // console.log('result', result);
-  };
-
-
-
-  useEffect(() => {
-    const formattedList = handleFormatList(transactions);
-    // console.log(formattedList);
-    // setFormattedTransactions(formattedList);
-  }, []);
-
-  const handleGetDetails = ({ id, url }) => {
-    navigation.navigate(SCREEN_NAMES.DETAILS_SCREEN, { url: url, id: id });
+  const handleGetDetails = (transaction) => {
+    navigation.navigate(SCREEN_NAMES.DETAILS_SCREEN, { transaction: transaction });
   };
 
   const handleBottomSheetIndexChange = (index) => {
@@ -193,13 +95,15 @@ export const WalletBalanceScreen = React.memo(({
   return (
     <View style={styles.container}>
       <BalanceSheet
+        address={address}
+        balance={balance}
         currentIndex={currentIndex}
       />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         backgroundComponent={CustomBottomSheetBackground}
-        handleComponent={() => !!MOCK_DATA && MOCK_DATA.length > 0 ? (
+        handleComponent={() => formattedTransactions.length > 0 ? (
           <CustomHandleBS Icon={<EvilIcons name="pointer" size={40} color={active05} />} />
         ) : null}
         enableHandlePanningGesture={true}
@@ -215,10 +119,10 @@ export const WalletBalanceScreen = React.memo(({
           alwaysBounceVertical={false}
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={16}
-          sections={[]}
-          keyExtractor={item => item.id}
+          sections={formattedTransactions}
+          keyExtractor={(item) => item.block}
           renderSectionHeader={({ section: { title } }) => <TransactionHeader title={title} />}
-          renderItem={({ item }) => <TransactionItem item={item} onPress={handleGetDetails} />}
+          renderItem={({ item }) => <TransactionItem item={item} address={address} onPress={handleGetDetails} />}
           ListEmptyComponent={(
             <EmptyList
               text={"Транзакции на этом кошелке еще не производилось"}

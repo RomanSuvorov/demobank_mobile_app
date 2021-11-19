@@ -50,12 +50,12 @@ export function Card({ scrollX, paginationIndex, goToSlide = () => {} }) {
       {
         rotateY: `${cardAnimatedValue.value}deg`
       },
-      { perspective: 600 },
+      { perspective: 1000 },
       {
         scale: interpolate(
           progress.value,
-          [0, 0.2, 0.4, 1],
-          [1, 0.8, 0.9, 1],
+          [0, 0.5, 1],
+          [1, 0.9, 1],
           Extrapolate.CLAMP,
         )
       }
@@ -66,12 +66,12 @@ export function Card({ scrollX, paginationIndex, goToSlide = () => {} }) {
       {
         rotateY: `${cardAnimatedValue.value + 180}deg`,
       },
-      { perspective: -600 },
+      { perspective: 1000 },
       {
         scale: interpolate(
           progress.value,
-          [0, 0.2, 0.4, 1],
-          [1, 0.8, 0.9, 1]
+          [0, 0.5, 1],
+          [1, 0.9, 1]
         )
       }
     ],
@@ -107,6 +107,7 @@ export function Card({ scrollX, paginationIndex, goToSlide = () => {} }) {
   };
 
   const handleCopyAddress = () => {
+    if (isFront) return;
     setString(address);
     Alert.alert("Address copied");
   };

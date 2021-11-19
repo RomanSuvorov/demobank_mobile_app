@@ -5,7 +5,6 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { useSelector } from 'react-redux';
 import { setString } from 'expo-clipboard';
 
 import { CircleBtn } from './CircleBtn';
@@ -17,10 +16,8 @@ import { deviceSize, getStyle } from '../sdk/helper';
 const { width, height } = deviceSize;
 const HORIZONTAL_PADDING_BALANCE = width * 0.093;
 
-export function BalanceSheet({ currentIndex }) {
+export function BalanceSheet({ address, balance, currentIndex }) {
   const [widthOfBalanceString, setWidthOfBalanceString] = useState(0);
-  const address = useSelector(state => state.wallet.address);
-  const balance = useSelector(state => state.wallet.balance);
 
   const actionsContainerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(

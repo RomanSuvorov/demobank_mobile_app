@@ -4,79 +4,94 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { CustomText } from '../CustomText';
 import { Circle } from '../CircleBtn';
 import { greyPrimary } from '../../styles/color.theme';
+import { DEFAULT_RESOURCES } from '../../styles/constants';
 
-export function TransactionItem({ item, onPress, withShadow }) {
+export function TransactionItem({ item, address, onPress }) {
+  const isTransactionOut = () => {
+    return item.ownerAddress === address;
+  };
+
+  const handlePress = () => {
+    onPress(item);
+  };
+
   return (
     <TouchableOpacity
       style={[styles.transactionItem, item.sum ? styles.transactionItemPaddingLarge : styles.transactionItemPaddingSmall]}
-      onPress={() => onPress(item)}
+      onPress={handlePress}
     >
-      {!!item.logo && (
-        <Circle
-          size={45}
-          contentSize={33}
-          label={null}
-          imageSource={item.logo}
-          withShadow={withShadow}
-        />
-      )}
-
-      {!!item.svgUri && (
-        <Circle
-          size={45}
-          contentSize={33}
-          label={null}
-          svgUri={item.svgUri}
-          withShadow={withShadow}
-        />
-      )}
-
-      {!!item.svg && (
-        <Circle
-          size={45}
-          contentSize={24}
-          label={null}
-          Icon={item.svg}
-          withShadow={withShadow}
-        />
-      )}
+      {
+        item.hasOwnProperty("body")
+        && item.body.hasOwnProperty("putInfo")
+        && item.body.putInfo.hasOwnProperty("putLogo") ? (
+          <Circle
+            size={45}
+            contentSize={33}
+            lable={null}
+            withShadow={true}
+            imageSource={{ uri: item.body.putInfo.putLogo }}
+          />
+        ) : (
+          <Circle
+            size={45}
+            contentSize={33}
+            label={null}
+            svgUri={DEFAULT_RESOURCES.graphCoinSvgUri}
+            withShadow={true}
+          />
+        )
+      }
 
       <View style={styles.transactionItemInfo}>
         <CustomText
           size={item.sum ? 14 : 12}
           numberOfLines={1}
         >
-          {item.title}
+          {
+            item.hasOwnProperty("body")
+            && item.body.hasOwnProperty("putInfo")
+            && item.body.putInfo.hasOwnProperty("putName") ? (
+              item.body.putInfo.putName
+            ) : "Неизвестный токен"
+          }
         </CustomText>
         {
-          item.subTitle && (
+          item.confirmations > 0 && (
             <CustomText
               size={12}
               numberOfLines={1}
               color={"greyPrimary"}
             >
-              {item.subTitle}
+              {item.confirmed ? "Подтверждено" : "Неподтверждено"}
             </CustomText>
           )
         }
       </View>
       {
-        item.sum && (
+        item.hasOwnProperty("body")
+        && item.body.hasOwnProperty("amount") && (
           <View style={styles.transactionItemAmount}>
             <CustomText
               size={16}
               type={'bold'}
-              color={item.sum[0] === "-" ? "danger" : "success"}
+              color={isTransactionOut() ? "danger" : "success"}
               numberOfLines={1}
             >
-              {item.sum}
+              {`${isTransactionOut() ? "-" : ""}${item.body.amount}`}
             </CustomText>
-            <CustomText
-              size={16}
-              type={'bold'}
-            >
-              &nbsp;{item.curr}
-            </CustomText>
+            {
+              item.hasOwnProperty("body")
+              && item.body.hasOwnProperty("putInfo")
+              && item.body.putInfo.hasOwnProperty("putSymbol")
+              && (
+                <CustomText
+                  size={16}
+                  type={'bold'}
+                >
+                    &nbsp;{item.body.putInfo.putSymbol}
+                </CustomText>
+              )
+            }
           </View>
         )
       }

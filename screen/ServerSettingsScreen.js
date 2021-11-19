@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 
 import { CustomInput } from '../component/CustomInput';
 import { CustomButton } from '../component/CustomButton';
+import { InfoRow } from '../component/InfoRow';
 import { saveServerAction } from '../store/app/actions';
 import { StatusBarHeight } from '../sdk/helper';
 import { dark } from '../styles/color.theme';
@@ -56,22 +57,16 @@ export function ServerSettingsScreen({ navigation }) {
         onChangeText={handleChangeNetwork}
       />
 
-      <CustomInput
-        label={"Количество узлов:"}
-        editable={false}
-        direction={'row'}
-        containerStyle={[styles.readOnlyInputContainer]}
-        inputStyle={styles.readOnlyInput}
+      <InfoRow
+        label={"Количество узлов"}
         value={gnn}
+        widthBorder={false}
       />
-
-      <CustomInput
-        label={"Статус сервера:"}
-        editable={false}
-        direction={'row'}
-        containerStyle={[styles.inputContainer, styles.readOnlyInputContainer]}
-        inputStyle={styles.readOnlyInput}
+      <InfoRow
+        label={"Статус сервера"}
         value={status}
+        containerStyle={styles.inputContainer}
+        widthBorder={false}
       />
 
       <CustomButton
