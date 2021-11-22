@@ -3,7 +3,7 @@ import { BackHandler } from 'react-native';
 
 import Types from './types';
 import { saveToDeviceStorage, getValueFromDeviceStorage } from '../../sdk/helper';
-import { createWallet } from '../../sdk/wallet';
+import { createWallet, importWalletPrivateKey } from '../../sdk/wallet';
 import { showModalAction } from '../modal/actions';
 import { navigate } from '../../sdk/helper';
 import { SECURE_STORE_NAMES, SCREEN_NAMES } from '../../styles/constants';
@@ -27,10 +27,6 @@ export const generateWalletAction = ({ isAuthenticated }) => async (dispatch, ge
       }, 0);
     });
 
-
-    // TODO: check what is wrong with this (UI button freeze)
-    // const { address, privateKey} = createWallet();
-
     // get all previous wallets from secure store
     const walletsStringified = await getValueFromDeviceStorage(SECURE_STORE_NAMES.WALLETS);
     const wallets = JSON.parse(walletsStringified) || [];
@@ -48,7 +44,7 @@ export const generateWalletAction = ({ isAuthenticated }) => async (dispatch, ge
       // push user to signed in app with this (newest) wallet
       dispatch({ type: Types.CHANGE_AUTHENTICATED, payload: true });
     }
-    dispatch(showModalAction({ type: "success", text: "Ваш кошелек был успешно создан." }));
+    dispatch(showModalAction({ type: "success", text: "Ваш кошелек был успешно создан" }));
   } catch (e) {
     console.error(e);
     dispatch({ type: Types.WALLET_LOAD_ERROR, payload: e });
@@ -58,13 +54,60 @@ export const generateWalletAction = ({ isAuthenticated }) => async (dispatch, ge
   }
 };
 
-export const importWalletAction = () => async (dispatch) => {
+export const importWalletAction = ({ isAuthenticated, privateKey }) => async (dispatch) => {
   dispatch({ type: Types.WALLET_LOAD_START });
 
   try {
-    console.log("import");
+    const importedWallet = {
+      address: undefined,
+      privateKey: undefined,
+      publicKey: undefined,
+    };
+
+    // import wallet
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        const result = importWalletPrivateKey(privateKey);
+        importedWallet.address = result.address;
+        importedWallet.privateKey = result.privateKey;
+        importedWallet.publicKey = result.publicKey;
+        resolve();
+      }, 0);
+    });
+
+    // get all previous wallets from secure store
+    const walletsStringified = await getValueFromDeviceStorage(SECURE_STORE_NAMES.WALLETS);
+    const wallets = JSON.parse(walletsStringified) || [];
+
+    if (isAuthenticated) {
+      const isWalletExist = wallets.find(w => w.address === importedWallet.address);
+      if (isWalletExist) {
+        // push user to wallets lst
+        navigate(SCREEN_NAMES.SETTINGS_WALLET_LIST);
+        dispatch(showModalAction({ type: "success", text: "Импортируемый кошелек уже есть в списке Ваших кошельков" }));
+        return;
+      }
+    }
+
+    // concatenate all previous wallets from secure store with new one
+    const newWallets = [...wallets, { ...importedWallet, name: `Основной кошелек ${wallets.length + 1}` }];
+    // save new wallets list to secure store for next sign in process (startApp action)
+    await saveToDeviceStorage(SECURE_STORE_NAMES.WALLETS, JSON.stringify(newWallets));
+    dispatch({ type: Types.WALLET_LIST_LOAD_SUCCESS, payload: newWallets });
+    await dispatch(getWalletDataAction({ address: importedWallet.address }));
+
+    if (isAuthenticated) {
+      // push user to wallets lst
+      navigate(SCREEN_NAMES.SETTINGS_WALLET_LIST);
+    } else {
+      // push user to signed in app with this (newest) wallet
+      dispatch({ type: Types.CHANGE_AUTHENTICATED, payload: true });
+    }
+    dispatch(showModalAction({ type: "success", text: "Ваш кошелек был успешно импортирован" }));
   } catch (e) {
+    console.error(e);
     dispatch({ type: Types.WALLET_LOAD_ERROR, payload: e });
+    dispatch(showModalAction({ type: "error", text: "Возникла проблемка при импорте кошелька. Упсь" }));
   } finally {
     dispatch({ type: Types.WALLET_LOAD_FINISH });
   }

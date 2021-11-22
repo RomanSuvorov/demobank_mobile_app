@@ -61,7 +61,7 @@ export function DetailsTransactionScreen({ navigation, route }) {
         }
       </View>
 
-      <View style={styles.addressesBox}>
+      <View style={styles.infoWrapper}>
         <InfoRow
           label={"Hash"}
           value={transaction.hash}
@@ -87,7 +87,7 @@ export function DetailsTransactionScreen({ navigation, route }) {
         widthBorder={false}
       />
 
-      <View style={styles.addressesBox}>
+      <View style={styles.infoWrapper}>
         <InfoRow
           label={"From"}
           value={transaction.body.ownerAddress}
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 24,
   },
-  addressesBox: {
+  infoWrapper: {
     backgroundColor: lightDark,
     marginVertical: 12,
     marginHorizontal: -12,

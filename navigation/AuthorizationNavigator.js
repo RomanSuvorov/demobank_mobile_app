@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AuthScreen as AuthStartScreen } from '../screen/AuthScreen';
 import { GenerateWalletScreen } from '../screen/GenerateWalletScreen';
+import { ImportWalletScreen } from '../screen/ImportWalletScreen';
 import { BackNavigation } from '../component/BackNavigation';
 import { active, lightDark } from '../styles/color.theme';
 import { SCREEN_NAMES } from '../styles/constants';
@@ -19,26 +20,31 @@ export function AuthorizationNavigator() {
           animation: Platform.OS === "ios" ? "default" : "slide_from_right",
         }}
       />
-      <AuthStack.Screen
-        name={SCREEN_NAMES.GENERATE_WALLET_SCREEN}
-        component={GenerateWalletScreen}
-        options={({ navigation }) => ({
-          headerShown: true,
-          animation: Platform.OS === "ios" ? "default" : "slide_from_right",
-          title: null,
-          headerTintColor: active,
-          headerLeft: (props) => (
-            <BackNavigation
-              title={"Назад"}
-              navigation={navigation}
-              {...props}
-            />
-          ),
-          headerTransparent: true,
-          headerStyle: { backgroundColor: lightDark },
-          headerShadowVisible: false,
-        })}
-      />
+      <AuthStack.Group screenOptions={({ navigation }) => ({
+        headerShown: true,
+        animation: Platform.OS === "ios" ? "default" : "slide_from_right",
+        title: null,
+        headerTintColor: active,
+        headerLeft: (props) => (
+          <BackNavigation
+            title={"Назад"}
+            navigation={navigation}
+            {...props}
+          />
+        ),
+        headerTransparent: true,
+        headerStyle: { backgroundColor: lightDark },
+        headerShadowVisible: false,
+      })}>
+        <AuthStack.Screen
+          name={SCREEN_NAMES.GENERATE_WALLET_SCREEN}
+          component={GenerateWalletScreen}
+        />
+        <AuthStack.Screen
+          name={SCREEN_NAMES.IMPORT_WALLET_SCREEN}
+          component={ImportWalletScreen}
+        />
+      </AuthStack.Group>
     </AuthStack.Navigator>
   );
 }
