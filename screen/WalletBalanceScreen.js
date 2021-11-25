@@ -37,6 +37,8 @@ export const WalletBalanceScreen = React.memo(({
   const listRef = useRef(null);
   const address = useSelector(state => state.wallet.address);
   const balance = useSelector(state => state.wallet.balance);
+  // TODO: change it when wallet has puts
+  const putSymbol = useSelector(state => state.wallet.putSymbol);
   const transactions = useSelector(state => state.wallet.transactions);
   const [formattedTransactions, setFormattedTransactions] = useState([]);
   const [listScrollEnabled, setListScrollEnabled] = useState(false);
@@ -97,7 +99,9 @@ export const WalletBalanceScreen = React.memo(({
       <BalanceSheet
         address={address}
         balance={balance}
+        putSymbol={putSymbol}
         currentIndex={currentIndex}
+        navigation={navigation}
       />
       <BottomSheet
         ref={bottomSheetRef}

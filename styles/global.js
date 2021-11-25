@@ -27,7 +27,7 @@ export const PROFILE_VERTICAL_MARGIN = 30;
 export const PROFILE_TEXT_INPUT_HEIGHT = 27;
 export const HEIGHT_OF_PROFILE_BOX = PROFILE_TEXT_INPUT_HEIGHT * 2;
 
-export const PADDING_TOP_FROM_NAVIGATION_HEADER = 12;
+export const PADDING_TOP_FROM_NAVIGATION_HEADER = 24;
 
 export const GLOB_VAR = {
   // wallet

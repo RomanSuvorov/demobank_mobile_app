@@ -12,11 +12,12 @@ import { CustomText } from './CustomText';
 import { CopyAddressIcon, FillUpWalletIcon, SendToWalletIcon, WalletsIcon, ArrowDownIcon } from './Icons';
 import { WALLETS_ICON_BOX_HEIGHT, ACTIONS_BOX_HEIGHT, HEIGHT_OF_BALANCE_CONTENT } from '../styles/global';
 import { deviceSize, getStyle } from '../sdk/helper';
+import { SCREEN_NAMES } from '../styles/constants';
 
 const { width, height } = deviceSize;
 const HORIZONTAL_PADDING_BALANCE = width * 0.093;
 
-export function BalanceSheet({ address, balance, currentIndex }) {
+export function BalanceSheet({ address, balance, putSymbol, currentIndex, navigation }) {
   const [widthOfBalanceString, setWidthOfBalanceString] = useState(0);
 
   const actionsContainerAnimatedStyle = useAnimatedStyle(() => ({
@@ -92,6 +93,10 @@ export function BalanceSheet({ address, balance, currentIndex }) {
     setWidthOfBalanceString(width);
   }
 
+  const handleGoToSendScreen = () => {
+    navigation.navigate(SCREEN_NAMES.SEND_SETUP_SCREEN);
+  };
+
   const handleCopyAddress = () => {
     setString(address);
     Alert.alert("Address copied");
@@ -141,7 +146,7 @@ export function BalanceSheet({ address, balance, currentIndex }) {
               type={'bold'}
               style={[styles.balancePriceCurr]}
             >
-              {"BTC"}
+              {putSymbol}
             </CustomText>
           </Animated.View>
           <Animated.View style={balancePriceEqualToStyle}>
@@ -184,6 +189,7 @@ export function BalanceSheet({ address, balance, currentIndex }) {
         <CircleBtn
           label={"Перевести\n на кошелек "}
           Icon={SendToWalletIcon}
+          onPress={handleGoToSendScreen}
         />
         <CircleBtn
           label={"Копировать\n адресс "}

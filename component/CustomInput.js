@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
 });
 
 CustomInput.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   label: PropTypes.string,
   placeholder: PropTypes.string,
   placeholderTextColor: PropTypes.string,

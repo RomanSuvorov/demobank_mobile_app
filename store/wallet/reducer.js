@@ -14,6 +14,7 @@ const initialStore = {
   address: null,
   balance: 0,
   transactions: [],
+  putSymbol: "GRPH"
 };
 
 const reducer = {

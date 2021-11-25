@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/elements';
 import { useSelector, useDispatch } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -15,7 +14,6 @@ export function ImportWalletScreen({}) {
   const [privateKey, setPrivateKey] = useState("");
   const loading = useSelector(state => state.wallet.loading);
   const isAuthenticated = useSelector(state => state.wallet.isAuthenticated);
-  const headerHeight = useHeaderHeight();
   const dispatch = useDispatch();
 
   const handleChangeInput = (value) => {
@@ -28,7 +26,13 @@ export function ImportWalletScreen({}) {
   };
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, { marginTop: headerHeight }]}>
+    <ScrollView
+      style={[styles.container]}
+      contentContainerStyle={[styles.contentContainer]}
+      overScrollMode={"never"}
+      bounces={false}
+      keyboardShouldPersistTap={"always"}
+    >
       <View style={styles.headerText}>
         <CustomText
           size={12}
@@ -81,15 +85,17 @@ export function ImportWalletScreen({}) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    backgroundColor: dark,
+  },
+  contentContainer: {
     paddingTop: PADDING_TOP_FROM_NAVIGATION_HEADER,
     paddingHorizontal: 18,
-    justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: dark,
+    flex: 1,
   },
   headerText: {
     paddingHorizontal: 36,
+    marginBottom: 18,
   },
   inputBox: {
     width: "100%",
@@ -98,6 +104,7 @@ const styles = StyleSheet.create({
     backgroundColor: lightDark,
     borderRadius: 15,
     padding: 18,
+    marginBottom: 18,
   },
   infoWrapper: {
     padding: 24,
@@ -106,6 +113,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 18,
   },
   footerWrapper: {
     marginBottom: 60,

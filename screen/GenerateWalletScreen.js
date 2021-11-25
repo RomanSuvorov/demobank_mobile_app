@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { useHeaderHeight } from '@react-navigation/elements';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { CustomText } from '../component/CustomText';
@@ -16,7 +15,6 @@ const { width, height } = deviceSize;
 
 export function GenerateWalletScreen({}) {
   const [isAgreed, setIsAgreed] = useState(false);
-  const headerHeight = useHeaderHeight();
   const loading = useSelector(state => state.wallet.loading);
   const isAuthenticated = useSelector(state => state.wallet.isAuthenticated);
   const dispatch = useDispatch();
@@ -28,7 +26,7 @@ export function GenerateWalletScreen({}) {
   const handleChangeAgreeState = (checked) => setIsAgreed(checked);
 
   return (
-    <View style={[styles.container, { marginTop: headerHeight }]}>
+    <View style={[styles.container]}>
       <View style={styles.headerText}>
         <CustomText
           size={12}

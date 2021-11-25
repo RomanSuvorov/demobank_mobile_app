@@ -118,7 +118,7 @@ export function SettingsWalletListScreen({ navigation }) {
                 </View>
 
                 <GoToButton
-                  to={SCREEN_NAMES.AUTHORIZATION_NAVIGATOR}
+                  to={SCREEN_NAMES.AUTH_START_SCREEN}
                   style={styles.settingsButton}
                   Icon={<AddIcon />}
                 >

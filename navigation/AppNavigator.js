@@ -4,11 +4,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { TabNavigator } from './TabNavigator';
 import { DetailsTransactionScreen } from '../screen/DetailsTransactionScreen';
+import { SendSetupScreen } from '../screen/SendSetupScreen';
+import { SendConfirmScreen } from '../screen/SendConfirmScreen';
 import { GlobalSettingsScreen } from '../screen/GlobalSettingsScreen';
 import { SettingsWalletItemScreen } from '../screen/SettingsWalletItemScreen';
 import { ServerSettingsScreen } from '../screen/ServerSettingsScreen';
 import { SecuritySettingsScreen } from '../screen/SecuritySettingsScreen';
-import { AuthorizationNavigator } from './AuthorizationNavigator';
+import { AuthScreen } from '../screen/AuthScreen';
+import { GenerateWalletScreen } from '../screen/GenerateWalletScreen';
+import { ImportWalletScreen } from '../screen/ImportWalletScreen';
 import { WalletPublicKeyScreen } from '../screen/WalletPublicKeyScreen';
 import { WalletPrivateKeyScreen } from '../screen/WalletPrivateKeyScreen';
 import { BackNavigation } from '../component/BackNavigation';
@@ -48,6 +52,26 @@ export function AppNavigator() {
               headerTitleAlign: "center",
               headerTitleStyle: styles.headerFontStyle,
               animation: Platform.OS === "ios" ? "default" : "fade",
+              presentation: "formSheet",
+            }}
+          />
+          <AppStack.Screen
+            name={SCREEN_NAMES.SEND_SETUP_SCREEN}
+            component={SendSetupScreen}
+            options={{
+              title: "Перевод",
+              headerTitleAlign: "center",
+              headerTitleStyle: styles.headerFontStyle,
+              presentation: "formSheet",
+            }}
+          />
+          <AppStack.Screen
+            name={SCREEN_NAMES.SEND_CONFIRM_SCREEN}
+            component={SendConfirmScreen}
+            options={{
+              title: "Перевод",
+              headerTitleAlign: "center",
+              headerTitleStyle: styles.headerFontStyle,
               presentation: "formSheet",
             }}
           />
@@ -112,23 +136,42 @@ export function AppNavigator() {
           />
         </AppStack.Group>
 
-        <AppStack.Screen
-          name={SCREEN_NAMES.AUTHORIZATION_NAVIGATOR}
-          component={AuthorizationNavigator}
-          options={({ navigation }) => ({
-            animation: Platform.OS === "ios" ? "default" : "slide_from_right",
-            title: "Добавление кошелька",
-            headerTitleAlign: "center",
-            headerTitleStyle: styles.headerFontStyle,
-            headerLeft: (props) => (
-              <BackNavigation
-                title={"К списку"}
-                navigation={navigation}
-                {...props}
-              />
-            ),
-          })}
-        />
+        {/* adding wallet */}
+        <AppStack.Group screenOptions={({ navigation }) => ({
+          animation: Platform.OS === "ios" ? "default" : "slide_from_right",
+          title: "Добавление кошелька",
+          headerTitleAlign: "center",
+          headerTitleStyle: styles.headerFontStyle,
+          headerLeft: (props) => (
+            <BackNavigation
+              title={"Назад"}
+              navigation={navigation}
+              {...props}
+            />
+          ),
+        })}>
+          <AppStack.Screen
+            name={SCREEN_NAMES.AUTH_START_SCREEN}
+            component={AuthScreen}
+            options={({ navigation }) => ({
+              headerLeft: (props) => (
+                <BackNavigation
+                  title={"К списку"}
+                  navigation={navigation}
+                  {...props}
+                />
+              ),
+            })}
+          />
+          <AppStack.Screen
+            name={SCREEN_NAMES.GENERATE_WALLET_SCREEN}
+            component={GenerateWalletScreen}
+          />
+          <AppStack.Screen
+            name={SCREEN_NAMES.IMPORT_WALLET_SCREEN}
+            component={ImportWalletScreen}
+          />
+        </AppStack.Group>
       </AppStack.Group>
     </AppStack.Navigator>
   )
