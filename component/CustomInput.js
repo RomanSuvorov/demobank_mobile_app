@@ -4,20 +4,22 @@ import { View, TextInput, StyleSheet } from 'react-native';
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 import { CustomText } from './CustomText';
-import { active, greySecondary, textWhite } from '../styles/color.theme';
+import { CustomButton } from './CustomButton';
+import { active, greySecondary, textWhite, danger } from '../styles/color.theme';
 
 export const CustomInput = ({
   value,
   label,
   placeholder,
-  direction,
   editable,
   autoFocus,
+  buttons,
   selectionColor,
   containerStyle,
   inputStyle,
   isInsideBottomSheet,
   onChangeText,
+  error,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -31,45 +33,75 @@ export const CustomInput = ({
       style={[
         styles.container,
         containerStyle,
-        { flexDirection: direction },
       ]}
     >
       <CustomText
-        size={direction === "column" ? 12 : 14}
+        size={12}
         color={'greySecondary'}
-        style={[styles.label, { lineHeight: direction === "column" ? 14 : 42 }]}
+        style={[styles.label]}
       >
         {label}
       </CustomText>
+      <View style={styles.inputWrapper}>
+        {
+          isInsideBottomSheet ? (
+            <BottomSheetTextInput
+              value={value}
+              defaultValue={props.defaultValue}
+              placeholder={placeholder}
+              editable={editable}
+              autoFocus={autoFocus}
+              selectionColor={selectionColor}
+              style={[styles.input, { borderBottomColor: error ? danger : (isFocused ? active : textWhite) }, inputStyle]}
+              onFocus={handleInputFocus}
+              onBlur={handleInputBlur}
+              onChangeText={onChangeText}
+              {...props}
+            />
+          ) : (
+            <TextInput
+              value={value}
+              defaultValue={props.defaultValue}
+              placeholder={placeholder}
+              editable={editable}
+              autoFocus={autoFocus}
+              selectionColor={selectionColor}
+              style={[styles.input, { borderBottomColor: error ? danger : (isFocused ? active : textWhite) }, inputStyle]}
+              onFocus={handleInputFocus}
+              onBlur={handleInputBlur}
+              onChangeText={onChangeText}
+              {...props}
+            />
+          )
+        }
+        {
+          buttons.length > 0 && (
+            <View style={styles.btnWrapper}>
+              {
+                buttons.map(({ text, ...btnProps }) => (
+                  <CustomButton
+                    key={text}
+                    style={[styles.btnStyle]}
+                    textColor={error ? "danger" : "active"}
+                    {...btnProps}
+                  >
+                    {text}
+                  </CustomButton>
+                ))
+              }
+            </View>
+          )
+        }
+      </View>
       {
-        isInsideBottomSheet ? (
-          <BottomSheetTextInput
-            value={props.defaultValue ? null : value}
-            defaultValue={value}
-            placeholder={placeholder}
-            editable={editable}
-            autoFocus={autoFocus}
-            selectionColor={selectionColor}
-            style={[styles.input, { borderBottomColor: isFocused ? active : textWhite }, inputStyle]}
-            onFocus={handleInputFocus}
-            onBlur={handleInputBlur}
-            onChangeText={onChangeText}
-            {...props}
-          />
-        ) : (
-          <TextInput
-            value={props.defaultValue ? null : value}
-            defaultValue={value}
-            placeholder={placeholder}
-            editable={editable}
-            autoFocus={autoFocus}
-            selectionColor={selectionColor}
-            style={[styles.input, { borderBottomColor: isFocused ? active : textWhite }, inputStyle]}
-            onFocus={handleInputFocus}
-            onBlur={handleInputBlur}
-            onChangeText={onChangeText}
-            {...props}
-          />
+        !!error && (
+          <CustomText
+            style={styles.errorStyle}
+            size={12}
+            color={'danger'}
+          >
+            {error}
+          </CustomText>
         )
       }
     </View>
@@ -77,10 +109,16 @@ export const CustomInput = ({
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flexDirection: "column",
+  },
   label: {
     paddingHorizontal: 12,
     marginBottom: 6,
+    lineHeight: 14,
+  },
+  inputWrapper: {
+    flexDirection: "row",
   },
   input: {
     height: 42,
@@ -91,6 +129,24 @@ const styles = StyleSheet.create({
     fontFamily: "Play-Regular",
     fontSize: 14,
   },
+  btnWrapper: {
+    flexDirection: "row",
+    position: "absolute",
+    right: 12,
+    height: "100%",
+    justifyContent: "center",
+  },
+  btnStyle: {
+    minWidth: 36,
+    paddingHorizontal: 6,
+    paddingVertical: 12,
+    marginLeft: 6,
+    backgroundColor: "transparent",
+  },
+  errorStyle: {
+    marginTop: 3,
+    paddingHorizontal: 12,
+  },
 });
 
 CustomInput.propTypes = {
@@ -98,14 +154,15 @@ CustomInput.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   placeholderTextColor: PropTypes.string,
-  direction: PropTypes.oneOf(['row', 'column']),
   editable: PropTypes.bool,
   autoFocus: PropTypes.bool,
+  buttons: PropTypes.arrayOf(PropTypes.object),
   selectionColor: PropTypes.string,
   containerStyle: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
   inputStyle: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
   isInsideBottomSheet: PropTypes.bool,
   onChangeText: PropTypes.func,
+  error: PropTypes.string,
 };
 
 CustomInput.defaultProps = {
@@ -113,12 +170,13 @@ CustomInput.defaultProps = {
   label: null,
   placeholder: "",
   placeholderTextColor: greySecondary,
-  direction: 'column',
   editable: true,
   autoFocus: false,
+  buttons: [],
   selectionColor: active,
   containerStyle: {},
   inputStyle: {},
   isInsideBottomSheet: false,
   onChangeText: () => {},
+  error: "",
 };
