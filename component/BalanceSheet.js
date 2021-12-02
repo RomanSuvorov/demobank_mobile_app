@@ -192,7 +192,7 @@ export function BalanceSheet({ address, balance, putSymbol, currentIndex, naviga
           onPress={handleGoToSendScreen}
         />
         <CircleBtn
-          label={"Копировать\n адресс "}
+          label={"Копировать\n адрес "}
           Icon={CopyAddressIcon}
           onPress={handleCopyAddress}
         />

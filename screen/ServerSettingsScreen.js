@@ -44,7 +44,7 @@ export function ServerSettingsScreen({ navigation }) {
       <CustomInput
         label={"URL-адрес конфигурации"}
         placeholder={"config URL"}
-        defaultValue={configUrlTemp}
+        value={configUrlTemp}
         containerStyle={styles.inputContainer}
         onChangeText={handleChangeConfigUrl}
       />
@@ -52,7 +52,7 @@ export function ServerSettingsScreen({ navigation }) {
       <CustomInput
         label={"Blockchain ID"}
         placeholder={"blockchainID"}
-        defaultValue={networkTemp}
+        value={networkTemp}
         containerStyle={styles.inputContainer}
         onChangeText={handleChangeNetwork}
       />

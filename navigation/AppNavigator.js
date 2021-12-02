@@ -10,6 +10,7 @@ import { GlobalSettingsScreen } from '../screen/GlobalSettingsScreen';
 import { SettingsWalletItemScreen } from '../screen/SettingsWalletItemScreen';
 import { ServerSettingsScreen } from '../screen/ServerSettingsScreen';
 import { SecuritySettingsScreen } from '../screen/SecuritySettingsScreen';
+import { QrScannerScreen } from '../screen/QrScannerScreen';
 import { AuthScreen } from '../screen/AuthScreen';
 import { GenerateWalletScreen } from '../screen/GenerateWalletScreen';
 import { ImportWalletScreen } from '../screen/ImportWalletScreen';
@@ -53,16 +54,18 @@ export function AppNavigator() {
               headerTitleStyle: styles.headerFontStyle,
               animation: Platform.OS === "ios" ? "default" : "fade",
               presentation: "formSheet",
+              orientation: "portrait",
             }}
           />
           <AppStack.Screen
             name={SCREEN_NAMES.SEND_SETUP_SCREEN}
             component={SendSetupScreen}
             options={{
-              title: "Перевод",
+              title: "Отправка",
               headerTitleAlign: "center",
               headerTitleStyle: styles.headerFontStyle,
               presentation: "formSheet",
+              orientation: "portrait",
             }}
           />
           <AppStack.Screen
@@ -73,6 +76,7 @@ export function AppNavigator() {
               headerTitleAlign: "center",
               headerTitleStyle: styles.headerFontStyle,
               presentation: "formSheet",
+              orientation: "portrait",
             }}
           />
           <AppStack.Screen
@@ -132,6 +136,17 @@ export function AppNavigator() {
               title: "Настройки безопасности",
               headerTitleAlign: "center",
               headerTitleStyle: styles.headerFontStyle,
+            }}
+          />
+          <AppStack.Screen
+            name={SCREEN_NAMES.QR_SCANNER_SCREEN}
+            component={QrScannerScreen}
+            options={{
+              title: "QR",
+              headerTitleAlign: "center",
+              headerTitleStyle: styles.headerFontStyle,
+              animation: Platform.OS === "ios" ? "default" : "fade",
+              presentation: "fullScreenModal",
             }}
           />
         </AppStack.Group>

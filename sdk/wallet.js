@@ -104,20 +104,24 @@ export function importWalletPrivateKey(pKeyHex){
 }
 
 export function validateAddress(address){
-	let pubKeyHash = bs58.decode(address)
+	try {
+		let pubKeyHash = bs58.decode(address)
 
-	const arrayBytesAddress = Array.from(new Uint8Array(pubKeyHash))
+		const arrayBytesAddress = Array.from(new Uint8Array(pubKeyHash))
 
-	const actualChecksum = arrayBytesAddress.slice(arrayBytesAddress.length -addressChecksumLen)
+		const actualChecksum = arrayBytesAddress.slice(arrayBytesAddress.length -addressChecksumLen)
 
-	const version = arrayBytesAddress[0]
+		const version = arrayBytesAddress[0]
 
-	pubKeyHash = pubKeyHash.slice(1, arrayBytesAddress.length -addressChecksumLen)
+		pubKeyHash = pubKeyHash.slice(1, arrayBytesAddress.length -addressChecksumLen)
 
-	const targetChecksum = Array.from(checksum(new Uint8Array([version, ...pubKeyHash])))
+		const targetChecksum = Array.from(checksum(new Uint8Array([version, ...pubKeyHash])))
 
-	const targetBuffer = Buffer.from(targetChecksum);
-	const actualBuffer = Buffer.from(actualChecksum);
+		const targetBuffer = Buffer.from(targetChecksum);
+		const actualBuffer = Buffer.from(actualChecksum);
 
-	return Buffer.compare(targetBuffer, actualBuffer) === 0
+		return Buffer.compare(targetBuffer, actualBuffer) === 0
+	} catch (e) {
+		console.error(e);
+	}
 }

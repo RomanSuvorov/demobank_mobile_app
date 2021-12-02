@@ -20,7 +20,7 @@ export function DetailsTransactionScreen({ navigation, route }) {
   return (
     <ScrollView
       overScrollMode={"never"}
-      bounces={false}
+      bounces={true}
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >

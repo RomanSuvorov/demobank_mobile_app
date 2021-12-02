@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useSharedValue } from "react-native-reanimated";
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import { EvilIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 import { Profile } from '../component/Profile';
 import { GoToButton } from '../component/GoToButton';
@@ -85,7 +85,7 @@ export function SettingsWalletListScreen({ navigation }) {
           snapPoints={snapPoints}
           backgroundComponent={CustomBottomSheetBackground}
           handleComponent={() => !!wallets && wallets.length > 0 ? (
-            <CustomHandleBS Icon={<EvilIcons name="pointer" size={40} color={active05} />} />
+            <CustomHandleBS Icon={<FontAwesome name="arrows-v" size={18} color={active05} />} />
           ) : null}
           enableHandlePanningGesture={true}
           animatedIndex={currentIndex}

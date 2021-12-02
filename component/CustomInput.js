@@ -5,7 +5,7 @@ import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 import { CustomText } from './CustomText';
 import { CustomButton } from './CustomButton';
-import { active, greySecondary, textWhite, danger } from '../styles/color.theme';
+import { active, dark, greySecondary, textWhite, danger } from '../styles/color.theme';
 
 export const CustomInput = ({
   value,
@@ -76,7 +76,7 @@ export const CustomInput = ({
         }
         {
           buttons.length > 0 && (
-            <View style={styles.btnWrapper}>
+            <View style={[styles.btnWrapper, { borderBottomColor: error ? danger : (isFocused ? active : textWhite) } ]}>
               {
                 buttons.map(({ text, ...btnProps }) => (
                   <CustomButton
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 42,
-    width: "100%",
+    flex: 1,
     borderBottomWidth: 1,
     color: textWhite,
     paddingHorizontal: 12,
@@ -131,10 +131,11 @@ const styles = StyleSheet.create({
   },
   btnWrapper: {
     flexDirection: "row",
-    position: "absolute",
     right: 12,
-    height: "100%",
+    height: 42,
     justifyContent: "center",
+    backgroundColor: dark,
+    borderBottomWidth: 1,
   },
   btnStyle: {
     minWidth: 36,

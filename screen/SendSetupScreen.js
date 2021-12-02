@@ -1,68 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getStringAsync } from 'expo-clipboard';
 
 import { CustomInput } from '../component/CustomInput';
 import { InfoRow } from '../component/InfoRow';
 import { CustomButton } from '../component/CustomButton';
 import { dark } from '../styles/color.theme';
 import { StatusBarHeight } from '../sdk/helper';
+import { validateAddress } from '../sdk/wallet';
+import { SCREEN_NAMES } from '../styles/constants';
+import WalletTypes from '../store/wallet/types';
 
 export function SendSetupScreen({ navigation }) {
-  const [amountValue, setAmountValue] = useState("");
-  const [receiverAddress, setReceiverAddress] = useState("");
-  const [errorState, setErrorState] = useState({
-    amount: null,
-    receiver: null,
-  });
+  const [receiverError, setReceiverError] = useState(null);
+  const [amountError, setAmountError] = useState(null);
+  const amountValue = useSelector(state => state.wallet.amountValue);
+  const receiverAddress = useSelector(state => state.wallet.receiverAddress);
   const balance = useSelector(state => state.wallet.balance);
   // TODO: change it when wallet has puts
   const putSymbol = useSelector(state => state.wallet.putSymbol);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch({ type: WalletTypes.RESET_SEND_VALUES });
+    };
+  }, [])
 
   const handleChangeAmountValue = (value) => {
-    if (value[0] === "0" && value[1] === "0") {
-      setAmountValue(value.substring(1));
-      return;
-    }
-    setAmountValue(value);
+    dispatch({ type: WalletTypes.CHANGE_AMOUNT_VALUE, payload: value });
   };
 
   const handleSetToMaxAmount = () => {
-    setAmountValue(JSON.stringify(balance));
+    dispatch({ type: WalletTypes.CHANGE_AMOUNT_VALUE, payload: JSON.stringify(balance) });
   };
 
   const handleChangeReceiverAddressValue = (value) => {
-    setReceiverAddress(value);
+    dispatch({ type: WalletTypes.CHANGE_RECEIVE_ADDRESS, payload: value });
   };
 
-  const handlePasteReceiveAddress = () => {
+  const handlePasteReceiveAddress = async () => {
+    try {
+      const text = await getStringAsync();
+      dispatch({ type: WalletTypes.CHANGE_RECEIVE_ADDRESS, payload: text });
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
+  const handleScanAddress = async () => {
+    navigation.navigate(SCREEN_NAMES.QR_SCANNER_SCREEN);
   };
 
   const handleContinue = () => {
     let isValid = true;
 
     if (amountValue > balance) {
-      setErrorState({
-        ...errorState,
-        amount: `Указаное количество ${putSymbol} превышает текущий баланс`,
-      });
+      setAmountError(`Указаное количество ${putSymbol} превышает текущий баланс`);
       isValid = false;
+    } else if (amountValue === "" || amountValue === "undefined") {
+      setAmountError(`Введите количество ${putSymbol} для отправки`);
+      isValid = false;
+    } else {
+      setAmountError(null);
     }
-    if (amountValue === "" || amountValue === "undefined") {
-      setErrorState({
-        ...errorState,
-        amount: `Введите количество ${putSymbol} для отправки`,
-      });
+
+    const isAddressValid = validateAddress(receiverAddress);
+    if (!isAddressValid) {
+      setReceiverError('Неверный адрес');
       isValid = false;
+    } else if (receiverAddress === "" || receiverAddress === "undefined") {
+      setReceiverError("Введите адрес получателя");
+      isValid = false;
+    } else {
+      setReceiverError(null);
     }
 
     if (!isValid) return;
 
-    setErrorState({
-      amount: null,
-      receiver: null,
-    });
+    navigation.navigate(SCREEN_NAMES.SEND_CONFIRM_SCREEN);
   };
 
   return (
@@ -71,7 +88,7 @@ export function SendSetupScreen({ navigation }) {
       bounces={false}
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
-      keyboardShouldPersistTap={"always"}
+      keyboardShouldPersistTaps={"always"}
     >
       <CustomInput
         value={amountValue}
@@ -83,7 +100,7 @@ export function SendSetupScreen({ navigation }) {
           onPress: handleSetToMaxAmount,
         }]}
         onChangeText={handleChangeAmountValue}
-        error={errorState.amount}
+        error={amountError}
       />
       <InfoRow
         label={"Ваш баланс"}
@@ -94,7 +111,7 @@ export function SendSetupScreen({ navigation }) {
 
       <CustomInput
         value={receiverAddress}
-        label={"Введите адресс получателя"}
+        label={"Введите адрес получателя"}
         containerStyle={{ marginBottom: 24 }}
         buttons={[
           {
@@ -103,10 +120,11 @@ export function SendSetupScreen({ navigation }) {
           },
           {
             text: "Scan",
-            onPress: () => {},
+            onPress: handleScanAddress,
           }
         ]}
         onChangeText={handleChangeReceiverAddressValue}
+        error={receiverError}
       />
 
       <CustomButton

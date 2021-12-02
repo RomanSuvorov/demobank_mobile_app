@@ -2,7 +2,7 @@ import React, { useState, useRef, useMemo } from 'react';
 import { View, StyleSheet, Platform, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { EvilIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 import { CardSheet } from '../component/CardSheet';
 import { CustomBottomSheetBackground } from '../component/CustomBottomSheetBackground';
@@ -69,7 +69,7 @@ export const WalletCardScreen = React.memo(({
         snapPoints={snapPoints}
         backgroundComponent={CustomBottomSheetBackground}
         handleComponent={() => (
-          <CustomHandleBS Icon={<EvilIcons name="pointer" size={40} color={active05} />} />
+          <CustomHandleBS Icon={<FontAwesome name="arrows-v" size={18} color={active05} />} />
         )}
         enableHandlePanningGesture={true}
         animatedIndex={currentIndex}

@@ -14,7 +14,10 @@ const initialStore = {
   address: null,
   balance: 0,
   transactions: [],
-  putSymbol: "GRPH"
+  putSymbol: "GRPH",
+
+  amountValue: "",
+  receiverAddress: "",
 };
 
 const reducer = {
@@ -52,6 +55,24 @@ const reducer = {
 
   [Types.WALLET_LIST_LOAD_FINISH]: draft => {
     draft.walletsLoading = false;
+  },
+
+  [Types.CHANGE_AMOUNT_VALUE]: (draft, payload) => {
+    if (payload[0] === "0" && payload[1] === "0") {
+      draft.amountValue = payload.substring(1);
+      return;
+    }
+
+    draft.amountValue = payload;
+  },
+
+  [Types.CHANGE_RECEIVE_ADDRESS]: (draft, payload) => {
+    draft.receiverAddress = payload;
+  },
+
+  [Types.RESET_SEND_VALUES]: draft => {
+    draft.amountValue = initialStore.amountValue;
+    draft.receiverAddress = initialStore.receiverAddress;
   },
 
   [Types.CHANGE_AUTHENTICATED]: (draft, payload) => {

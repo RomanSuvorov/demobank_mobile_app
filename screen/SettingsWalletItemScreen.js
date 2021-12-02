@@ -61,7 +61,7 @@ export function SettingsWalletItem({ walletAddress, navigation, insideBottomShee
     >
       <CustomInput
         isInsideBottomSheet={insideBottomSheet}
-        defaultValue={wallet?.name}
+        value={wallet?.name}
         label={"Имя"}
         editable={!loading}
         placeholder={"Введите имя кошелька..."}

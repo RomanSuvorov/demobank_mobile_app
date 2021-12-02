@@ -7,7 +7,7 @@ import {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { EvilIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 import { BalanceSheet } from '../component/BalanceSheet';
 import { TransactionHeader } from '../component/Transaction/TransactionHeader';
@@ -108,7 +108,7 @@ export const WalletBalanceScreen = React.memo(({
         snapPoints={snapPoints}
         backgroundComponent={CustomBottomSheetBackground}
         handleComponent={() => formattedTransactions.length > 0 ? (
-          <CustomHandleBS Icon={<EvilIcons name="pointer" size={40} color={active05} />} />
+          <CustomHandleBS Icon={<FontAwesome name="arrows-v" size={18} color={active05} />} />
         ) : null}
         enableHandlePanningGesture={true}
         animatedIndex={currentIndex}

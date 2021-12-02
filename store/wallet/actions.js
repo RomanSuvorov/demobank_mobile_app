@@ -212,4 +212,8 @@ export const deleteWalletAction = ({ address }) => async (dispatch) => {
     dispatch({ type: Types.WALLET_LOAD_ERROR, payload: e });
     dispatch(showModalAction({ type: "error", text: "Возникла проблемка при удалении кошелька" }));
   }
-}
+};
+
+export const sendToWallet = ({ from, to, amount, putSymbol }) => async (dispatch) => {
+  console.log(from, to, amount, putSymbol);
+};

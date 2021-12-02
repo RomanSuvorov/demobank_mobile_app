@@ -57,7 +57,7 @@ const Dot = ({ active }) => {
         color={'active'}
         type={'bold'}
       >
-        &delta;&beta;
+        &#46;
       </CustomText>
     </Animated.View>
   );
