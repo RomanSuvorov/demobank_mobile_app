@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 
-import { active05 } from '../styles/color.theme';
+import { active07 } from '../styles/color.theme';
 
 export function CustomHandleBS({
   containerHeight,
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   bordered: {
     borderRadius: 1,
-    borderBottomColor: active05,
+    borderBottomColor: active07,
     borderBottomWidth: 2,
   },
 });

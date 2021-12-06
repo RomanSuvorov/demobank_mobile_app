@@ -24,7 +24,7 @@ import {
   groupingTransactionsList,
 } from '../sdk/helper';
 import { SCREEN_NAMES } from '../styles/constants';
-import { active05 } from '../styles/color.theme';
+import { active07 } from '../styles/color.theme';
 
 const { width, height } = deviceSize;
 
@@ -108,7 +108,7 @@ export const WalletBalanceScreen = React.memo(({
         snapPoints={snapPoints}
         backgroundComponent={CustomBottomSheetBackground}
         handleComponent={() => formattedTransactions.length > 0 ? (
-          <CustomHandleBS Icon={<FontAwesome name="arrows-v" size={18} color={active05} />} />
+          <CustomHandleBS Icon={<FontAwesome name="arrows-v" size={18} color={active07} />} />
         ) : null}
         enableHandlePanningGesture={true}
         animatedIndex={currentIndex}

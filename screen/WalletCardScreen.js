@@ -15,7 +15,7 @@ import {
   onIOSBottomSheetIndexChange,
   onIOSBottomSheetListScroll,
 } from '../sdk/helper';
-import { active05 } from '../styles/color.theme';
+import { active07 } from '../styles/color.theme';
 
 const { width, height } = deviceSize;
 
@@ -69,7 +69,7 @@ export const WalletCardScreen = React.memo(({
         snapPoints={snapPoints}
         backgroundComponent={CustomBottomSheetBackground}
         handleComponent={() => (
-          <CustomHandleBS Icon={<FontAwesome name="arrows-v" size={18} color={active05} />} />
+          <CustomHandleBS Icon={<FontAwesome name="arrows-v" size={18} color={active07} />} />
         )}
         enableHandlePanningGesture={true}
         animatedIndex={currentIndex}

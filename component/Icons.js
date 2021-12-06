@@ -210,7 +210,7 @@ export function SendToWalletIcon(props) {
   );
 }
 
-export function CopyAddressIcon(props) {
+export function CopyIcon(props) {
   return (
     <Svg
       width={19}

@@ -26,10 +26,21 @@ export function QrScannerScreen({ navigation }) {
   }, []);
 
   const handleOnScanned = (data) => {
-    console.log("data: ", data.data);
-    setScanned(true);
-    dispatch({ type: WalletTypes.CHANGE_RECEIVE_ADDRESS, payload: data.data });
-    navigation.navigate(SCREEN_NAMES.SEND_SETUP_SCREEN);
+    const result = data.data;
+
+    if (!!result) {
+      const strArray = result.split("?");
+      const address = strArray[0];
+
+      if (strArray[1]) {
+        const amount = strArray[1].split("=")[1];
+        dispatch({ type: WalletTypes.CHANGE_AMOUNT_VALUE, payload: amount });
+      }
+
+      setScanned(true);
+      dispatch({ type: WalletTypes.CHANGE_RECEIVE_ADDRESS, payload: address });
+      navigation.navigate(SCREEN_NAMES.SEND_SETUP_SCREEN);
+    }
   };
 
   if (hasCameraPermission === null) {

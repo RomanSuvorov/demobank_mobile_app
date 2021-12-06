@@ -6,6 +6,7 @@ import { TabNavigator } from './TabNavigator';
 import { DetailsTransactionScreen } from '../screen/DetailsTransactionScreen';
 import { SendSetupScreen } from '../screen/SendSetupScreen';
 import { SendConfirmScreen } from '../screen/SendConfirmScreen';
+import { ReceiveScreen } from '../screen/ReceiveScreen';
 import { GlobalSettingsScreen } from '../screen/GlobalSettingsScreen';
 import { SettingsWalletItemScreen } from '../screen/SettingsWalletItemScreen';
 import { ServerSettingsScreen } from '../screen/ServerSettingsScreen';
@@ -73,6 +74,17 @@ export function AppNavigator() {
             component={SendConfirmScreen}
             options={{
               title: "Перевод",
+              headerTitleAlign: "center",
+              headerTitleStyle: styles.headerFontStyle,
+              presentation: "formSheet",
+              orientation: "portrait",
+            }}
+          />
+          <AppStack.Screen
+            name={SCREEN_NAMES.RECEIVE_SCREEN}
+            component={ReceiveScreen}
+            options={{
+              title: "Получить",
               headerTitleAlign: "center",
               headerTitleStyle: styles.headerFontStyle,
               presentation: "formSheet",

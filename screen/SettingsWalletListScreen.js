@@ -17,7 +17,7 @@ import { getWalletDataAction } from '../store/wallet/actions';
 import { getProfileAction } from '../store/app/actions';
 import AppTypes from '../store/app/types';
 import { deviceSize, onIOSBottomSheetIndexChange, StatusBarHeight, onIOSBottomSheetListScroll } from '../sdk/helper';
-import { textWhite, greyPrimary, active05 } from '../styles/color.theme';
+import { textWhite, greyPrimary, active07 } from '../styles/color.theme';
 import { SCREEN_NAMES } from '../styles/constants';
 import { GLOB_VAR } from '../styles/global';
 
@@ -85,7 +85,7 @@ export function SettingsWalletListScreen({ navigation }) {
           snapPoints={snapPoints}
           backgroundComponent={CustomBottomSheetBackground}
           handleComponent={() => !!wallets && wallets.length > 0 ? (
-            <CustomHandleBS Icon={<FontAwesome name="arrows-v" size={18} color={active05} />} />
+            <CustomHandleBS Icon={<FontAwesome name="arrows-v" size={18} color={active07} />} />
           ) : null}
           enableHandlePanningGesture={true}
           animatedIndex={currentIndex}

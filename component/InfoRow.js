@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 
 import { CustomText } from './CustomText';
-import { CopyAddressIcon } from './Icons';
+import { CopyIcon } from './Icons';
 import { greyPrimary } from '../styles/color.theme';
 import { CircleBtn } from './CircleBtn';
 
@@ -61,7 +61,7 @@ export function InfoRow({
         {!!onCopy && (
           <CircleBtn
             label={null}
-            Icon={CopyAddressIcon}
+            Icon={CopyIcon}
             size={36}
             style={{ paddingHorizontal: 12 }}
             onPress={() => onCopy(value, label)}

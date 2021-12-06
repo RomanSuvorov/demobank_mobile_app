@@ -95,6 +95,7 @@ export function SendSetupScreen({ navigation }) {
         label={`Введите количество ${putSymbol}`}
         placeholder={"0"}
         keyboardType={"numeric"}
+        autoFocus={true}
         buttons={[{
           text: "MAX",
           onPress: handleSetToMaxAmount,

@@ -9,7 +9,7 @@ import { setString } from 'expo-clipboard';
 
 import { CircleBtn } from './CircleBtn';
 import { CustomText } from './CustomText';
-import { CopyAddressIcon, FillUpWalletIcon, SendToWalletIcon, WalletsIcon, ArrowDownIcon } from './Icons';
+import { CopyIcon, FillUpWalletIcon, SendToWalletIcon, WalletsIcon, ArrowDownIcon } from './Icons';
 import { WALLETS_ICON_BOX_HEIGHT, ACTIONS_BOX_HEIGHT, HEIGHT_OF_BALANCE_CONTENT } from '../styles/global';
 import { deviceSize, getStyle } from '../sdk/helper';
 import { SCREEN_NAMES } from '../styles/constants';
@@ -91,7 +91,11 @@ export function BalanceSheet({ address, balance, putSymbol, currentIndex, naviga
   const onLayout = (event) => {
     const { width } = event.nativeEvent.layout;
     setWidthOfBalanceString(width);
-  }
+  };
+
+  const handleGoToReceiveScreen = () => {
+    navigation.navigate(SCREEN_NAMES.RECEIVE_SCREEN);
+  };
 
   const handleGoToSendScreen = () => {
     navigation.navigate(SCREEN_NAMES.SEND_SETUP_SCREEN);
@@ -185,6 +189,7 @@ export function BalanceSheet({ address, balance, putSymbol, currentIndex, naviga
         <CircleBtn
           label={"Пополнить\n свой кошелек "}
           Icon={FillUpWalletIcon}
+          onPress={handleGoToReceiveScreen}
         />
         <CircleBtn
           label={"Перевести\n на кошелек "}
@@ -193,7 +198,7 @@ export function BalanceSheet({ address, balance, putSymbol, currentIndex, naviga
         />
         <CircleBtn
           label={"Копировать\n адрес "}
-          Icon={CopyAddressIcon}
+          Icon={CopyIcon}
           onPress={handleCopyAddress}
         />
       </Animated.View>

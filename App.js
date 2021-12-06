@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { useFonts } from '@expo-google-fonts/inter';

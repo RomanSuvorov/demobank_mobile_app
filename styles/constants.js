@@ -19,6 +19,7 @@ export const SCREEN_NAMES =  {
   WALLET_SCREEN: "WALLET_SCREEN",
   SEND_SETUP_SCREEN: "SEND_SETUP_SCREEN",
   SEND_CONFIRM_SCREEN: "SEND_CONFIRM_SCREEN",
+  RECEIVE_SCREEN: "RECEIVE_SCREEN",
 
   //
   EXCHANGE_SCREEN: "EXCHANGE_SCREEN",
@@ -44,6 +45,7 @@ export const SECURE_STORE_NAMES = {
 
 export const DEFAULT_RESOURCES = {
   graphCoinSvgUri: "https://glcdn.sgp1.digitaloceanspaces.com/graph/coin.svg",
+  graphCoinPngUri: "https://glcdn.sgp1.digitaloceanspaces.com/graph/coin.png",
   graphNetworkUrl: "https://core.graph.finance",
 };
 
