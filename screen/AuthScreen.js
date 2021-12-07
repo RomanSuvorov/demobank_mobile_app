@@ -14,7 +14,7 @@ const { width, height } = deviceSize;
 const slides = [
   {
     image: require("../assets/slideImage1.png"),
-    title: "Конфиденциальный и безопасный",
+    title: "Конфиденциальный и безопасный",
     description: "Приватные ключи не покидают ваше устройство.",
   },
   {

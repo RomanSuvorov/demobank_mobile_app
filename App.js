@@ -1,4 +1,5 @@
 import React from 'react';
+// import React, { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { useFonts } from '@expo-google-fonts/inter';
@@ -16,6 +17,34 @@ export default function App() {
     'Play-Bold': require('./assets/fonts/Play-Bold.ttf'),
     'Play-Regular': require('./assets/fonts/Play-Regular.ttf'),
   });
+
+  // TODO: Add deep link for universal links
+  // import * as Linking from 'expo-linking';
+
+  // const prefix = Linking.createURL('/');
+
+  // const [data, setData] = useState(null);
+
+  // const getInitialUrl = async () => {
+  //   const initialUrl = await Linking.getInitialURL();
+  //   if (initialUrl) setData(Linking.parse(initialUrl));
+  // };
+  //
+  // useEffect(() => {
+  //   Linking.addEventListener("url", handleDeepLink);
+  //   if (!data) {
+  //     getInitialUrl();
+  //   }
+  //
+  //   return (() => {
+  //     Linking.removeEventListener("url", handleDeepLink);
+  //   });
+  // }, []);
+  //
+  // const handleDeepLink = (event) => {
+  //   const data = Linking.parse(event.url);
+  //   setData(data);
+  // };
 
   return (
     <Provider store={store}>

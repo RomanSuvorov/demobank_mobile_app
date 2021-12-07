@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "demobank_mobile_app",
+    "scheme": "demobank",
+    "name": "Demobank",
     "slug": "demobank_mobile_app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +24,26 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "https",
+              "host": "*.demobank.com",
+              "pathPrefix": "/send"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ],
+      "package": "com.gliesereum.demobank",
+      "versionCode": 1,
+      "permissions": ["CAMERA"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
