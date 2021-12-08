@@ -18,7 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "associatedDomains": ["applinks:myDomain.com"]
     },
     "android": {
       "adaptiveIcon": {
@@ -27,12 +28,13 @@
       },
       "intentFilters": [
         {
+          "autoVerify": true,
           "action": "VIEW",
           "data": [
             {
               "scheme": "https",
-              "host": "*.demobank.com",
-              "pathPrefix": "/send"
+              "host": "*.myDomain.com",
+              "pathPrefix": "/*"
             }
           ],
           "category": [
@@ -41,7 +43,7 @@
           ]
         }
       ],
-      "package": "com.gliesereum.demobank",
+      "package": "com.demobank",
       "versionCode": 1,
       "permissions": ["CAMERA"]
     },
