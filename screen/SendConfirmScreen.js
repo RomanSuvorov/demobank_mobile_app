@@ -7,7 +7,6 @@ import { InfoRow } from '../component/InfoRow';
 import { CustomButton } from '../component/CustomButton';
 import { sendToWallet } from '../store/wallet/actions';
 import { dark, greyPrimary, lightDark } from '../styles/color.theme';
-import { StatusBarHeight } from '../sdk/helper';
 
 export function SendConfirmScreen({ navigation }) {
   const address = useSelector(state => state.wallet.address);
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: dark,
   },
   contentContainer: {
-    paddingVertical: StatusBarHeight,
+    paddingVertical: 24,
     paddingHorizontal: 18,
   },
   infoWrapper: {

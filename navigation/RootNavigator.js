@@ -3,14 +3,16 @@ import { Platform, StatusBar } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSelector, useDispatch } from 'react-redux';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 import { AppLoadingScreen } from '../screen/AppLoadingScreen';
 import { CustomModal } from '../component/CustomModal';
 import { AppNavigator } from './AppNavigator';
-import { AuthorizationNavigator } from './AuthorizationNavigator';
-import { checkGraphNetwork } from '../store/app/actions';
+import { AddWalletNavigator } from './AddWalletNavigator';
+import { checkGraphNetwork, checkSecure } from '../store/app/actions';
 import { NetworkUrlErrorScreen } from '../screen/NetworkUrlErrorScreen';
 import { ServerSettingsScreen } from '../screen/ServerSettingsScreen';
+import { LocalAuthorizationScreen } from '../screen/LocalAuthorizationScreen';
 import { active, greyPrimary, lightDark } from '../styles/color.theme';
 import { navigationRef } from '../sdk/helper';
 import { SCREEN_NAMES } from '../styles/constants';
@@ -27,14 +29,31 @@ const DemobankTheme = {
 
 const Stack = createNativeStackNavigator();
 export function RootNavigator() {
-  const walletsLoading = useSelector(state => state.wallet.walletsLoading);
-  const isAuthenticated = useSelector(state => state.wallet.isAuthenticated);
+  const secureChecking = useSelector(state => state.app.secureChecking);
+  const isLocalAuthenticated = useSelector(state => state.app.isLocalAuthenticated);
   const checkNetworkLoading = useSelector(state => state.app.checkNetworkLoading);
   const checkNetworkError = useSelector(state => state.app.checkNetworkError);
+  const walletsLoading = useSelector(state => state.wallet.walletsLoading);
+  const wallets = useSelector(state => state.wallet.wallets);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(checkGraphNetwork());
+    (async () => {
+      await dispatch(checkSecure());
+      await dispatch(checkGraphNetwork());
+    })();
+    // (async () => {
+    //   const isSupported = await LocalAuthentication.hasHardwareAsync();
+    //   console.log(Platform.OS, "isSupported", isSupported);
+    //   const isSaved = await LocalAuthentication.isEnrolledAsync();
+    //   console.log(Platform.OS, "isSaved", isSaved);
+    //   const isAuth = await LocalAuthentication.authenticateAsync({
+      //   promptMessage: "Login with ...",
+      //   cancelLabel: "PIN",
+      //   disableDeviceFallback: true,
+      // });
+      // console.log(Platform.OS, "isAuth", isAuth);
+    // })();
   }, []);
 
   const renderContent = () => {
@@ -74,31 +93,38 @@ export function RootNavigator() {
       );
     }
 
-    if (walletsLoading || checkNetworkLoading) {
+    if (secureChecking || walletsLoading || checkNetworkLoading) {
       return (
-        <Stack.Group>
-          <Stack.Screen
-            name={SCREEN_NAMES.APP_LOADING_SCREEN}
-            component={AppLoadingScreen}
-          />
-        </Stack.Group>
+        <Stack.Screen
+          name={SCREEN_NAMES.APP_LOADING_SCREEN}
+          component={AppLoadingScreen}
+        />
       );
     }
 
+    if (!isLocalAuthenticated) {
+      return (
+        <Stack.Screen
+          name={SCREEN_NAMES.LOCAL_AUTH_SCREEN}
+          component={LocalAuthorizationScreen}
+        />
+      );
+    }
+
+    if (wallets.length === 0) {
+      return (
+        <Stack.Screen
+          name={SCREEN_NAMES.ADD_WALLET_NAVIGATOR}
+          component={AddWalletNavigator}
+        />
+      )
+    }
+
     return (
-      <Stack.Group>
-        {isAuthenticated ? (
-          <Stack.Screen
-            name={SCREEN_NAMES.APP_NAVIGATOR}
-            component={AppNavigator}
-          />
-        ) : (
-          <Stack.Screen
-            name={SCREEN_NAMES.AUTHORIZATION_NAVIGATOR}
-            component={AuthorizationNavigator}
-          />
-        )}
-      </Stack.Group>
+      <Stack.Screen
+        name={SCREEN_NAMES.APP_NAVIGATOR}
+        component={AppNavigator}
+      />
     )
   };
 

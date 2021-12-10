@@ -1,8 +1,10 @@
+import { Platform } from 'react-native';
 import { deviceSize, StatusBarHeight } from '../sdk/helper';
 
 const { height, width } = deviceSize;
 
 export const WALLETS_ICON_BOX_HEIGHT = 54;
+export const WALLETS_ICON_BOX_MARGIN_TOP = Platform.OS === "android" ? 0 : 24;
 export const PAGINATION_HEIGHT = 42;
 export const ACTIONS_BOX_HEIGHT = 95;
 export const CARD_WIDTH = width * 0.912;
@@ -31,12 +33,12 @@ export const PADDING_TOP_FROM_NAVIGATION_HEADER = 24;
 
 export const GLOB_VAR = {
   // wallet
-  INITIAL_SNAP_POINT: height - HEIGHT_OF_BALANCE_CONTENT - PAGINATION_HEIGHT - StatusBarHeight,
-  SECOND_SNAP_POINT_BALANCE: height - (WALLETS_ICON_BOX_HEIGHT + StatusBarHeight - 12),
+  INITIAL_SNAP_POINT: height - HEIGHT_OF_BALANCE_CONTENT - PAGINATION_HEIGHT,
+  SECOND_SNAP_POINT_BALANCE: height - WALLETS_ICON_BOX_HEIGHT,
   SECOND_SNAP_POINT_CARD: height - StatusBarHeight,
-  PAGINATION_TOP_POSITION: HEIGHT_OF_BALANCE_CONTENT + StatusBarHeight,
+  PAGINATION_TOP_POSITION: HEIGHT_OF_BALANCE_CONTENT + (Platform.OS === "android" ? StatusBarHeight : 0),
 
   // settings
-  INITIAL_SETTINGS_SNAP_POINT: height - StatusBarHeight - HEIGHT_OF_PROFILE_BOX - (PROFILE_VERTICAL_MARGIN * 2),
+  INITIAL_SETTINGS_SNAP_POINT: height - (Platform.OS === "android" ? StatusBarHeight : 0) - HEIGHT_OF_PROFILE_BOX - (PROFILE_VERTICAL_MARGIN * 2),
   SECOND_SNAP_POINT_SETTINGS: height - StatusBarHeight,
 };

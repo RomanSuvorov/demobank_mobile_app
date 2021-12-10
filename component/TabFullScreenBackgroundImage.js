@@ -1,8 +1,8 @@
 import React from 'react';
-import { ImageBackground, StyleSheet } from 'react-native';
+import { ImageBackground, StyleSheet, Platform } from 'react-native';
 
 import TabNavigatorBgImage from '../assets/backgroundImage.png';
-import { deviceSize } from '../sdk/helper';
+import { deviceSize, StatusBarHeight } from '../sdk/helper';
 
 const { height, width } = deviceSize;
 
@@ -23,5 +23,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: width,
     height: height,
+    paddingTop: Platform.OS === "android" ? StatusBarHeight : 0,
   },
 });

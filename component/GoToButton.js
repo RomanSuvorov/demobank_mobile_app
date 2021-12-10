@@ -23,7 +23,7 @@ export function GoToButton({
     }
 
     if (to) {
-      navigate(to, { navigationParams: navigationParams });
+      navigate(to, navigationParams);
     }
   };
 

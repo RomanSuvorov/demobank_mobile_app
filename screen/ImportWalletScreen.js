@@ -13,7 +13,6 @@ import { textWhite, dark, lightDark, greyPrimary } from '../styles/color.theme';
 export function ImportWalletScreen({}) {
   const [privateKey, setPrivateKey] = useState("");
   const loading = useSelector(state => state.wallet.loading);
-  const isAuthenticated = useSelector(state => state.wallet.isAuthenticated);
   const dispatch = useDispatch();
 
   const handleChangeInput = (value) => {
@@ -22,7 +21,7 @@ export function ImportWalletScreen({}) {
 
   const handleContinue = () => {
     if (!privateKey) return;
-    dispatch(importWalletAction({ isAuthenticated, privateKey }));
+    dispatch(importWalletAction({ privateKey }));
   };
 
   return (

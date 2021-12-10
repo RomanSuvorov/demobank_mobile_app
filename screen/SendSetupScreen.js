@@ -7,7 +7,6 @@ import { CustomInput } from '../component/CustomInput';
 import { InfoRow } from '../component/InfoRow';
 import { CustomButton } from '../component/CustomButton';
 import { dark } from '../styles/color.theme';
-import { StatusBarHeight } from '../sdk/helper';
 import { validateAddress } from '../sdk/wallet';
 import { SCREEN_NAMES } from '../styles/constants';
 import WalletTypes from '../store/wallet/types';
@@ -143,7 +142,7 @@ const styles = StyleSheet.create({
     backgroundColor: dark,
   },
   contentContainer: {
-    paddingVertical: StatusBarHeight,
+    paddingVertical: 24,
     paddingHorizontal: 18,
   },
   btnWrapper: {

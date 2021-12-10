@@ -4,6 +4,9 @@ import { DEFAULT_RESOURCES } from '../../styles/constants';
 
 const initialStore = {
   activeSlide: 0,
+  secureChecking: true,
+  isLocalAuthenticated: false,
+  isPasscodeSet: false,
 
   profile: {
     name: "Имя",
@@ -51,6 +54,18 @@ const reducer = {
 
   [Types.CHECK_NETWORK_FINISH]: draft => {
     draft.checkNetworkLoading = false;
+  },
+
+  [Types.SECURE_CHECKING_START]: draft => {
+    draft.secureChecking = true;
+  },
+
+  [Types.SECURE_CHECKING_FINISH]: draft => {
+    draft.secureChecking = false;
+  },
+
+  [Types.CHANGE_IS_LOCAL_AUTHENTICATED]: (draft, payload) => {
+    draft.isLocalAuthenticated = payload;
   },
 };
 

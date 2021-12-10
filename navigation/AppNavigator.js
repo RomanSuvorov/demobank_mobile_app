@@ -11,8 +11,9 @@ import { GlobalSettingsScreen } from '../screen/GlobalSettingsScreen';
 import { SettingsWalletItemScreen } from '../screen/SettingsWalletItemScreen';
 import { ServerSettingsScreen } from '../screen/ServerSettingsScreen';
 import { SecuritySettingsScreen } from '../screen/SecuritySettingsScreen';
+import { LocalAuthorizationScreen } from '../screen/LocalAuthorizationScreen';
 import { QrScannerScreen } from '../screen/QrScannerScreen';
-import { AuthScreen } from '../screen/AuthScreen';
+import { AddWalletScreen } from '../screen/AddWalletScreen';
 import { GenerateWalletScreen } from '../screen/GenerateWalletScreen';
 import { ImportWalletScreen } from '../screen/ImportWalletScreen';
 import { WalletPublicKeyScreen } from '../screen/WalletPublicKeyScreen';
@@ -28,6 +29,13 @@ export function AppNavigator() {
       <AppStack.Screen
         name={SCREEN_NAMES.TABS_NAVIGATOR}
         component={TabNavigator}
+      />
+      <AppStack.Screen
+        options={{
+          presentation: "modal",
+        }}
+        name={SCREEN_NAMES.LOCAL_AUTH_SCREEN}
+        component={LocalAuthorizationScreen}
       />
 
       <AppStack.Group screenOptions={{
@@ -178,8 +186,8 @@ export function AppNavigator() {
           ),
         })}>
           <AppStack.Screen
-            name={SCREEN_NAMES.AUTH_START_SCREEN}
-            component={AuthScreen}
+            name={SCREEN_NAMES.ADD_WALLET_SCREEN}
+            component={AddWalletScreen}
             options={({ navigation }) => ({
               headerLeft: (props) => (
                 <BackNavigation

@@ -5,6 +5,23 @@ import { showModalAction } from '../modal/actions';
 import { getWalletsList } from '../wallet/actions';
 import { SECURE_STORE_NAMES, DEFAULT_RESOURCES } from '../../styles/constants';
 
+export const checkSecure = () => async (dispatch) => {
+  dispatch({ type: Types.SECURE_CHECKING_START });
+  try {
+    const isPasscodeSet = await AsyncStorage.getItem(SECURE_STORE_NAMES.PASSCODE);
+    dispatch({ type: Types.CHANGE_IS_LOCAL_AUTHENTICATED, payload: !isPasscodeSet });
+    dispatch({ type: Types.SET_TO_STORE_LOCAL_AUTH_DATA, payload: isPasscodeSet });
+  } catch (e) {
+    console.error(e);
+    dispatch(showModalAction({
+      type: "error",
+      text: "Возникла проблемка при загрузке данных",
+    }));
+  } finally {
+    dispatch({ type: Types.SECURE_CHECKING_FINISH });
+  }
+};
+
 export const getProfileAction = () => async (dispatch) => {
   try {
     const profile = await AsyncStorage.getItem(SECURE_STORE_NAMES.PROFILE);

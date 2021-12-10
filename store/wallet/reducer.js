@@ -8,7 +8,6 @@ const initialStore = {
   walletsLoading: false,
   walletsError: undefined,
 
-  isAuthenticated: false,
   wallets: [],
 
   address: null,
@@ -74,10 +73,6 @@ const reducer = {
     draft.amountValue = initialStore.amountValue;
     draft.receiverAddress = initialStore.receiverAddress;
   },
-
-  [Types.CHANGE_AUTHENTICATED]: (draft, payload) => {
-    draft.isAuthenticated = payload;
-  }
 };
 
 export const wallet = createReducer(reducer, initialStore)

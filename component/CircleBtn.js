@@ -27,6 +27,7 @@ export function Circle({
   style,
   iconColor,
   badge,
+  children,
 }) {
   return (
     <View style={[
@@ -58,6 +59,11 @@ export function Circle({
           <View style={[styles.badge, { zIndex: 3, top: 0, right: 0 }]}>
             {badge}
           </View>
+        )
+      }
+      {
+        !!children && (
+          <CustomText>{children}</CustomText>
         )
       }
     </View>
@@ -102,6 +108,7 @@ export function CircleBtn({
   contentSize,
   withShadow,
   onPress,
+  children,
 }) {
   return (
     <TouchableOpacity
@@ -118,7 +125,9 @@ export function CircleBtn({
         style={[circleStyle]}
         badge={badge}
         disabled={disabled}
-      />
+      >
+        {children}
+      </Circle>
       {label && (
         <CustomText
           size={12}

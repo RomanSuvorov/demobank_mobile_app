@@ -8,7 +8,7 @@ import { showModalAction } from '../modal/actions';
 import { navigate } from '../../sdk/helper';
 import { SECURE_STORE_NAMES, SCREEN_NAMES } from '../../styles/constants';
 
-export const generateWalletAction = ({ isAuthenticated }) => async (dispatch, getState) => {
+export const generateWalletAction = () => async (dispatch) => {
   dispatch({ type: Types.WALLET_LOAD_START });
 
   try {
@@ -29,20 +29,17 @@ export const generateWalletAction = ({ isAuthenticated }) => async (dispatch, ge
 
     // get all previous wallets from secure store
     const walletsStringified = await getValueFromDeviceStorage(SECURE_STORE_NAMES.WALLETS);
-    const wallets = JSON.parse(walletsStringified) || [];
+    const oldWalletsList = JSON.parse(walletsStringified) || [];
     // concatenate all previous wallets from secure store with new one
-    const newWallets = [...wallets, { address, privateKey, publicKey, name: `Основной кошелек ${wallets.length + 1}` }];
+    const newWallets = [...oldWalletsList, { address, privateKey, publicKey, name: `Основной кошелек ${oldWalletsList.length + 1}` }];
     // save new wallets list to secure store for next sign in process (startApp action)
     await saveToDeviceStorage(SECURE_STORE_NAMES.WALLETS, JSON.stringify(newWallets));
     dispatch({ type: Types.WALLET_LIST_LOAD_SUCCESS, payload: newWallets });
     await dispatch(getWalletDataAction({ address: address }));
 
-    if (isAuthenticated) {
+    if (oldWalletsList.length > 0) {
       // push user to wallets lst
       navigate(SCREEN_NAMES.SETTINGS_WALLET_LIST);
-    } else {
-      // push user to signed in app with this (newest) wallet
-      dispatch({ type: Types.CHANGE_AUTHENTICATED, payload: true });
     }
     dispatch(showModalAction({ type: "success", text: "Ваш кошелек был успешно создан" }));
   } catch (e) {
@@ -54,7 +51,7 @@ export const generateWalletAction = ({ isAuthenticated }) => async (dispatch, ge
   }
 };
 
-export const importWalletAction = ({ isAuthenticated, privateKey }) => async (dispatch) => {
+export const importWalletAction = ({ privateKey }) => async (dispatch) => {
   dispatch({ type: Types.WALLET_LOAD_START });
 
   try {
@@ -77,10 +74,10 @@ export const importWalletAction = ({ isAuthenticated, privateKey }) => async (di
 
     // get all previous wallets from secure store
     const walletsStringified = await getValueFromDeviceStorage(SECURE_STORE_NAMES.WALLETS);
-    const wallets = JSON.parse(walletsStringified) || [];
+    const oldWalletsList = JSON.parse(walletsStringified) || [];
 
-    if (isAuthenticated) {
-      const isWalletExist = wallets.find(w => w.address === importedWallet.address);
+    if (oldWalletsList.length > 0) {
+      const isWalletExist = oldWalletsList.find(w => w.address === importedWallet.address);
       if (isWalletExist) {
         // push user to wallets lst
         navigate(SCREEN_NAMES.SETTINGS_WALLET_LIST);
@@ -90,18 +87,15 @@ export const importWalletAction = ({ isAuthenticated, privateKey }) => async (di
     }
 
     // concatenate all previous wallets from secure store with new one
-    const newWallets = [...wallets, { ...importedWallet, name: `Основной кошелек ${wallets.length + 1}` }];
+    const newWallets = [...oldWalletsList, { ...importedWallet, name: `Основной кошелек ${oldWalletsList.length + 1}` }];
     // save new wallets list to secure store for next sign in process (startApp action)
     await saveToDeviceStorage(SECURE_STORE_NAMES.WALLETS, JSON.stringify(newWallets));
     dispatch({ type: Types.WALLET_LIST_LOAD_SUCCESS, payload: newWallets });
     await dispatch(getWalletDataAction({ address: importedWallet.address }));
 
-    if (isAuthenticated) {
+    if (oldWalletsList.length > 0) {
       // push user to wallets lst
       navigate(SCREEN_NAMES.SETTINGS_WALLET_LIST);
-    } else {
-      // push user to signed in app with this (newest) wallet
-      dispatch({ type: Types.CHANGE_AUTHENTICATED, payload: true });
     }
     dispatch(showModalAction({ type: "success", text: "Ваш кошелек был успешно импортирован" }));
   } catch (e) {
@@ -119,9 +113,9 @@ export const getWalletsList = () => async (dispatch) => {
   try {
     // get all wallets from secure store
     const stringifiedWallets = await getValueFromDeviceStorage(SECURE_STORE_NAMES.WALLETS);
+
     if (!stringifiedWallets) {
-      dispatch({ type: Types.CHANGE_AUTHENTICATED, payload: false });
-      return;
+      return dispatch({ type: Types.WALLET_LIST_LOAD_SUCCESS, payload: [] });
     }
 
     const wallets = JSON.parse(stringifiedWallets);
@@ -129,8 +123,6 @@ export const getWalletsList = () => async (dispatch) => {
     dispatch({ type: Types.WALLET_LIST_LOAD_SUCCESS, payload: wallets });
     // get active wallet address
     const activeWalletAddress = JSON.parse(await AsyncStorage.getItem(SECURE_STORE_NAMES.ACTIVE_WALLET_ADDRESS)) || wallets[0].address;
-    // push user to signed in app with active wallet
-    dispatch({ type: Types.CHANGE_AUTHENTICATED, payload: true });
     await dispatch(getWalletDataAction({ address: activeWalletAddress }));
   } catch (e) {
     console.error(e);
@@ -204,8 +196,6 @@ export const deleteWalletAction = ({ address }) => async (dispatch) => {
     dispatch({ type: Types.WALLET_LIST_LOAD_SUCCESS, payload: newWallets });
     if (newWallets.length > 0) {
       await dispatch(getWalletDataAction({ address: newWallets[0].address }));
-    } else {
-      dispatch({ type: Types.CHANGE_AUTHENTICATED, payload: false });
     }
   } catch (e) {
     console.error(e);

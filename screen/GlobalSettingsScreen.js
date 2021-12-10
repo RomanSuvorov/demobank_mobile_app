@@ -1,14 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
 import { MaterialIcons, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { CommonActions } from '@react-navigation/native';
 
 import { GoToButton } from '../component/GoToButton';
 import { FingerPrintIcon } from '../component/Icons';
-import { StatusBarHeight } from '../sdk/helper';
 import { dark, textWhite } from '../styles/color.theme';
 import { SCREEN_NAMES } from '../styles/constants';
 
-export function GlobalSettingsScreen({ navigation }) {
+export function GlobalSettingsScreen({ navigation, route }) {
+  const isPasscodeSet = useSelector(state => state.app.isPasscodeSet);
+
+  useEffect(() => {
+    if (!isPasscodeSet) return;
+    // get this params from lock screen to authenticate navigation to "toPath" route;
+    if (route.params?.authed && route.params?.toPath) {
+      // when lock screen authed, go to "toPath"
+      navigation.navigate(route.params?.toPath);
+      // reset navigation store for current route, for repeating this behaviour;
+      navigation.dispatch(CommonActions.setParams({ authed: false, toPath: undefined }));
+    }
+  }, [route.params?.authed, route.params?.toPath]);
+
+  const handleGoToSecurity = () => {
+    if (isPasscodeSet) {
+      navigation.navigate(
+        SCREEN_NAMES.LOCAL_AUTH_SCREEN,
+        {
+          fromPath: SCREEN_NAMES.GLOBAL_SETTINGS_SCREEN,
+          toPath: SCREEN_NAMES.SECURITY_SETTINGS_SCREEN,
+        }
+      );
+    } else {
+      navigation.navigate(SCREEN_NAMES.SECURITY_SETTINGS_SCREEN);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <GoToButton
@@ -25,7 +53,7 @@ export function GlobalSettingsScreen({ navigation }) {
       </GoToButton>
 
       <GoToButton
-        to={SCREEN_NAMES.SECURITY_SETTINGS_SCREEN}
+        onPress={handleGoToSecurity}
         Icon={(
           <FingerPrintIcon
             color={textWhite}
@@ -96,6 +124,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: dark,
     paddingHorizontal: 18,
-    paddingVertical: StatusBarHeight,
+    paddingVertical: 24,
   },
 });

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { View, ActivityIndicator, StyleSheet, Image, Animated } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Image, Animated, Platform } from 'react-native';
 
 import { CustomText } from '../component/CustomText';
 import { StatusBarHeight, deviceSize } from '../sdk/helper';
@@ -67,6 +67,7 @@ export function AppLoadingScreen() {
   const [activeDot, setActiveDot] = useState(1)
   const checkNetworkLoading = useSelector(state => state.app.checkNetworkLoading);
   const walletsLoading = useSelector(state => state.wallet.walletsLoading);
+  const secureChecking = useSelector(state => state.app.secureChecking);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -79,7 +80,7 @@ export function AppLoadingScreen() {
   const getLoadingText = () => {
     if (checkNetworkLoading) {
       return "Проверка сервера";
-    } else if (walletsLoading) {
+    } else if (secureChecking || walletsLoading) {
       return "Проверка локальных данных";
     }
   }
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingTop: StatusBarHeight,
+    paddingTop: Platform.OS === "android" ? StatusBarHeight : 0,
     backgroundColor: dark,
   },
   imageContainer: {

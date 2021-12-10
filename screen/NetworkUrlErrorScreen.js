@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { CustomText } from '../component/CustomText';
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: dark,
     paddingHorizontal: 18,
-    paddingVertical: StatusBarHeight,
+    paddingTop: Platform.OS === "android" ? StatusBarHeight : 0,
     justifyContent: "center",
     alignItems: "center",
   },

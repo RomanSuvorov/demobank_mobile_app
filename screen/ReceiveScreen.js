@@ -12,7 +12,6 @@ import { CopyIcon } from '../component/Icons';
 import DemoLogo from '../assets/demoLogo.png';
 import DemoBankLabel from '../assets/demoLabelDark.png';
 import { dark, lightDark, greyPrimary, active, textWhite } from '../styles/color.theme';
-import { StatusBarHeight } from '../sdk/helper';
 import { DEFAULT_RESOURCES } from '../styles/constants';
 import { deviceSize } from '../sdk/helper';
 
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: dark,
   },
   contentContainer: {
-    paddingVertical: StatusBarHeight,
+    paddingVertical: 24,
     paddingHorizontal: 18,
     alignItems: "center",
     flex: 1,
