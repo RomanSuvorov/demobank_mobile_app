@@ -6,7 +6,6 @@ import { CustomInput } from '../component/CustomInput';
 import { CustomButton } from '../component/CustomButton';
 import { InfoRow } from '../component/InfoRow';
 import { saveServerAction } from '../store/app/actions';
-import { StatusBarHeight } from '../sdk/helper';
 import { dark } from '../styles/color.theme';
 
 export function ServerSettingsScreen({ navigation }) {
@@ -84,7 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: dark,
     paddingHorizontal: 18,
-    paddingVertical: StatusBarHeight,
+    paddingVertical: 24,
   },
   inputContainer: {
     marginBottom: 36,

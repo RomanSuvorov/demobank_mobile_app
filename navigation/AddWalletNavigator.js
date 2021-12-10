@@ -2,25 +2,25 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { AuthScreen as AuthStartScreen } from '../screen/AuthScreen';
+import { AddWalletScreen } from '../screen/AddWalletScreen';
 import { GenerateWalletScreen } from '../screen/GenerateWalletScreen';
 import { ImportWalletScreen } from '../screen/ImportWalletScreen';
 import { BackNavigation } from '../component/BackNavigation';
 import { active, lightDark } from '../styles/color.theme';
 import { SCREEN_NAMES } from '../styles/constants';
 
-const AuthStack = createNativeStackNavigator();
-export function AuthorizationNavigator() {
+const AddWalletStack = createNativeStackNavigator();
+export function AddWalletNavigator() {
   return (
-    <AuthStack.Navigator screenOptions={{ headerShown: false }}>
-      <AuthStack.Screen
-        name={SCREEN_NAMES.AUTH_START_SCREEN}
-        component={AuthStartScreen}
+    <AddWalletStack.Navigator screenOptions={{ headerShown: false }}>
+      <AddWalletStack.Screen
+        name={SCREEN_NAMES.ADD_WALLET_SCREEN}
+        component={AddWalletScreen}
         options={{
           animation: Platform.OS === "ios" ? "default" : "slide_from_right",
         }}
       />
-      <AuthStack.Group screenOptions={({ navigation }) => ({
+      <AddWalletStack.Group screenOptions={({ navigation }) => ({
         headerShown: true,
         animation: Platform.OS === "ios" ? "default" : "slide_from_right",
         title: null,
@@ -36,15 +36,15 @@ export function AuthorizationNavigator() {
         headerStyle: { backgroundColor: lightDark },
         headerShadowVisible: false,
       })}>
-        <AuthStack.Screen
+        <AddWalletStack.Screen
           name={SCREEN_NAMES.GENERATE_WALLET_SCREEN}
           component={GenerateWalletScreen}
         />
-        <AuthStack.Screen
+        <AddWalletStack.Screen
           name={SCREEN_NAMES.IMPORT_WALLET_SCREEN}
           component={ImportWalletScreen}
         />
-      </AuthStack.Group>
-    </AuthStack.Navigator>
+      </AddWalletStack.Group>
+    </AddWalletStack.Navigator>
   );
 }

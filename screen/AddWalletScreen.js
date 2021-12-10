@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, Image, StyleSheet } from 'react-native';
+import { View, ScrollView, Image, StyleSheet, Platform } from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
 import { CustomButton } from '../component/CustomButton';
@@ -30,7 +30,7 @@ const slides = [
 ];
 const MARGIN_TOP = 24;
 
-export function AuthScreen({ navigation }) {
+export function AddWalletScreen({ navigation }) {
   const scrollX = useSharedValue(0);
 
   const handleScroll = ({ nativeEvent }) => scrollX.value = nativeEvent.contentOffset.x;
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: StatusBarHeight,
+    paddingTop: Platform.OS === "android" ? StatusBarHeight : 0,
     backgroundColor: dark,
   },
   slides: {

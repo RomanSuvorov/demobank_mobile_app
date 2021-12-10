@@ -18,7 +18,6 @@ import { CustomHandleBS } from '../component/CustomHandleBS';
 import { GLOB_VAR } from '../styles/global';
 import {
   deviceSize,
-  StatusBarHeight,
   onIOSBottomSheetIndexChange,
   onIOSBottomSheetListScroll,
   groupingTransactionsList,
@@ -146,7 +145,6 @@ const styles = StyleSheet.create({
   container: {
     width,
     height,
-    paddingTop: StatusBarHeight,
   },
   bottomSheetContainer: {
     marginTop: Platform.OS === "ios" ? 38 : 18,

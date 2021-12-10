@@ -16,11 +16,10 @@ const { width, height } = deviceSize;
 export function GenerateWalletScreen({}) {
   const [isAgreed, setIsAgreed] = useState(false);
   const loading = useSelector(state => state.wallet.loading);
-  const isAuthenticated = useSelector(state => state.wallet.isAuthenticated);
   const dispatch = useDispatch();
 
   const handleContinue = () => {
-    dispatch(generateWalletAction({ isAuthenticated }));
+    dispatch(generateWalletAction());
   };
 
   const handleChangeAgreeState = (checked) => setIsAgreed(checked);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { View, ActivityIndicator, StyleSheet, Image, Animated } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Image, Animated, Platform } from 'react-native';
 
 import { CustomText } from '../component/CustomText';
 import { StatusBarHeight, deviceSize } from '../sdk/helper';
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingTop: StatusBarHeight,
+    paddingTop: Platform.OS === "android" ? StatusBarHeight : 0,
     backgroundColor: dark,
   },
   imageContainer: {

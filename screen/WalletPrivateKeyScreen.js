@@ -6,7 +6,6 @@ import { setString } from 'expo-clipboard';
 
 import { CustomText } from '../component/CustomText';
 import { dark, lightDark } from '../styles/color.theme';
-import { StatusBarHeight } from '../sdk/helper';
 
 export function WalletPrivateKeyScreen({ navigation, route }) {
   const { privateKey } = route.params;
@@ -47,7 +46,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     flex: 1,
     backgroundColor: dark,
-    paddingVertical: StatusBarHeight,
+    paddingVertical: 24,
   },
   infoBox: {
     borderRadius: 15,

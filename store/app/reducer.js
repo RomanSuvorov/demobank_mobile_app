@@ -3,6 +3,7 @@ import Types from './types';
 import { DEFAULT_RESOURCES } from '../../styles/constants';
 
 const initialStore = {
+  isLocalAuthenticated: false,
   activeSlide: 0,
 
   profile: {

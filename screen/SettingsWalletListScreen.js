@@ -16,7 +16,7 @@ import { SettingsIcon, AddIcon } from '../component/Icons';
 import { getWalletDataAction } from '../store/wallet/actions';
 import { getProfileAction } from '../store/app/actions';
 import AppTypes from '../store/app/types';
-import { deviceSize, onIOSBottomSheetIndexChange, StatusBarHeight, onIOSBottomSheetListScroll } from '../sdk/helper';
+import { deviceSize, onIOSBottomSheetIndexChange, onIOSBottomSheetListScroll } from '../sdk/helper';
 import { textWhite, greyPrimary, active07 } from '../styles/color.theme';
 import { SCREEN_NAMES } from '../styles/constants';
 import { GLOB_VAR } from '../styles/global';
@@ -118,7 +118,7 @@ export function SettingsWalletListScreen({ navigation }) {
                 </View>
 
                 <GoToButton
-                  to={SCREEN_NAMES.AUTH_START_SCREEN}
+                  to={SCREEN_NAMES.ADD_WALLET_SCREEN}
                   style={styles.settingsButton}
                   Icon={<AddIcon />}
                 >
@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
   container: {
     width,
     height,
-    paddingTop: StatusBarHeight,
   },
   bottomSheetContainer: {
     marginTop: Platform.OS === "ios" ? 38 : 18,

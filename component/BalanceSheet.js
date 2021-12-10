@@ -10,7 +10,7 @@ import { setString } from 'expo-clipboard';
 import { CircleBtn } from './CircleBtn';
 import { CustomText } from './CustomText';
 import { CopyIcon, FillUpWalletIcon, SendToWalletIcon, WalletsIcon, ArrowDownIcon } from './Icons';
-import { WALLETS_ICON_BOX_HEIGHT, ACTIONS_BOX_HEIGHT, HEIGHT_OF_BALANCE_CONTENT } from '../styles/global';
+import { WALLETS_ICON_BOX_HEIGHT, WALLETS_ICON_BOX_MARGIN_TOP, ACTIONS_BOX_HEIGHT, HEIGHT_OF_BALANCE_CONTENT } from '../styles/global';
 import { deviceSize, getStyle } from '../sdk/helper';
 import { SCREEN_NAMES } from '../styles/constants';
 
@@ -42,7 +42,7 @@ export function BalanceSheet({ address, balance, putSymbol, currentIndex, naviga
   const animateTextOpacityAndTransform = ({
     withOpacity = true,
     translateYInput = [0, 0.8],
-    translateYOutput = [WALLETS_ICON_BOX_HEIGHT / 2, -(WALLETS_ICON_BOX_HEIGHT + 12)],
+    translateYOutput = [WALLETS_ICON_BOX_HEIGHT / 2, -WALLETS_ICON_BOX_HEIGHT],
     withScale = false,
   }) => useAnimatedStyle(() => ({
     opacity: withOpacity ? interpolate(
@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
   },
   walletsContainer: {
     height: WALLETS_ICON_BOX_HEIGHT,
+    marginTop: WALLETS_ICON_BOX_MARGIN_TOP,
     alignItems: "center",
   },
   walletsArray: {

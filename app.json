@@ -19,7 +19,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "associatedDomains": ["applinks:myDomain.com"]
+      "associatedDomains": ["applinks:myDomain.com"],
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Access for wallet"
+      },
+      "bundleIdentifier": "com.demobank",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "adaptiveIcon": {
@@ -44,8 +49,7 @@
         }
       ],
       "package": "com.demobank",
-      "versionCode": 1,
-      "permissions": ["CAMERA"]
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

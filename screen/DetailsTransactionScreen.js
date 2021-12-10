@@ -6,7 +6,7 @@ import { Circle } from '../component/CircleBtn';
 import { CustomText } from '../component/CustomText';
 import { InfoRow } from '../component/InfoRow';
 import { dark, danger, success, lightDark, greyPrimary, active } from '../styles/color.theme';
-import { StatusBarHeight, getTime } from '../sdk/helper';
+import { getTime } from '../sdk/helper';
 import { DEFAULT_RESOURCES, TRANSACTION_STATUS } from '../styles/constants';
 
 export function DetailsTransactionScreen({ navigation, route }) {
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     backgroundColor: dark,
   },
   contentContainer: {
-    paddingVertical: StatusBarHeight,
+    paddingVertical: 24,
     paddingHorizontal: 18,
   },
   logoBox: {

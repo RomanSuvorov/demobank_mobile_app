@@ -4,7 +4,6 @@ import { MaterialIcons, FontAwesome, Ionicons } from '@expo/vector-icons';
 
 import { GoToButton } from '../component/GoToButton';
 import { FingerPrintIcon } from '../component/Icons';
-import { StatusBarHeight } from '../sdk/helper';
 import { dark, textWhite } from '../styles/color.theme';
 import { SCREEN_NAMES } from '../styles/constants';
 
@@ -96,6 +95,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: dark,
     paddingHorizontal: 18,
-    paddingVertical: StatusBarHeight,
+    paddingVertical: 24,
   },
 });
