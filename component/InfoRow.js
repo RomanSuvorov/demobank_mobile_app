@@ -14,7 +14,9 @@ export function InfoRow({
   containerStyle,
   labelStyle,
   valueStyle,
+  valueComponent,
   widthBorder,
+  blockWidthRatio,
   onCopy,
 }) {
   return (
@@ -28,7 +30,7 @@ export function InfoRow({
         style={[
           styles.labelStyle,
           {
-            width: direction === "row" ? "40%" : "100%",
+            width: direction === "row" ? `${blockWidthRatio[0]}%` : "100%",
             paddingBottom: direction === "row" ? 0 : 12,
           },
           labelStyle,
@@ -40,24 +42,31 @@ export function InfoRow({
         style={[
           styles.valueStyle,
           {
-            width: direction === "row" ? "60%" : "100%",
+            width: direction === "row" ? `${blockWidthRatio[1]}%` : "100%",
             justifyContent: direction === "row" ? "flex-end" : "center",
             paddingBottom: direction === "row" ? 0 : 12,
           }
         ]}
       >
-        <CustomText
-          style={[
-            styles.valueTextStyle,
-            {
-              textAlign: direction === "row" ? "right" : "left",
-              flex: 1,
-            },
-            valueStyle,
-          ]}
-        >
-          {value}
-        </CustomText>
+        {
+          valueComponent ? (
+            valueComponent
+          ) : (
+            <CustomText
+              style={[
+                styles.valueTextStyle,
+                {
+                  textAlign: direction === "row" ? "right" : "left",
+                  flex: 1,
+                },
+                valueStyle,
+              ]}
+            >
+              {value}
+            </CustomText>
+          )
+        }
+
         {!!onCopy && (
           <CircleBtn
             label={null}
@@ -74,12 +83,19 @@ export function InfoRow({
 
 InfoRow.propTypes = {
   label: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  valueComponent: PropTypes.element,
   direction: PropTypes.string,
   containerStyle: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
   labelStyle: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
   valueStyle: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]),
   widthBorder: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  blockWidthRatio: (props, propName) => {
+    if (!Array.isArray(props.blockWidthRatio) || props.blockWidthRatio.length !== 2 || !props.blockWidthRatio.every(Number.isInteger)) {
+      return new Error(`${propName} needs to be an array of two numbers`);
+    }
+    return null;
+  },
   onCopy: PropTypes.oneOfType([PropTypes.func]),
 };
 
@@ -91,6 +107,7 @@ InfoRow.defaultProps = {
   labelStyle: {},
   valueStyle: {},
   widthBorder: greyPrimary,
+  blockWidthRatio: [40, 60],
   onCopy: null,
 };
 

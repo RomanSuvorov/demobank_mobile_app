@@ -1,35 +1,24 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
 import { MaterialIcons, FontAwesome, Ionicons } from '@expo/vector-icons';
-import { CommonActions } from '@react-navigation/native';
 
 import { GoToButton } from '../component/GoToButton';
 import { FingerPrintIcon } from '../component/Icons';
 import { dark, textWhite } from '../styles/color.theme';
-import { SCREEN_NAMES } from '../styles/constants';
+import { SCREEN_NAMES, LOCAL_AUTH_SCREEN_MODE } from '../styles/constants';
 
-export function GlobalSettingsScreen({ navigation, route }) {
-  const isPasscodeSet = useSelector(state => state.app.isPasscodeSet);
-
-  useEffect(() => {
-    if (!isPasscodeSet) return;
-    // get this params from lock screen to authenticate navigation to "toPath" route;
-    if (route.params?.authed && route.params?.toPath) {
-      // when lock screen authed, go to "toPath"
-      navigation.navigate(route.params?.toPath);
-      // reset navigation store for current route, for repeating this behaviour;
-      navigation.dispatch(CommonActions.setParams({ authed: false, toPath: undefined }));
-    }
-  }, [route.params?.authed, route.params?.toPath]);
+export function GlobalSettingsScreen({ navigation }) {
+  const isPasscodeExist = useSelector(state => state.app.isPasscodeExist);
 
   const handleGoToSecurity = () => {
-    if (isPasscodeSet) {
+    if (isPasscodeExist) {
       navigation.navigate(
-        SCREEN_NAMES.LOCAL_AUTH_SCREEN,
+        SCREEN_NAMES.LOCK_APP_NAVIGATOR,
         {
-          fromPath: SCREEN_NAMES.GLOBAL_SETTINGS_SCREEN,
           toPath: SCREEN_NAMES.SECURITY_SETTINGS_SCREEN,
+          fromPath: SCREEN_NAMES.GLOBAL_SETTINGS_SCREEN,
+          mode: LOCAL_AUTH_SCREEN_MODE.CONFIRM_PASSCODE,
         }
       );
     } else {

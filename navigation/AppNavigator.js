@@ -3,6 +3,7 @@ import { StyleSheet, Platform } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { TabNavigator } from './TabNavigator';
+import { LocalAuthorizationNavigator } from './LocalAuthorizationNavigator';
 import { DetailsTransactionScreen } from '../screen/DetailsTransactionScreen';
 import { SendSetupScreen } from '../screen/SendSetupScreen';
 import { SendConfirmScreen } from '../screen/SendConfirmScreen';
@@ -11,7 +12,7 @@ import { GlobalSettingsScreen } from '../screen/GlobalSettingsScreen';
 import { SettingsWalletItemScreen } from '../screen/SettingsWalletItemScreen';
 import { ServerSettingsScreen } from '../screen/ServerSettingsScreen';
 import { SecuritySettingsScreen } from '../screen/SecuritySettingsScreen';
-import { LocalAuthorizationScreen } from '../screen/LocalAuthorizationScreen';
+import { AutoLockListScreen } from '../screen/AutoLockListScreen';
 import { QrScannerScreen } from '../screen/QrScannerScreen';
 import { AddWalletScreen } from '../screen/AddWalletScreen';
 import { GenerateWalletScreen } from '../screen/GenerateWalletScreen';
@@ -30,13 +31,6 @@ export function AppNavigator() {
         name={SCREEN_NAMES.TABS_NAVIGATOR}
         component={TabNavigator}
       />
-      <AppStack.Screen
-        options={{
-          presentation: "modal",
-        }}
-        name={SCREEN_NAMES.LOCAL_AUTH_SCREEN}
-        component={LocalAuthorizationScreen}
-      />
 
       <AppStack.Group screenOptions={{
         headerShown: true,
@@ -54,6 +48,14 @@ export function AppNavigator() {
             />
           ),
         })}>
+          <AppStack.Screen
+            options={{
+              title: null,
+              animation: Platform.OS === "ios" ? "slide_from_left" : "fade",
+            }}
+            name={SCREEN_NAMES.LOCK_APP_NAVIGATOR}
+            component={LocalAuthorizationNavigator}
+          />
           <AppStack.Screen
             name={SCREEN_NAMES.DETAILS_SCREEN}
             component={DetailsTransactionScreen}
@@ -154,6 +156,15 @@ export function AppNavigator() {
             component={SecuritySettingsScreen}
             options={{
               title: "Настройки безопасности",
+              headerTitleAlign: "center",
+              headerTitleStyle: styles.headerFontStyle,
+            }}
+          />
+          <AppStack.Screen
+            name={SCREEN_NAMES.AUTO_LOCK_LIST_SCREEN}
+            component={AutoLockListScreen}
+            options={{
+              title: "Автоблокировка",
               headerTitleAlign: "center",
               headerTitleStyle: styles.headerFontStyle,
             }}

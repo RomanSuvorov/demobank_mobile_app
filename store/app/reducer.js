@@ -1,13 +1,17 @@
 import { createReducer } from '../../sdk/helper';
 import Types from './types';
-import { DEFAULT_RESOURCES } from '../../styles/constants';
+import { DEFAULT_RESOURCES, BIOMETRIC_METHOD, AUTO_LOCK } from '../../styles/constants';
 
 const initialStore = {
-  isLocalAuthenticated: false,
   activeSlide: 0,
+
+  timeLocked: null,
   secureChecking: true,
   isLocalAuthenticated: false,
-  isPasscodeSet: false,
+  isPasscodeExist: false,
+  biometricIsOn: false,
+  biometricMethod: BIOMETRIC_METHOD.NONE,
+  autoLockValue: AUTO_LOCK.FIVE_MINUTES,
 
   profile: {
     name: "Имя",
@@ -67,6 +71,26 @@ const reducer = {
 
   [Types.CHANGE_IS_LOCAL_AUTHENTICATED]: (draft, payload) => {
     draft.isLocalAuthenticated = payload;
+  },
+
+  [Types.CHANGE_IS_PASSCODE_EXIST]: (draft, payload) => {
+    draft.isPasscodeExist = payload;
+  },
+
+  [Types.CHANGE_BIOMETRIC_IS_ON]: (draft, payload) => {
+    draft.biometricIsOn = payload;
+  },
+
+  [Types.CHANGE_BIOMETRIC_METHOD]: (draft, payload) => {
+    draft.biometricMethod = payload;
+  },
+
+  [Types.CHANGE_AUTO_LOCK_VALUE]: (draft, payload) => {
+    draft.autoLockValue = payload;
+  },
+
+  [Types.CHANGE_APP_LOCKED_TIME]: (draft, payload) => {
+    draft.timeLocked = payload;
   },
 };
 

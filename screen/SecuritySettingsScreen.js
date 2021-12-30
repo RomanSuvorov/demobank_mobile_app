@@ -1,23 +1,119 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { View, Switch, StyleSheet } from 'react-native';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { View, Switch, StyleSheet, Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { CustomText } from '../component/CustomText';
-import { dark, textWhite, success } from '../styles/color.theme';
+import { InfoRow } from '../component/InfoRow';
+import { GoToButton } from '../component/GoToButton';
+import { dark, textWhite, green, darkGrey, greySecondary } from '../styles/color.theme';
+import { SCREEN_NAMES, LOCAL_AUTH_SCREEN_MODE, BIOMETRIC_METHOD, SECURE_STORE_NAMES, AUTO_LOCK_VALUE_TRANSL } from '../styles/constants';
+import Types from '../store/app/types';
+
+const biometricMethodTransl = {
+  [BIOMETRIC_METHOD.FINGERPRINT]: "Разблокировка отпечатком пальца",
+  [BIOMETRIC_METHOD.FACE_ID]: "Разблокировка по Face ID",
+};
 
 export function SecuritySettingsScreen({ navigation }) {
+  const isPasscodeExist = useSelector(state => state.app.isPasscodeExist);
+  const biometricIsOn = useSelector(state => state.app.biometricIsOn);
+  const biometricMethod = useSelector(state => state.app.biometricMethod);
+  const autoLockValue = useSelector(state => state.app.autoLockValue);
   const dispatch = useDispatch();
+
+  const handleChangeIsSetPasscode = ({ nativeEvent }) => {
+    const isTurnOn = nativeEvent.value;
+    navigation.navigate(
+      SCREEN_NAMES.LOCK_APP_NAVIGATOR,
+      {
+        toPath: SCREEN_NAMES.SECURITY_SETTINGS_SCREEN,
+        fromPath: SCREEN_NAMES.SECURITY_SETTINGS_SCREEN,
+        mode: isTurnOn ? LOCAL_AUTH_SCREEN_MODE.CREATE_PASSCODE : LOCAL_AUTH_SCREEN_MODE.DELETE_PASSCODE
+      },
+    );
+  };
+
+  const handleChangeBiometricIsOn = async ({ nativeEvent }) => {
+    const isTurnOn = nativeEvent.value;
+    dispatch({ type: Types.CHANGE_BIOMETRIC_IS_ON, payload: isTurnOn });
+    await AsyncStorage.setItem(SECURE_STORE_NAMES.BIOMETRIC_IS_ON, isTurnOn.toString());
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.switchPasswordContainer}>
-        <CustomText>Блокировка приложения</CustomText>
-        <Switch
-          style={styles.switch}
-          thumbColor={textWhite}
-          trackColor={success}
-        />
+      <InfoRow
+        containerStyle={[styles.blockContainer, styles.infoRowContainer]}
+        label={"Блокировка приложения"}
+        labelStyle={{ color: textWhite }}
+        valueComponent={(
+          <Switch
+            value={isPasscodeExist}
+            style={styles.switch}
+            thumbColor={textWhite}
+            trackColor={{ true: green, false: darkGrey }}
+            ios_backgroundColor={darkGrey}
+            onChange={handleChangeIsSetPasscode}
+          />
+        )}
+        widthBorder={false}
+        blockWidthRatio={[70, 30]}
+      />
+      <View style={[{ marginBottom: 24, paddingHorizontal: 12 }]}>
+        <CustomText color={'greySecondary'}>
+          Важно: если Вы забудете пароль доступа, Вам нужно будет переустанавливать приложения и совершить импорт кошельков
+        </CustomText>
       </View>
+      {
+        isPasscodeExist && (
+          <>
+            <View style={styles.blockContainer}>
+              <GoToButton
+                to={SCREEN_NAMES.LOCK_APP_NAVIGATOR}
+                navigationParams={{
+                  toPath: SCREEN_NAMES.SECURITY_SETTINGS_SCREEN,
+                  fromPath: SCREEN_NAMES.SECURITY_SETTINGS_SCREEN,
+                  mode: LOCAL_AUTH_SCREEN_MODE.CREATE_PASSCODE,
+                }}
+                style={{ marginBottom: 0 }}
+              >
+                Сменить пароль
+              </GoToButton>
+            </View>
+            <InfoRow
+              containerStyle={[styles.blockContainer, styles.infoRowContainer]}
+              label={biometricMethodTransl[biometricMethod]}
+              labelStyle={{ color: textWhite }}
+              valueComponent={(
+                <Switch
+                  value={biometricIsOn}
+                  style={styles.switch}
+                  thumbColor={textWhite}
+                  trackColor={{ true: green, false: darkGrey }}
+                  ios_backgroundColor={darkGrey}
+                  onChange={handleChangeBiometricIsOn}
+                />
+              )}
+              widthBorder={false}
+              blockWidthRatio={[70, 30]}
+            />
+            <View style={styles.blockContainer}>
+              <GoToButton
+                to={SCREEN_NAMES.AUTO_LOCK_LIST_SCREEN}
+                style={{ marginBottom: 0 }}
+              >
+                Автоблокировка
+              </GoToButton>
+              <CustomText
+                color={'greySecondary'}
+                style={{ paddingHorizontal: 12 }}
+              >
+                {AUTO_LOCK_VALUE_TRANSL[autoLockValue]}
+              </CustomText>
+            </View>
+          </>
+        )
+      }
     </View>
   );
 }
@@ -29,7 +125,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     paddingVertical: 24,
   },
-  switch: {
-    width: 200,
+  blockContainer: {
+    marginBottom: 12,
   },
+  infoRowContainer: {
+    paddingVertical: Platform.OS === "android" ? 0 : 12,
+  },
+  switch: {},
 });

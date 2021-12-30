@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 import produce from 'immer';
 import { Platform, Dimensions } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { createNavigationContainerRef } from '@react-navigation/native';
+import { createNavigationContainerRef, StackActions } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { Easing } from "react-native-reanimated";
 
@@ -74,6 +74,11 @@ export function navigate(name, params) {
   }
 }
 
+export function replace(name, params) {
+  if (navigationRef.isReady()) {
+    navigationRef.dispatch(StackActions.replace(name, params));
+  }
+}
 
 // storage managing
 export async function saveToDeviceStorage(key, value, options) {
@@ -168,5 +173,13 @@ export function groupingTransactionsList(list) {
       title: getTitleByDate(date),
       data: groupsObj[date],
     };
+  });
+}
+
+export async function delay(ms) {
+  await new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
   });
 }

@@ -1,22 +1,22 @@
-import React, { useEffect } from 'react';
-import { Platform, StatusBar } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Platform, StatusBar, AppState } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useSelector, useDispatch } from 'react-redux';
-import * as LocalAuthentication from 'expo-local-authentication';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { AppLoadingScreen } from '../screen/AppLoadingScreen';
-import { CustomModal } from '../component/CustomModal';
 import { AppNavigator } from './AppNavigator';
 import { AddWalletNavigator } from './AddWalletNavigator';
-import { checkGraphNetwork, checkSecure } from '../store/app/actions';
-import { NetworkUrlErrorScreen } from '../screen/NetworkUrlErrorScreen';
+import { LocalAuthorizationNavigator } from './LocalAuthorizationNavigator';
+import { AppLoadingScreen } from '../screen/AppLoadingScreen';
 import { ServerSettingsScreen } from '../screen/ServerSettingsScreen';
-import { LocalAuthorizationScreen } from '../screen/LocalAuthorizationScreen';
-import { active, greyPrimary, lightDark } from '../styles/color.theme';
-import { navigationRef } from '../sdk/helper';
-import { SCREEN_NAMES } from '../styles/constants';
+import { NetworkUrlErrorScreen } from '../screen/NetworkUrlErrorScreen';
+import { CustomModal } from '../component/CustomModal';
 import { BackNavigation } from '../component/BackNavigation';
+import { checkGraphNetwork, checkSecure, checkTimeForReAuthorization } from '../store/app/actions';
+import { navigationRef } from '../sdk/helper';
+import { SCREEN_NAMES, LOCAL_AUTH_SCREEN_MODE, SECURE_STORE_NAMES } from '../styles/constants';
+import { active, greyPrimary, lightDark } from '../styles/color.theme';
 
 const DemobankTheme = {
   ...DefaultTheme,
@@ -29,6 +29,7 @@ const DemobankTheme = {
 
 const Stack = createNativeStackNavigator();
 export function RootNavigator() {
+  const appState = useRef(AppState.currentState);
   const secureChecking = useSelector(state => state.app.secureChecking);
   const isLocalAuthenticated = useSelector(state => state.app.isLocalAuthenticated);
   const checkNetworkLoading = useSelector(state => state.app.checkNetworkLoading);
@@ -39,22 +40,43 @@ export function RootNavigator() {
 
   useEffect(() => {
     (async () => {
+      // await dispatch(appPrepare());
       await dispatch(checkSecure());
       await dispatch(checkGraphNetwork());
     })();
-    // (async () => {
-    //   const isSupported = await LocalAuthentication.hasHardwareAsync();
-    //   console.log(Platform.OS, "isSupported", isSupported);
-    //   const isSaved = await LocalAuthentication.isEnrolledAsync();
-    //   console.log(Platform.OS, "isSaved", isSaved);
-    //   const isAuth = await LocalAuthentication.authenticateAsync({
-      //   promptMessage: "Login with ...",
-      //   cancelLabel: "PIN",
-      //   disableDeviceFallback: true,
-      // });
-      // console.log(Platform.OS, "isAuth", isAuth);
-    // })();
+    const subscription = AppState.addEventListener("change", handleAppState);
+
+    return () => {
+     // subscription.remove();
+      AppState.removeEventListener("change", handleAppState);
+    };
   }, []);
+
+  const handleAppState = async (nextAppState) => {
+    if (appState.current.match(/inactive|background/) && nextAppState === "active") {
+      dispatch(checkTimeForReAuthorization());
+    } else {
+      const currentRoute = navigationRef.current.getCurrentRoute();
+
+      let routeName = currentRoute.name;
+      let needReplace = true;
+      if (currentRoute.name === SCREEN_NAMES.LOCAL_AUTH_SCREEN || currentRoute.name === SCREEN_NAMES.LOCK_APP_SCREEN) {
+        routeName = currentRoute.params.fromPath;
+        needReplace = false;
+      }
+
+      await AsyncStorage.setItem(
+        SECURE_STORE_NAMES.EXIT_PROPS,
+        JSON.stringify({
+          routeName: routeName,
+          exitTime: new Date().toISOString(),
+          needReplace: needReplace,
+        }),
+      );
+    }
+
+    appState.current = nextAppState;
+  };
 
   const renderContent = () => {
     if (checkNetworkError) {
@@ -105,8 +127,9 @@ export function RootNavigator() {
     if (!isLocalAuthenticated) {
       return (
         <Stack.Screen
-          name={SCREEN_NAMES.LOCAL_AUTH_SCREEN}
-          component={LocalAuthorizationScreen}
+          name={SCREEN_NAMES.LOCK_APP_NAVIGATOR}
+          component={LocalAuthorizationNavigator}
+          initialParams={{ mode: LOCAL_AUTH_SCREEN_MODE.AUTH_IN_APP, toPath: SCREEN_NAMES.APP_LOADING_SCREEN }}
         />
       );
     }
