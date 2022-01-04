@@ -47,8 +47,7 @@ export function RootNavigator() {
     const subscription = AppState.addEventListener("change", handleAppState);
 
     return () => {
-     // subscription.remove();
-      AppState.removeEventListener("change", handleAppState);
+      subscription.remove();
     };
   }, []);
 
