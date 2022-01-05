@@ -9,7 +9,7 @@ import { SCREEN_NAMES } from '../styles/constants';
 
 const LocalAuthStack = createNativeStackNavigator();
 export function LocalAuthorizationNavigator({ navigation, route }) {
-  const { toPath, fromPath, mode } = route.params;
+  const { toPath, fromPath, mode, routeParams } = route.params;
   const timeLocked = useSelector(state => state.app.timeLocked);
 
   return (
@@ -24,7 +24,7 @@ export function LocalAuthorizationNavigator({ navigation, route }) {
           <LocalAuthStack.Screen
             name={SCREEN_NAMES.LOCAL_AUTH_SCREEN}
             component={PasscodeScreen}
-            initialParams={{ toPath, fromPath, mode }}
+            initialParams={{ toPath, fromPath, mode, routeParams }}
             options={{
               animation: Platform.OS === "ios" ? "default" : "fade",
               presentation: "formSheet",

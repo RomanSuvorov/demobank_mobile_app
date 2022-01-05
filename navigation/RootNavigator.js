@@ -47,7 +47,11 @@ export function RootNavigator() {
     const subscription = AppState.addEventListener("change", handleAppState);
 
     return () => {
-      subscription.remove();
+      if (subscription) {
+        subscription.remove();
+      } else {
+        AppState.removeEventListener("change", handleAppState);
+      }
     };
   }, []);
 
@@ -58,18 +62,17 @@ export function RootNavigator() {
       const currentRoute = navigationRef.current.getCurrentRoute();
 
       let routeName = currentRoute.name;
-      let needReplace = true;
+      const routeParams = currentRoute.params || {};
       if (currentRoute.name === SCREEN_NAMES.LOCAL_AUTH_SCREEN || currentRoute.name === SCREEN_NAMES.LOCK_APP_SCREEN) {
         routeName = currentRoute.params.fromPath;
-        needReplace = false;
       }
 
       await AsyncStorage.setItem(
         SECURE_STORE_NAMES.EXIT_PROPS,
         JSON.stringify({
           routeName: routeName,
+          routeParams: routeParams,
           exitTime: new Date().toISOString(),
-          needReplace: needReplace,
         }),
       );
     }

@@ -37,6 +37,7 @@ export const checkSecure = () => async (dispatch) => {
       if (isSaved) {
         let method;
         let biometricIsOn = await AsyncStorage.getItem(SECURE_STORE_NAMES.BIOMETRIC_IS_ON);
+        if (biometricIsOn) biometricIsOn = JSON.parse(biometricIsOn);
         const kindAvailable = await LocalAuthentication.supportedAuthenticationTypesAsync();
 
         if (kindAvailable.length) {
@@ -77,17 +78,17 @@ export const checkTimeForReAuthorization = () => async (dispatch, getState) => {
 
     if (isPasscodeExist) {
       const autoLockValue = store.app.autoLockValue;
-      const { exitTime, routeName, needReplace } = JSON.parse(await AsyncStorage.getItem(SECURE_STORE_NAMES.EXIT_PROPS));
+      const { exitTime, routeName, routeParams } = JSON.parse(await AsyncStorage.getItem(SECURE_STORE_NAMES.EXIT_PROPS));
       const timeWithoutReAuth = new Date(exitTime).getTime() + +autoLockValue;
       const currentTime = new Date().getTime();
 
       if (currentTime > timeWithoutReAuth) {
-        const method = needReplace ? replace : navigate;
-        method(
+        navigate(
           SCREEN_NAMES.LOCK_APP_NAVIGATOR,
           {
             toPath: SCREEN_NAMES[routeName],
-            mode: LOCAL_AUTH_SCREEN_MODE.CONFIRM_PASSCODE,
+            mode: LOCAL_AUTH_SCREEN_MODE.APP_STATE_BECOME_ACTIVE,
+            routeParams: routeParams,
           }
         )
       } else {

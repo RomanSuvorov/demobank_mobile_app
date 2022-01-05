@@ -2,11 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BackHandler } from 'react-native';
 
 import Types from './types';
+import AppTypes from '../app/types';
 import { saveToDeviceStorage, getValueFromDeviceStorage } from '../../sdk/helper';
 import { createWallet, importWalletPrivateKey } from '../../sdk/wallet';
 import { showModalAction } from '../modal/actions';
 import { navigate } from '../../sdk/helper';
-import { SECURE_STORE_NAMES, SCREEN_NAMES } from '../../styles/constants';
+import { SECURE_STORE_NAMES, SCREEN_NAMES, AUTO_LOCK } from '../../styles/constants';
 
 export const generateWalletAction = () => async (dispatch) => {
   dispatch({ type: Types.WALLET_LOAD_START });
@@ -196,6 +197,16 @@ export const deleteWalletAction = ({ address }) => async (dispatch) => {
     dispatch({ type: Types.WALLET_LIST_LOAD_SUCCESS, payload: newWallets });
     if (newWallets.length > 0) {
       await dispatch(getWalletDataAction({ address: newWallets[0].address }));
+    } else {
+      await AsyncStorage.multiRemove([
+        SECURE_STORE_NAMES.PASSCODE,
+        SECURE_STORE_NAMES.BIOMETRIC_IS_ON,
+        SECURE_STORE_NAMES.AUTO_LOCK,
+      ]);
+
+      dispatch({ type: AppTypes.CHANGE_IS_PASSCODE_EXIST, payload: false });
+      dispatch({ type: AppTypes.CHANGE_BIOMETRIC_IS_ON, payload: false });
+      dispatch({ type: AppTypes.CHANGE_AUTO_LOCK_VALUE, payload: AUTO_LOCK.FIVE_MINUTES });
     }
   } catch (e) {
     console.error(e);

@@ -24,7 +24,7 @@ export function SecuritySettingsScreen({ navigation }) {
 
   const handleChangeIsSetPasscode = ({ nativeEvent }) => {
     const isTurnOn = nativeEvent.value;
-    navigation.navigate(
+    navigation.replace(
       SCREEN_NAMES.LOCK_APP_NAVIGATOR,
       {
         toPath: SCREEN_NAMES.SECURITY_SETTINGS_SCREEN,
@@ -80,23 +80,29 @@ export function SecuritySettingsScreen({ navigation }) {
                 Сменить пароль
               </GoToButton>
             </View>
-            <InfoRow
-              containerStyle={[styles.blockContainer, styles.infoRowContainer]}
-              label={biometricMethodTransl[biometricMethod]}
-              labelStyle={{ color: textWhite }}
-              valueComponent={(
-                <Switch
-                  value={biometricIsOn}
-                  style={styles.switch}
-                  thumbColor={textWhite}
-                  trackColor={{ true: green, false: darkGrey }}
-                  ios_backgroundColor={darkGrey}
-                  onChange={handleChangeBiometricIsOn}
+
+            {
+              biometricMethod !== BIOMETRIC_METHOD.NONE && (
+                <InfoRow
+                  containerStyle={[styles.blockContainer, styles.infoRowContainer]}
+                  label={biometricMethodTransl[biometricMethod]}
+                  labelStyle={{ color: textWhite }}
+                  valueComponent={(
+                    <Switch
+                      value={biometricIsOn}
+                      style={styles.switch}
+                      thumbColor={textWhite}
+                      trackColor={{ true: green, false: darkGrey }}
+                      ios_backgroundColor={darkGrey}
+                      onChange={handleChangeBiometricIsOn}
+                    />
+                  )}
+                  widthBorder={false}
+                  blockWidthRatio={[70, 30]}
                 />
-              )}
-              widthBorder={false}
-              blockWidthRatio={[70, 30]}
-            />
+              )
+            }
+
             <View style={styles.blockContainer}>
               <GoToButton
                 to={SCREEN_NAMES.AUTO_LOCK_LIST_SCREEN}

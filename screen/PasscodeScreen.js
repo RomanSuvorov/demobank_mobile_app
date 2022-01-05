@@ -26,7 +26,7 @@ const CodeInput = ({ value }) => {
 }
 
 export function PasscodeScreen({ navigation, route }) {
-  const { toPath, mode } = route.params;
+  const { toPath, mode, routeParams } = route.params;
   // animation
   const incorrectDoteAnimation = useRef(new Animated.Value(0)).current;
   const incorrectLockAnimation = useRef(new Animated.Value(0)).current;
@@ -110,6 +110,7 @@ export function PasscodeScreen({ navigation, route }) {
       screenMode === LOCAL_AUTH_SCREEN_MODE.CONFIRM_PASSCODE
       || screenMode === LOCAL_AUTH_SCREEN_MODE.AUTH_IN_APP
       || screenMode === LOCAL_AUTH_SCREEN_MODE.DELETE_PASSCODE
+      || screenMode === LOCAL_AUTH_SCREEN_MODE.APP_STATE_BECOME_ACTIVE
     ) {
       setLoading(true);
       const passcode = await AsyncStorage.getItem(SECURE_STORE_NAMES.PASSCODE);
@@ -132,7 +133,12 @@ export function PasscodeScreen({ navigation, route }) {
             dispatch({ type: Types.CHANGE_AUTO_LOCK_VALUE, payload: AUTO_LOCK.FIVE_MINUTES });
           }
           setLoading(false);
-          navigation.replace(toPath);
+
+          if (screenMode === LOCAL_AUTH_SCREEN_MODE.APP_STATE_BECOME_ACTIVE) {
+            navigation.navigate(toPath, routeParams);
+          } else {
+            navigation.replace(toPath);
+          }
         }
       } else {
         await handleFailure({ repeatPasscodeScreen: false });
@@ -168,12 +174,13 @@ export function PasscodeScreen({ navigation, route }) {
         await AsyncStorage.removeItem(SECURE_STORE_NAMES.ATTEMPTS_COUNT);
       } else {
         await AsyncStorage.setItem(SECURE_STORE_NAMES.ATTEMPTS_COUNT, currentAttemptsCount.toString());
-        setCode("");
-        if (repeatPasscodeScreen) {
-          setTempCode("");
-          setScreenMode(LOCAL_AUTH_SCREEN_MODE.CREATE_PASSCODE);
-        }
       }
+    }
+
+    setCode("");
+    if (repeatPasscodeScreen) {
+      setTempCode("");
+      setScreenMode(LOCAL_AUTH_SCREEN_MODE.CREATE_PASSCODE);
     }
   };
 
@@ -237,6 +244,7 @@ export function PasscodeScreen({ navigation, route }) {
   switch (screenMode) {
     case LOCAL_AUTH_SCREEN_MODE.CONFIRM_PASSCODE:
     case LOCAL_AUTH_SCREEN_MODE.AUTH_IN_APP:
+    case LOCAL_AUTH_SCREEN_MODE.APP_STATE_BECOME_ACTIVE:
     case LOCAL_AUTH_SCREEN_MODE.DELETE_PASSCODE:
       title = "Введите ваш пароль";
       iconName = "lock-closed";
